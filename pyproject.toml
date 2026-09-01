@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["*/migrations/*"]
+
+[tool.ruff.lint]
+# E,F = Standardpruefungen, I = Importsortierung, UP = veraltete Schreibweisen,
+# DJ = Django-spezifische Regeln
+select = ["E", "F", "I", "UP", "DJ"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+addopts = "-q"

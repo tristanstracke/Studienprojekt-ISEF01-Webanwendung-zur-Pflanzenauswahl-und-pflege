@@ -1,0 +1,33 @@
+name: CI
+
+# Laeuft bei jedem Push und bei jedem Pull Request. Schlaegt die Pruefung fehl,
+# laesst sich der Pull Request nicht zusammenfuehren.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pruefung:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Abhaengigkeiten installieren
+        run: pip install -r requirements-dev.txt
+
+      - name: Statische Pruefung
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Django-Systemcheck
+        run: python manage.py check
+
+      - name: Tests
+        run: pytest --cov=plants --cov-report=term-missing

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titel %}Care for Plants{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f7f8f6; color: #1d2b1f; }
+    header { background: #2f5d3a; color: #fff; padding: 1rem 1.5rem; }
+    header a { color: #fff; }
+    main { max-width: 52rem; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Care for Plants</strong>
+    {% if user.is_authenticated %}
+      &mdash; angemeldet als {{ user.username }}
+      <form action="{% url 'logout' %}" method="post" style="display:inline">
+        {% csrf_token %}<button type="submit">Abmelden</button>
+      </form>
+    {% endif %}
+  </header>
+  <main>{% block inhalt %}{% endblock %}</main>
+</body>
+</html>
