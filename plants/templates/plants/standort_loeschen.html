@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titel %}Standort löschen{% endblock %}
+{% block inhalt %}
+  <h1>Standort löschen</h1>
+  <div class="karte">
+    <p>Soll der Standort <strong>{{ standort.name }}</strong> wirklich gelöscht werden?</p>
+    <p class="merkmale">Pflanzen, die diesem Standort zugeordnet sind, bleiben erhalten und
+      verlieren nur die Zuordnung.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="zeile">
+        <button type="submit" class="knopf warnung">Endgültig löschen</button>
+        <a class="knopf leise" href="{% url 'standort_liste' %}">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

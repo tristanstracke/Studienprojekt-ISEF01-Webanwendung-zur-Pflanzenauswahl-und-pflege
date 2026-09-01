@@ -1,7 +1,10 @@
 """
 Datenmodell "Care for Plants".
-Entwurfsstand fuer UC1 (Standorte, Wunschliste, Eignungspruefung)
-und UC2 (Pflegeaufgaben, Kalender).
+
+Grundunterscheidung: Eine Pflanzenart beschreibt die botanischen Anforderungen
+einer Art ("Ein Fensterblatt braucht helles Licht"). Eine Pflanze ist der
+Eintrag einer Person ("mein Fensterblatt im Wohnzimmer"). Die Eignungspruefung
+vergleicht die Anforderungen der Art mit den Gegebenheiten des Standorts.
 """
 
 from django.conf import settings
@@ -10,24 +13,41 @@ from django.db import models
 # --------------------------------------------------------------------------
 # Skalen
 #
-# Licht und Feuchtigkeit sind Ordinalskalen: Die Zahlenwerte sind geordnet,
-# damit sich Angebot und Bedarf direkt vergleichen lassen
-# (z. B. "Standort bietet 2, Pflanze braucht 3" -> eine Stufe zu dunkel).
+# Licht, Feuchtigkeit und Wasserbedarf sind Ordinalskalen: Die Werte sind
+# geordnet, damit sich Angebot und Bedarf vergleichen lassen
+# (z. B. "Standort bietet 3, Pflanze braucht 4" -> eine Stufe zu dunkel).
 # Deshalb IntegerChoices und nicht TextChoices.
 # --------------------------------------------------------------------------
 
 
 class Licht(models.IntegerChoices):
-    SCHATTIG = 1, "schattig"
-    HALBSCHATTIG = 2, "halbschattig"
-    HELL = 3, "hell, ohne direkte Sonne"
-    VOLLSONNIG = 4, "vollsonnig"
+    SEHR_SCHATTIG = 1, "sehr schattig"
+    SCHATTIG = 2, "schattig"
+    HALBSCHATTIG = 3, "halbschattig"
+    HELL = 4, "hell"
+    SONNIG = 5, "sonnig"
 
 
 class Feuchtigkeit(models.IntegerChoices):
+    """Luftfeuchtigkeit. Wird zwischen Standort und Pflanzenart abgeglichen."""
+
     TROCKEN = 1, "trocken"
     NORMAL = 2, "normal"
     FEUCHT = 3, "feucht"
+
+
+class Wasserbedarf(models.IntegerChoices):
+    """
+    Giessbedarf. Geht nicht in die Eignungspruefung ein, sondern in die
+    Pflegeplanung. Eigene Skala, weil hier fuenf Stufen fachlich
+    unterscheidbar sind, bei der Luftfeuchtigkeit aber nicht.
+    """
+
+    SEHR_GERING = 1, "sehr gering"
+    GERING = 2, "gering"
+    MITTEL = 3, "mittel"
+    HOCH = 4, "hoch"
+    SEHR_HOCH = 5, "sehr hoch"
 
 
 class Standortart(models.TextChoices):
@@ -47,9 +67,9 @@ class Taetigkeit(models.TextChoices):
 class Bodenart(models.Model):
     """
     Stammdaten, vom Administrator gepflegt.
-    Eigene Tabelle, weil eine Pflanze mehrere Bodenarten vertraegt.
-    Eine kommaseparierte Liste im Textfeld waere eine Verletzung
-    der ersten Normalform und liesse sich nicht sauber abfragen.
+    Eigene Tabelle, weil eine Pflanzenart mehrere Bodenarten vertraegt.
+    Eine kommaseparierte Liste im Textfeld waere eine Verletzung der ersten
+    Normalform und liesse sich nicht sauber abfragen.
     """
 
     name = models.CharField("Bezeichnung", max_length=50, unique=True)
@@ -57,9 +77,100 @@ class Bodenart(models.Model):
     class Meta:
         verbose_name = "Bodenart"
         verbose_name_plural = "Bodenarten"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
+
+
+# --------------------------------------------------------------------------
+# Katalog
+# --------------------------------------------------------------------------
+
+
+class Pflanzenart(models.Model):
+    """
+    Botanische Anforderungen einer Art. Die Eintraege ohne Ersteller bilden
+    den mitgelieferten Katalog und sind fuer alle sichtbar. Legt eine Person
+    eine eigene Art an, weil ihre Pflanze nicht im Katalog steht, sieht nur
+    sie diesen Eintrag.
+    """
+
+    name = models.CharField("Name", max_length=80)
+    botanischer_name = models.CharField("botanischer Name", max_length=120, blank=True)
+
+    # Eingangsgroessen der Eignungspruefung
+    lichtbedarf = models.IntegerField("Lichtbedarf", choices=Licht.choices)
+    temperaturuntergrenze = models.IntegerField(
+        "verträgt Temperaturen bis (Grad Celsius)",
+        help_text="Tiefste Temperatur, die die Pflanze dauerhaft ohne Schaden übersteht.",
+    )
+    feuchtigkeitsbedarf = models.IntegerField("Luftfeuchtigkeit", choices=Feuchtigkeit.choices)
+    geeignete_bodenarten = models.ManyToManyField(
+        Bodenart, verbose_name="geeignete Bodenarten", related_name="pflanzenarten"
+    )
+    giftig = models.BooleanField("giftig", default=False)
+
+    # weitere Eigenschaften, nicht Teil der Eignungspruefung
+    wasserbedarf = models.IntegerField("Wasserbedarf", choices=Wasserbedarf.choices)
+    endwuchshoehe_cm = models.PositiveIntegerField("Endwuchshöhe in cm", null=True, blank=True)
+
+    quelle = models.CharField(
+        "Quelle",
+        max_length=300,
+        blank=True,
+        help_text="Woher stammen die botanischen Angaben? Wird im Projektbericht belegt.",
+    )
+    erstellt_von = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="pflanzenarten",
+        verbose_name="angelegt von",
+        help_text="Leer bei den Arten des mitgelieferten Katalogs.",
+    )
+
+    class Meta:
+        verbose_name = "Pflanzenart"
+        verbose_name_plural = "Pflanzenarten"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def gehoert_zum_katalog(self) -> bool:
+        return self.erstellt_von_id is None
+
+
+class Pflegeempfehlung(models.Model):
+    """
+    Empfohlenes Pflegeintervall einer Art, aus der botanischen Recherche.
+    Beim Anschaffen einer Pflanze entstehen daraus die Pflegevorlagen der
+    jeweiligen Person, die sie anschliessend an ihre Verhaeltnisse anpassen
+    kann. Die Empfehlung bleibt davon unberuehrt.
+    """
+
+    art = models.ForeignKey(
+        Pflanzenart, on_delete=models.CASCADE, related_name="pflegeempfehlungen"
+    )
+    taetigkeit = models.CharField("Tätigkeit", max_length=15, choices=Taetigkeit.choices)
+    intervall_tage = models.PositiveIntegerField("Intervall in Tagen")
+    hinweis = models.CharField("Hinweis", max_length=200, blank=True)
+
+    class Meta:
+        verbose_name = "Pflegeempfehlung"
+        verbose_name_plural = "Pflegeempfehlungen"
+        ordering = ["art__name", "taetigkeit"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["art", "taetigkeit"], name="eine_empfehlung_je_art_und_taetigkeit"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.art}: {self.get_taetigkeit_display()} alle {self.intervall_tage} Tage"
 
 
 # --------------------------------------------------------------------------
@@ -82,7 +193,7 @@ class Standort(models.Model):
     luftfeuchtigkeit = models.IntegerField("Luftfeuchtigkeit", choices=Feuchtigkeit.choices)
     bodenart = models.ForeignKey(Bodenart, on_delete=models.PROTECT, verbose_name="Bodenart")
     erreichbar_fuer_kinder_haustiere = models.BooleanField(
-        "fuer Kinder oder Haustiere erreichbar",
+        "für Kinder oder Haustiere erreichbar",
         default=False,
         help_text="Angehakt, wenn Kinder oder Haustiere an die Pflanzen herankommen.",
     )
@@ -90,6 +201,7 @@ class Standort(models.Model):
     class Meta:
         verbose_name = "Standort"
         verbose_name_plural = "Standorte"
+        ordering = ["name"]
         constraints = [
             models.UniqueConstraint(fields=["besitzer", "name"], name="standortname_je_benutzer")
         ]
@@ -100,9 +212,10 @@ class Standort(models.Model):
 
 class Pflanze(models.Model):
     """
-    Wunschliste und Bestand liegen in derselben Tabelle und werden ueber
-    das Feld 'status' unterschieden. Das Anschaffen einer Pflanze ist damit
-    ein Statuswechsel mit Standortzuordnung und kein Umkopieren von Daten.
+    Der Eintrag einer Person. Wunschliste und Bestand liegen in derselben
+    Tabelle und werden ueber das Feld 'status' unterschieden. Das Anschaffen
+    einer Pflanze ist damit ein Statuswechsel mit Standortzuordnung und kein
+    Umkopieren von Daten.
     """
 
     class Status(models.TextChoices):
@@ -112,25 +225,18 @@ class Pflanze(models.Model):
     besitzer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="pflanzen"
     )
-    name = models.CharField("Name", max_length=80)
-    botanischer_name = models.CharField("botanischer Name", max_length=120, blank=True)
-
-    # Anforderungen an den Standort -> Eingangsgroessen der Eignungspruefung
-    lichtbedarf = models.IntegerField("Lichtbedarf", choices=Licht.choices)
-    temperaturuntergrenze = models.IntegerField(
-        "vertraegt Temperaturen bis (Grad Celsius)",
-        help_text="Tiefste Temperatur, die die Pflanze dauerhaft ohne Schaden uebersteht.",
+    art = models.ForeignKey(
+        Pflanzenart,
+        on_delete=models.PROTECT,
+        related_name="pflanzen",
+        verbose_name="Pflanzenart",
     )
-    feuchtigkeitsbedarf = models.IntegerField("Feuchtigkeitsbedarf", choices=Feuchtigkeit.choices)
-    geeignete_bodenarten = models.ManyToManyField(
-        Bodenart, verbose_name="geeignete Bodenarten", related_name="pflanzen"
+    eigener_name = models.CharField(
+        "eigene Bezeichnung",
+        max_length=80,
+        blank=True,
+        help_text='Optional, zur Unterscheidung mehrerer Exemplare, z. B. "die große im Flur".',
     )
-    giftig = models.BooleanField("giftig", default=False)
-
-    # weitere Eigenschaften, nicht Teil der Eignungspruefung
-    wasserbedarf = models.IntegerField("Wasserbedarf", choices=Feuchtigkeit.choices)
-    endwuchshoehe_cm = models.PositiveIntegerField("Endwuchshoehe in cm", null=True, blank=True)
-
     status = models.CharField(
         "Status", max_length=10, choices=Status.choices, default=Status.WUNSCH
     )
@@ -143,13 +249,15 @@ class Pflanze(models.Model):
         verbose_name="Standort",
         help_text="Nur bei Pflanzen im Bestand gesetzt.",
     )
+    notiz = models.TextField("Notiz", blank=True)
 
     class Meta:
         verbose_name = "Pflanze"
         verbose_name_plural = "Pflanzen"
+        ordering = ["art__name"]
 
     def __str__(self):
-        return self.name
+        return self.eigener_name or self.art.name
 
 
 # --------------------------------------------------------------------------
@@ -184,7 +292,7 @@ class Pflegeaufgabe(models.Model):
     """
 
     vorlage = models.ForeignKey(Pflegevorlage, on_delete=models.CASCADE, related_name="aufgaben")
-    faelligkeit = models.DateField("faellig am")
+    faelligkeit = models.DateField("fällig am")
     erledigt_am = models.DateField("erledigt am", null=True, blank=True)
 
     class Meta:

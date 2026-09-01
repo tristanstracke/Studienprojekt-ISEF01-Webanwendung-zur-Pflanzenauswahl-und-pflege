@@ -28,10 +28,14 @@ from plants.eignung import (
     "angebot, bedarf, erwartet",
     [
         (3, 3, Bewertung.ERFUELLT),  # genau passend
+        (1, 1, Bewertung.ERFUELLT),  # unteres Ende der Skala
+        (5, 5, Bewertung.ERFUELLT),  # oberes Ende der Skala
         (2, 3, Bewertung.GRENZWERTIG),  # eine Stufe zu dunkel
         (4, 3, Bewertung.GRENZWERTIG),  # eine Stufe zu hell
+        (4, 5, Bewertung.GRENZWERTIG),  # eine Stufe zu dunkel am oberen Rand
         (1, 3, Bewertung.VERFEHLT),  # zwei Stufen zu dunkel
-        (4, 1, Bewertung.VERFEHLT),  # drei Stufen zu hell
+        (5, 1, Bewertung.VERFEHLT),  # vier Stufen zu hell, groesste Abweichung
+        (1, 5, Bewertung.VERFEHLT),  # vier Stufen zu dunkel
     ],
 )
 def test_licht(angebot, bedarf, erwartet):

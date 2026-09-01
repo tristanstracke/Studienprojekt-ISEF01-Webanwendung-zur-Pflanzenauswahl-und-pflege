@@ -1,5 +1,5 @@
 """
-Eignungspruefung: Passt eine Pflanze zu einem Standort?
+Eignungspruefung: Passt eine Pflanzenart zu einem Standort?
 
 Die einzelnen Regeln arbeiten ausschliesslich mit einfachen Werten und kennen
 weder Django noch die Datenbank. Nur die Funktion `pruefe_eignung` liest die
@@ -47,7 +47,7 @@ class Ergebnis:
 
 def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
     """
-    Licht ist eine Ordinalskala von 1 (schattig) bis 4 (vollsonnig).
+    Licht ist eine Ordinalskala von 1 (sehr schattig) bis 5 (sonnig).
     Eine Stufe Abweichung gilt als vertretbar, zwei nicht mehr.
     Zu viel Licht wird ebenso bewertet wie zu wenig, da direkte Sonne
     bei schattenliebenden Pflanzen zu Blattschaeden fuehrt.
@@ -210,16 +210,22 @@ def bilde_urteil(kriterien: list[Kriterium]) -> Urteil:
 BODEN_AUSTAUSCHBAR = {"innen": True, "balkon": True, "garten": False}
 
 
-def pruefe_eignung(pflanze, standort) -> Ergebnis:
+def pruefe_eignung(pflanzenart, standort) -> Ergebnis:
+    """
+    Vergleicht die Anforderungen einer Pflanzenart mit den Gegebenheiten eines
+    Standorts. Nimmt bewusst die Art entgegen und nicht die Pflanze einer
+    Person: Die Pruefung soll auch fuer Arten moeglich sein, die noch auf
+    keiner Wunschliste stehen.
+    """
     kriterien = [
-        bewerte_licht(standort.lichtangebot, pflanze.lichtbedarf),
-        bewerte_temperatur(standort.minimaltemperatur, pflanze.temperaturuntergrenze),
-        bewerte_feuchtigkeit(standort.luftfeuchtigkeit, pflanze.feuchtigkeitsbedarf),
+        bewerte_licht(standort.lichtangebot, pflanzenart.lichtbedarf),
+        bewerte_temperatur(standort.minimaltemperatur, pflanzenart.temperaturuntergrenze),
+        bewerte_feuchtigkeit(standort.luftfeuchtigkeit, pflanzenart.feuchtigkeitsbedarf),
         bewerte_bodenart(
             standort.bodenart.name,
-            {b.name for b in pflanze.geeignete_bodenarten.all()},
+            {b.name for b in pflanzenart.geeignete_bodenarten.all()},
             BODEN_AUSTAUSCHBAR[standort.art],
         ),
-        bewerte_giftigkeit(pflanze.giftig, standort.erreichbar_fuer_kinder_haustiere),
+        bewerte_giftigkeit(pflanzenart.giftig, standort.erreichbar_fuer_kinder_haustiere),
     ]
     return Ergebnis(bilde_urteil(kriterien), kriterien)

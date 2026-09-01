@@ -1,0 +1,1197 @@
+[
+  {
+    "model": "plants.bodenart",
+    "pk": 1,
+    "fields": {
+      "name": "Blumenerde"
+    }
+  },
+  {
+    "model": "plants.bodenart",
+    "pk": 2,
+    "fields": {
+      "name": "Kakteenerde"
+    }
+  },
+  {
+    "model": "plants.bodenart",
+    "pk": 3,
+    "fields": {
+      "name": "Orchideensubstrat"
+    }
+  },
+  {
+    "model": "plants.bodenart",
+    "pk": 4,
+    "fields": {
+      "name": "saure Erde"
+    }
+  },
+  {
+    "model": "plants.bodenart",
+    "pk": 5,
+    "fields": {
+      "name": "lehmiger Gartenboden"
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 1,
+    "fields": {
+      "name": "Monstera deliciosa",
+      "botanischer_name": "",
+      "lichtbedarf": 4,
+      "temperaturuntergrenze": 18,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 250,
+      "quelle": "https://www.rhs.org.uk/plants/swiss-cheese-plants/how-to-grow",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 2,
+    "fields": {
+      "name": "Bogenhanf",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": true,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 120,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 3,
+    "fields": {
+      "name": "Grünlilie",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": false,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 60,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 4,
+    "fields": {
+      "name": "Efeutute",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 200,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 5,
+    "fields": {
+      "name": "Aloe vera",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": 10,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": true,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 80,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 6,
+    "fields": {
+      "name": "Gummibaum",
+      "botanischer_name": "",
+      "lichtbedarf": 4,
+      "temperaturuntergrenze": 16,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 300,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 7,
+    "fields": {
+      "name": "Basilikum",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": false,
+      "wasserbedarf": 5,
+      "endwuchshoehe_cm": 60,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 8,
+    "fields": {
+      "name": "Rosmarin",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": 5,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": false,
+      "wasserbedarf": 2,
+      "endwuchshoehe_cm": 150,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 9,
+    "fields": {
+      "name": "Lavendel",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": -10,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        5
+      ],
+      "giftig": false,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 100,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 10,
+    "fields": {
+      "name": "Friedenslilie",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 18,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 4,
+      "endwuchshoehe_cm": 100,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 11,
+    "fields": {
+      "name": "Glücksfeder (Zamioculcas)",
+      "botanischer_name": "",
+      "lichtbedarf": 2,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": true,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 100,
+      "quelle": "https://www.rhs.org.uk/shows-events/rhs-urban-show/houseplant-profiles/houseplants-for-shade",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 12,
+    "fields": {
+      "name": "Herzblatt-Philodendron",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 16,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 200,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 13,
+    "fields": {
+      "name": "Korbmarante (Calathea)",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 18,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": false,
+      "wasserbedarf": 4,
+      "endwuchshoehe_cm": 100,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 14,
+    "fields": {
+      "name": "Schwertfarn (Bostonfarn)",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 16,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": false,
+      "wasserbedarf": 4,
+      "endwuchshoehe_cm": 90,
+      "quelle": "https://www.missouribotanicalgarden.org/Portals/0/Kemper%20Gardens/Fact%20Sheets/Houseplants%202022-pdf.pdf",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 15,
+    "fields": {
+      "name": "Geldbaum (Crassula ovata)",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": 10,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": true,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 150,
+      "quelle": "https://www.rhs.org.uk/plants/4739/crassula-ovata/details",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 16,
+    "fields": {
+      "name": "Schmetterlingsorchidee",
+      "botanischer_name": "",
+      "lichtbedarf": 4,
+      "temperaturuntergrenze": 16,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        3
+      ],
+      "giftig": false,
+      "wasserbedarf": 2,
+      "endwuchshoehe_cm": 80,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 17,
+    "fields": {
+      "name": "Yucca-Palme",
+      "botanischer_name": "",
+      "lichtbedarf": 5,
+      "temperaturuntergrenze": 10,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        2
+      ],
+      "giftig": true,
+      "wasserbedarf": 1,
+      "endwuchshoehe_cm": 250,
+      "quelle": "https://www.rhs.org.uk/plants/yucca/growing-guide",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 18,
+    "fields": {
+      "name": "Drachenbaum (Dracaena)",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": 15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 2,
+      "endwuchshoehe_cm": 250,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 19,
+    "fields": {
+      "name": "Efeu (Hedera helix)",
+      "botanischer_name": "",
+      "lichtbedarf": 3,
+      "temperaturuntergrenze": -15,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": true,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 200,
+      "quelle": "",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflanzenart",
+    "pk": 20,
+    "fields": {
+      "name": "Weihnachtskaktus",
+      "botanischer_name": "",
+      "lichtbedarf": 4,
+      "temperaturuntergrenze": 10,
+      "feuchtigkeitsbedarf": 2,
+      "geeignete_bodenarten": [
+        1
+      ],
+      "giftig": false,
+      "wasserbedarf": 3,
+      "endwuchshoehe_cm": 45,
+      "quelle": "https://www.rhs.org.uk/plants/christmas-cactus/how-to-grow",
+      "erstellt_von": null
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 1,
+    "fields": {
+      "art": 1,
+      "taetigkeit": "giessen",
+      "intervall_tage": 8,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 2,
+    "fields": {
+      "art": 1,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 3,
+    "fields": {
+      "art": 1,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 4,
+    "fields": {
+      "art": 1,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 5,
+    "fields": {
+      "art": 2,
+      "taetigkeit": "giessen",
+      "intervall_tage": 18,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 6,
+    "fields": {
+      "art": 2,
+      "taetigkeit": "duengen",
+      "intervall_tage": 56,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 7,
+    "fields": {
+      "art": 2,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 900,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 8,
+    "fields": {
+      "art": 2,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 9,
+    "fields": {
+      "art": 3,
+      "taetigkeit": "giessen",
+      "intervall_tage": 6,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 10,
+    "fields": {
+      "art": 3,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 11,
+    "fields": {
+      "art": 3,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 12,
+    "fields": {
+      "art": 3,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 13,
+    "fields": {
+      "art": 4,
+      "taetigkeit": "giessen",
+      "intervall_tage": 8,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 14,
+    "fields": {
+      "art": 4,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 15,
+    "fields": {
+      "art": 4,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 16,
+    "fields": {
+      "art": 4,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 17,
+    "fields": {
+      "art": 5,
+      "taetigkeit": "giessen",
+      "intervall_tage": 18,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 18,
+    "fields": {
+      "art": 5,
+      "taetigkeit": "duengen",
+      "intervall_tage": 56,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 19,
+    "fields": {
+      "art": 5,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 900,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 20,
+    "fields": {
+      "art": 5,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 21,
+    "fields": {
+      "art": 6,
+      "taetigkeit": "giessen",
+      "intervall_tage": 10,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 22,
+    "fields": {
+      "art": 6,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 23,
+    "fields": {
+      "art": 6,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 24,
+    "fields": {
+      "art": 6,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 25,
+    "fields": {
+      "art": 7,
+      "taetigkeit": "giessen",
+      "intervall_tage": 2,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 26,
+    "fields": {
+      "art": 7,
+      "taetigkeit": "duengen",
+      "intervall_tage": 14,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 27,
+    "fields": {
+      "art": 7,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 14,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 28,
+    "fields": {
+      "art": 8,
+      "taetigkeit": "giessen",
+      "intervall_tage": 10,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 29,
+    "fields": {
+      "art": 8,
+      "taetigkeit": "duengen",
+      "intervall_tage": 42,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 30,
+    "fields": {
+      "art": 8,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 31,
+    "fields": {
+      "art": 8,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 32,
+    "fields": {
+      "art": 9,
+      "taetigkeit": "giessen",
+      "intervall_tage": 12,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 33,
+    "fields": {
+      "art": 9,
+      "taetigkeit": "duengen",
+      "intervall_tage": 90,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 34,
+    "fields": {
+      "art": 9,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 900,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 35,
+    "fields": {
+      "art": 9,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 36,
+    "fields": {
+      "art": 10,
+      "taetigkeit": "giessen",
+      "intervall_tage": 6,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 37,
+    "fields": {
+      "art": 10,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 38,
+    "fields": {
+      "art": 10,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 39,
+    "fields": {
+      "art": 10,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 40,
+    "fields": {
+      "art": 11,
+      "taetigkeit": "giessen",
+      "intervall_tage": 18,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 41,
+    "fields": {
+      "art": 11,
+      "taetigkeit": "duengen",
+      "intervall_tage": 56,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 42,
+    "fields": {
+      "art": 11,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 43,
+    "fields": {
+      "art": 11,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 44,
+    "fields": {
+      "art": 12,
+      "taetigkeit": "giessen",
+      "intervall_tage": 8,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 45,
+    "fields": {
+      "art": 12,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 46,
+    "fields": {
+      "art": 12,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 47,
+    "fields": {
+      "art": 12,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 48,
+    "fields": {
+      "art": 13,
+      "taetigkeit": "giessen",
+      "intervall_tage": 6,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 49,
+    "fields": {
+      "art": 13,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 50,
+    "fields": {
+      "art": 13,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 51,
+    "fields": {
+      "art": 13,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 52,
+    "fields": {
+      "art": 14,
+      "taetigkeit": "giessen",
+      "intervall_tage": 4,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 53,
+    "fields": {
+      "art": 14,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 54,
+    "fields": {
+      "art": 14,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 55,
+    "fields": {
+      "art": 14,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 56,
+    "fields": {
+      "art": 15,
+      "taetigkeit": "giessen",
+      "intervall_tage": 18,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 57,
+    "fields": {
+      "art": 15,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 58,
+    "fields": {
+      "art": 15,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 900,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 59,
+    "fields": {
+      "art": 15,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 60,
+    "fields": {
+      "art": 16,
+      "taetigkeit": "giessen",
+      "intervall_tage": 8,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 61,
+    "fields": {
+      "art": 16,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 62,
+    "fields": {
+      "art": 16,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 63,
+    "fields": {
+      "art": 16,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 64,
+    "fields": {
+      "art": 17,
+      "taetigkeit": "giessen",
+      "intervall_tage": 12,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 65,
+    "fields": {
+      "art": 17,
+      "taetigkeit": "duengen",
+      "intervall_tage": 42,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 66,
+    "fields": {
+      "art": 17,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 900,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 67,
+    "fields": {
+      "art": 17,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 68,
+    "fields": {
+      "art": 18,
+      "taetigkeit": "giessen",
+      "intervall_tage": 10,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 69,
+    "fields": {
+      "art": 18,
+      "taetigkeit": "duengen",
+      "intervall_tage": 42,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 70,
+    "fields": {
+      "art": 18,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 71,
+    "fields": {
+      "art": 18,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 365,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 72,
+    "fields": {
+      "art": 19,
+      "taetigkeit": "giessen",
+      "intervall_tage": 6,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 73,
+    "fields": {
+      "art": 19,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 74,
+    "fields": {
+      "art": 19,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 540,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 75,
+    "fields": {
+      "art": 19,
+      "taetigkeit": "schneiden",
+      "intervall_tage": 180,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 76,
+    "fields": {
+      "art": 20,
+      "taetigkeit": "giessen",
+      "intervall_tage": 8,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 77,
+    "fields": {
+      "art": 20,
+      "taetigkeit": "duengen",
+      "intervall_tage": 28,
+      "hinweis": ""
+    }
+  },
+  {
+    "model": "plants.pflegeempfehlung",
+    "pk": 78,
+    "fields": {
+      "art": 20,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
+      "hinweis": ""
+    }
+  }
+]
