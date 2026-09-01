@@ -1,7 +1,8 @@
 name: CI
 
 # Laeuft bei jedem Push und bei jedem Pull Request. Schlaegt die Pruefung fehl,
-# laesst sich der Pull Request nicht zusammenfuehren.
+# laesst sich der Pull Request nicht zusammenfuehren und es wird nichts
+# veroeffentlicht.
 on:
   push:
     branches: [main]
@@ -9,6 +10,7 @@ on:
 
 jobs:
   pruefung:
+    name: Statische Pruefung und Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,3 +33,26 @@ jobs:
 
       - name: Tests
         run: pytest --cov=plants --cov-report=term-missing
+
+  veroeffentlichung:
+    name: Veroeffentlichung auf Railway
+    # Qualitaetstor: Dieser Schritt startet nur, wenn die Pruefung vollstaendig
+    # bestanden wurde. Ein fehlgeschlagener Test verhindert die Auslieferung.
+    needs: pruefung
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Railway-Kommandozeile installieren
+        run: npm install -g @railway/cli
+
+      - name: Veroeffentlichen
+        run: railway up --service Studienprojekt-ISEF01 --ci
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
