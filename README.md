@@ -34,8 +34,7 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 
 pip install -r requirements-dev.txt
 
-cp .env.example .env               # Werte bei Bedarf anpassen
-export DEBUG=True SECRET_KEY=lokaler-platzhalter
+export DEBUG=1                     # ohne diese Zeile bricht der Start ab
 
 python manage.py migrate
 python manage.py createsuperuser
@@ -48,7 +47,7 @@ Administrationsoberfläche unter http://127.0.0.1:8000/admin/.
 ## Prüfungen
 
 ```bash
-pytest                             # Tests
+pytest                             # Tests (laufen mit abgeschaltetem Fehlersuchmodus)
 pytest --cov=plants                # Tests mit Abdeckungsmessung
 ruff check .                       # statische Pruefung
 ruff format .                      # Formatierung
@@ -62,10 +61,22 @@ lässt sich der Pull Request nicht zusammenführen.
 
 | Variable | Bedeutung | lokal | Produktion |
 |---|---|---|---|
-| `SECRET_KEY` | Signaturschlüssel von Django | Platzhalter | zufällig erzeugt |
-| `DEBUG` | Fehlersuchmodus | `True` | `False` |
+| `DEBUG` | Fehlersuchmodus | `1` setzen | nicht setzen |
+| `SECRET_KEY` | Signaturschlüssel von Django | wird bei `DEBUG=1` je Start zufällig erzeugt | **muss gesetzt sein** |
 | `DATA_DIR` | Verzeichnis der Datenbankdatei | nicht gesetzt | `/data` (Volume) |
 | `RAILWAY_PUBLIC_DOMAIN` | öffentliche Adresse | nicht gesetzt | von Railway gesetzt |
+
+Beide Schalter sind bewusst sicher voreingestellt: Ist `DEBUG` nicht gesetzt,
+gilt der Produktionsbetrieb, und ohne `SECRET_KEY` startet die Anwendung dann
+gar nicht erst. Eine vergessene Variable führt so zu einem sichtbaren Fehler
+statt zu einer laufenden, aber offenen Anwendung. Lokal genügt `DEBUG=1`; der
+Schlüssel wird dann bei jedem Start neu erzeugt und kann nicht versehentlich
+in eine Produktionsumgebung geraten.
+
+Das Zurücksetzen vergessener Kennwörter verschickt eine E-Mail. Ein
+Postausgangsserver ist für den Prototyp nicht vorgesehen, deshalb schreibt die
+Anwendung die Nachricht in das Protokoll; bei Railway steht sie unter *Logs*.
+Der Administrator kann den enthaltenen Link von dort weitergeben.
 
 `DATA_DIR` ist die wichtigste Variable im Betrieb: Ohne sie liegt die
 Datenbankdatei im Container und ist nach jeder Veröffentlichung leer.

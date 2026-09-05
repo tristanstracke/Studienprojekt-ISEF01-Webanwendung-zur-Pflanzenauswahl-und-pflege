@@ -38,8 +38,8 @@ class Feuchtigkeit(models.IntegerChoices):
 
 class Wasserbedarf(models.IntegerChoices):
     """
-    Giessbedarf. Geht nicht in die Eignungsprüfung ein, sondern in die
-    Pflegeplanung. Eigene Skala, weil hier fuenf Stufen fachlich
+    Gießbedarf. Geht nicht in die Eignungsprüfung ein, sondern in die
+    Pflegeplanung. Eigene Skala, weil hier fünf Stufen fachlich
     unterscheidbar sind, bei der Luftfeuchtigkeit aber nicht.
     """
 
@@ -69,7 +69,7 @@ class Bodenart(models.Model):
     Stammdaten, vom Administrator gepflegt.
     Eigene Tabelle, weil eine Pflanzenart mehrere Bodenarten verträgt.
     Eine kommaseparierte Liste im Textfeld wäre eine Verletzung der ersten
-    Normalform und liesse sich nicht sauber abfragen.
+    Normalform und ließe sich nicht sauber abfragen.
     """
 
     name = models.CharField("Bezeichnung", max_length=50, unique=True)
@@ -152,8 +152,8 @@ class Pflegeempfehlung(models.Model):
     """
     Empfohlenes Pflegeintervall einer Art, aus der botanischen Recherche.
     Beim Anschaffen einer Pflanze entstehen daraus die Pflegevorlagen der
-    jeweiligen Person, die sie anschließend an ihre Verhaeltnisse anpassen
-    kann. Die Empfehlung bleibt davon unberuehrt.
+    jeweiligen Person, die sie anschließend an ihre Verhältnisse anpassen
+    kann. Die Empfehlung bleibt davon unberührt.
     """
 
     art = models.ForeignKey(

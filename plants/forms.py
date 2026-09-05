@@ -13,7 +13,7 @@ class BodenartAuswahl(forms.ModelChoiceField):
 
 class StandortForm(forms.ModelForm):
     """
-    Formular zum Anlegen und Aendern eines Standorts.
+    Formular zum Anlegen und Ändern eines Standorts.
 
     Das Feld 'besitzer' ist bewusst nicht enthalten: Es wird in der Ansicht
     aus dem angemeldeten Konto gesetzt. Wäre es Teil des Formulars, könnte
@@ -47,7 +47,7 @@ class StandortForm(forms.ModelForm):
         """
         Standortnamen sollen je Person eindeutig sein. Die Datenbank stellt
         das über eine Bedingung sicher; hier wird derselbe Fall abgefangen,
-        damit die Person eine verstaendliche Meldung sieht statt eines
+        damit die Person eine verständliche Meldung sieht statt eines
         Datenbankfehlers.
         """
         name = self.cleaned_data["name"].strip()

@@ -18,7 +18,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-# Die Recherche fasst die Bodenbeschreibungen zu fuenf Kategorien zusammen
+# Die Recherche fasst die Bodenbeschreibungen zu fünf Kategorien zusammen
 # (Blatt "Hinweis zur Datenaufbereitung"). Der Bodenart-Code der Tabelle
 # verweist unmittelbar auf diese Liste. Jede Kategorie traegt zusätzlich
 # einen geläufigen Namen: Die fachliche Beschreibung allein - etwa

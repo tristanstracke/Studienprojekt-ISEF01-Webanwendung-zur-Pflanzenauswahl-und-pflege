@@ -50,7 +50,7 @@ def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
     Licht ist eine Ordinalskala von 1 (sehr schattig) bis 5 (sonnig).
     Eine Stufe Abweichung gilt als vertretbar, zwei nicht mehr.
     Zu viel Licht wird ebenso bewertet wie zu wenig, da direkte Sonne
-    bei schattenliebenden Pflanzen zu Blattschaeden führt.
+    bei schattenliebenden Pflanzen zu Blattschäden führt.
     """
     abweichung = angebot - bedarf
     if abweichung == 0:
@@ -61,51 +61,51 @@ def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
         return Kriterium(
             "Licht",
             Bewertung.GRENZWERTIG,
-            "Der Standort ist eine Stufe dunkler als benoetigt. Die Pflanze waechst langsamer.",
+            "Der Standort ist eine Stufe dunkler als benötigt. Die Pflanze wächst langsamer.",
         )
     if abweichung == 1:
         return Kriterium(
             "Licht",
             Bewertung.GRENZWERTIG,
-            "Der Standort ist eine Stufe heller als benoetigt. "
-            "Ein Platz etwas weiter vom Fenster entfernt ist guenstiger.",
+            "Der Standort ist eine Stufe heller als benötigt. "
+            "Ein Platz etwas weiter vom Fenster entfernt ist günstiger.",
         )
     if abweichung < -1:
         return Kriterium(
-            "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu dunkel fuer diese Pflanze."
+            "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu dunkel für diese Pflanze."
         )
     return Kriterium(
-        "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu hell; es drohen Blattschaeden."
+        "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu hell; es drohen Blattschäden."
     )
 
 
 def bewerte_temperatur(standortminimum: int, untergrenze: int) -> Kriterium:
     """
-    Ausschlusskriterium ohne Toleranzstufe nach unten: Faellt die Temperatur
+    Ausschlusskriterium ohne Toleranzstufe nach unten: Fällt die Temperatur
     unter die Untergrenze der Pflanze, erfriert sie. Das lässt sich durch
     Pflege nicht ausgleichen. Ein Abstand von weniger als zwei Grad gilt als
-    grenzwertig, weil die erfassten Werte Schaetzungen des Nutzers sind.
+    grenzwertig, weil die erfassten Werte Schätzungen des Nutzers sind.
     """
     puffer = standortminimum - untergrenze
     if puffer >= 2:
         return Kriterium(
             "Temperatur",
             Bewertung.ERFUELLT,
-            f"Der Standort faellt auf {standortminimum} Grad; die Pflanze "
-            f"vertraegt {untergrenze} Grad.",
+            f"Der Standort fällt auf {standortminimum} Grad; die Pflanze "
+            f"verträgt {untergrenze} Grad.",
         )
     if puffer >= 0:
         return Kriterium(
             "Temperatur",
             Bewertung.GRENZWERTIG,
-            f"Mit {standortminimum} Grad liegt der Standort nur knapp ueber "
+            f"Mit {standortminimum} Grad liegt der Standort nur knapp über "
             f"der Untergrenze von {untergrenze} Grad.",
         )
     return Kriterium(
         "Temperatur",
         Bewertung.VERFEHLT,
-        f"Der Standort faellt auf {standortminimum} Grad, die Pflanze "
-        f"vertraegt nur {untergrenze} Grad.",
+        f"Der Standort fällt auf {standortminimum} Grad, die Pflanze "
+        f"verträgt nur {untergrenze} Grad.",
     )
 
 
@@ -120,13 +120,13 @@ def bewerte_feuchtigkeit(angebot: int, bedarf: int) -> Kriterium:
         return Kriterium(
             "Luftfeuchtigkeit",
             Bewertung.GRENZWERTIG,
-            "Es ist etwas zu trocken. Regelmaessiges Besprühen hilft.",
+            "Es ist etwas zu trocken. Regelmäßiges Besprühen hilft.",
         )
     if abweichung == 1:
         return Kriterium(
             "Luftfeuchtigkeit",
             Bewertung.GRENZWERTIG,
-            "Es ist etwas feuchter als noetig. Auf Luftbewegung achten.",
+            "Es ist etwas feuchter als nötig. Auf Luftbewegung achten.",
         )
     if abweichung < -1:
         return Kriterium(
@@ -135,7 +135,7 @@ def bewerte_feuchtigkeit(angebot: int, bedarf: int) -> Kriterium:
     return Kriterium(
         "Luftfeuchtigkeit",
         Bewertung.VERFEHLT,
-        "Der Standort ist deutlich zu feucht; es droht Faeulnis.",
+        "Der Standort ist deutlich zu feucht; es droht Fäulnis.",
     )
 
 
@@ -147,13 +147,13 @@ def bewerte_bodenart(bodenart: str, geeignete: set[str], austauschbar: bool) -> 
     """
     if bodenart in geeignete:
         return Kriterium(
-            "Bodenart", Bewertung.ERFUELLT, f"{bodenart} ist fuer diese Pflanze geeignet."
+            "Bodenart", Bewertung.ERFUELLT, f"{bodenart} ist für diese Pflanze geeignet."
         )
     if austauschbar:
         return Kriterium(
             "Bodenart",
             Bewertung.GRENZWERTIG,
-            f"{bodenart} passt nicht, laesst sich beim Umtopfen aber "
+            f"{bodenart} passt nicht, lässt sich beim Umtopfen aber "
             f"gegen ein geeignetes Substrat tauschen.",
         )
     return Kriterium(
@@ -175,12 +175,12 @@ def bewerte_giftigkeit(giftig: bool, erreichbar: bool) -> Kriterium:
         return Kriterium(
             "Giftigkeit",
             Bewertung.ERFUELLT,
-            "Die Pflanze ist giftig, der Standort aber fuer Kinder und Haustiere nicht erreichbar.",
+            "Die Pflanze ist giftig, der Standort aber für Kinder und Haustiere nicht erreichbar.",
         )
     return Kriterium(
         "Giftigkeit",
         Bewertung.VERFEHLT,
-        "Die Pflanze ist giftig und der Standort fuer Kinder oder Haustiere erreichbar.",
+        "Die Pflanze ist giftig und der Standort für Kinder oder Haustiere erreichbar.",
     )
 
 
@@ -191,7 +191,7 @@ def bewerte_giftigkeit(giftig: bool, erreichbar: bool) -> Kriterium:
 
 def bilde_urteil(kriterien: list[Kriterium]) -> Urteil:
     """
-    Ein verfehltes Kriterium genuegt für ein ablehnendes Urteil. Die Kriterien
+    Ein verfehltes Kriterium genügt für ein ablehnendes Urteil. Die Kriterien
     werden also nicht gegeneinander verrechnet: Ein Standort, an dem die Pflanze
     erfriert, wird nicht dadurch geeignet, dass Licht und Boden stimmen.
     """
