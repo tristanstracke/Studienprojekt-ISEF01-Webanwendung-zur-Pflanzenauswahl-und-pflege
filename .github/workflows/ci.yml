@@ -29,7 +29,15 @@ jobs:
           ruff format --check .
 
       - name: Django-Systemcheck
-        run: python manage.py check
+        # Die Anwendung startet ohne SECRET_KEY nicht, sobald der
+        # Fehlersuchmodus aus ist. Fuer die Pruefung wird deshalb ein
+        # Schluessel erzeugt, der nur in diesem Lauf existiert. Geprueft wird
+        # zusaetzlich mit --deploy, also gegen dieselben Anforderungen, die
+        # in der Produktion gelten.
+        run: |
+          export SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(64))")
+          python manage.py check
+          python manage.py check --deploy
 
       - name: Tests
         run: pytest --cov=plants --cov-report=term-missing
