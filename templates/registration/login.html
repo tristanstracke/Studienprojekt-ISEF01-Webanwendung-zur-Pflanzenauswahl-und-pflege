@@ -1,10 +1,22 @@
 {% extends "base.html" %}
+{% load static %}
 {% block titel %}Anmelden{% endblock %}
+
+{# Auf der Anmeldeseite steht die Marke gross statt in der Kopfzeile. #}
+{% block kopfzeile %}
+  <div class="markenblock">
+    <img src="{% static 'logo.svg' %}" alt="Care for Plants">
+  </div>
+{% endblock %}
+
 {% block inhalt %}
   <h1>Anmelden</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Anmelden</button>
-  </form>
+  <p class="leer">Bitte melde dich an, um deine Standorte und Pflanzen zu sehen.</p>
+  <div class="karte">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="knopf">Anmelden</button>
+    </form>
+  </div>
 {% endblock %}
