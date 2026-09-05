@@ -2,7 +2,7 @@
 Tests der Standortverwaltung.
 
 Diese Tests brauchen eine Datenbank, weil sie das Zusammenspiel von Ansicht,
-Formular und Datenhaltung pruefen. Der wichtigste Fall ist die
+Formular und Datenhaltung prüfen. Der wichtigste Fall ist die
 Zugriffstrennung: Ein fehlender Filter auf den Besitzer ist in der Oberflaeche
 unsichtbar und faellt ohne Test niemandem auf.
 """

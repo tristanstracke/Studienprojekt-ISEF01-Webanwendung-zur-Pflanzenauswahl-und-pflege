@@ -3,7 +3,7 @@ Datenmodell "Care for Plants".
 
 Grundunterscheidung: Eine Pflanzenart beschreibt die botanischen Anforderungen
 einer Art ("Ein Fensterblatt braucht helles Licht"). Eine Pflanze ist der
-Eintrag einer Person ("mein Fensterblatt im Wohnzimmer"). Die Eignungspruefung
+Eintrag einer Person ("mein Fensterblatt im Wohnzimmer"). Die Eignungsprüfung
 vergleicht die Anforderungen der Art mit den Gegebenheiten des Standorts.
 """
 
@@ -38,7 +38,7 @@ class Feuchtigkeit(models.IntegerChoices):
 
 class Wasserbedarf(models.IntegerChoices):
     """
-    Giessbedarf. Geht nicht in die Eignungspruefung ein, sondern in die
+    Giessbedarf. Geht nicht in die Eignungsprüfung ein, sondern in die
     Pflegeplanung. Eigene Skala, weil hier fuenf Stufen fachlich
     unterscheidbar sind, bei der Luftfeuchtigkeit aber nicht.
     """
@@ -67,14 +67,14 @@ class Taetigkeit(models.TextChoices):
 class Bodenart(models.Model):
     """
     Stammdaten, vom Administrator gepflegt.
-    Eigene Tabelle, weil eine Pflanzenart mehrere Bodenarten vertraegt.
-    Eine kommaseparierte Liste im Textfeld waere eine Verletzung der ersten
+    Eigene Tabelle, weil eine Pflanzenart mehrere Bodenarten verträgt.
+    Eine kommaseparierte Liste im Textfeld wäre eine Verletzung der ersten
     Normalform und liesse sich nicht sauber abfragen.
     """
 
     name = models.CharField("Bezeichnung", max_length=50, unique=True)
     # Fachliche Beschreibung aus der Recherche. Sie steht neben dem
-    # gelaeufigen Namen, damit die Auswahl fachlich eindeutig bleibt und
+    # geläufigen Namen, damit die Auswahl fachlich eindeutig bleibt und
     # trotzdem von einer Privatperson beantwortet werden kann.
     beschreibung = models.CharField("Beschreibung", max_length=100, blank=True)
 
@@ -94,8 +94,8 @@ class Bodenart(models.Model):
 
 class Pflanzenart(models.Model):
     """
-    Botanische Anforderungen einer Art. Die Eintraege ohne Ersteller bilden
-    den mitgelieferten Katalog und sind fuer alle sichtbar. Legt eine Person
+    Botanische Anforderungen einer Art. Die Einträge ohne Ersteller bilden
+    den mitgelieferten Katalog und sind für alle sichtbar. Legt eine Person
     eine eigene Art an, weil ihre Pflanze nicht im Katalog steht, sieht nur
     sie diesen Eintrag.
     """
@@ -103,7 +103,7 @@ class Pflanzenart(models.Model):
     name = models.CharField("Name", max_length=80)
     botanischer_name = models.CharField("botanischer Name", max_length=120, blank=True)
 
-    # Eingangsgroessen der Eignungspruefung
+    # Eingangsgrößen der Eignungsprüfung
     lichtbedarf = models.IntegerField("Lichtbedarf", choices=Licht.choices)
     temperaturuntergrenze = models.IntegerField(
         "verträgt Temperaturen bis (Grad Celsius)",
@@ -115,7 +115,7 @@ class Pflanzenart(models.Model):
     )
     giftig = models.BooleanField("giftig", default=False)
 
-    # weitere Eigenschaften, nicht Teil der Eignungspruefung
+    # weitere Eigenschaften, nicht Teil der Eignungsprüfung
     wasserbedarf = models.IntegerField("Wasserbedarf", choices=Wasserbedarf.choices)
     endwuchshoehe_cm = models.PositiveIntegerField("Endwuchshöhe in cm", null=True, blank=True)
 
@@ -152,7 +152,7 @@ class Pflegeempfehlung(models.Model):
     """
     Empfohlenes Pflegeintervall einer Art, aus der botanischen Recherche.
     Beim Anschaffen einer Pflanze entstehen daraus die Pflegevorlagen der
-    jeweiligen Person, die sie anschliessend an ihre Verhaeltnisse anpassen
+    jeweiligen Person, die sie anschließend an ihre Verhaeltnisse anpassen
     kann. Die Empfehlung bleibt davon unberuehrt.
     """
 
@@ -217,7 +217,7 @@ class Standort(models.Model):
 class Pflanze(models.Model):
     """
     Der Eintrag einer Person. Wunschliste und Bestand liegen in derselben
-    Tabelle und werden ueber das Feld 'status' unterschieden. Das Anschaffen
+    Tabelle und werden über das Feld 'status' unterschieden. Das Anschaffen
     einer Pflanze ist damit ein Statuswechsel mit Standortzuordnung und kein
     Umkopieren von Daten.
     """
@@ -271,7 +271,7 @@ class Pflanze(models.Model):
 
 class Pflegevorlage(models.Model):
     """
-    Beschreibt eine wiederkehrende Taetigkeit je Pflanze, z. B.
+    Beschreibt eine wiederkehrende Tätigkeit je Pflanze, z. B.
     "giessen alle 7 Tage". Aus der Vorlage entstehen die einzelnen Termine.
     """
 
@@ -291,7 +291,7 @@ class Pflegevorlage(models.Model):
 class Pflegeaufgabe(models.Model):
     """
     Ein konkreter Termin. Wird eine Aufgabe abgehakt, entsteht die
-    Folgeaufgabe mit Faelligkeit = Erledigungsdatum + Intervall.
+    Folgeaufgabe mit Fälligkeit = Erledigungsdatum + Intervall.
     Erledigte Aufgaben bleiben als Pflegehistorie erhalten.
     """
 

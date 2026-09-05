@@ -16,7 +16,7 @@ class StandortForm(forms.ModelForm):
     Formular zum Anlegen und Aendern eines Standorts.
 
     Das Feld 'besitzer' ist bewusst nicht enthalten: Es wird in der Ansicht
-    aus dem angemeldeten Konto gesetzt. Waere es Teil des Formulars, koennte
+    aus dem angemeldeten Konto gesetzt. Wäre es Teil des Formulars, könnte
     jemand beim Absenden eine fremde Benutzerkennung mitschicken und einen
     Standort in fremdem Namen anlegen.
     """
@@ -46,7 +46,7 @@ class StandortForm(forms.ModelForm):
     def clean_name(self):
         """
         Standortnamen sollen je Person eindeutig sein. Die Datenbank stellt
-        das ueber eine Bedingung sicher; hier wird derselbe Fall abgefangen,
+        das über eine Bedingung sicher; hier wird derselbe Fall abgefangen,
         damit die Person eine verstaendliche Meldung sieht statt eines
         Datenbankfehlers.
         """

@@ -21,7 +21,7 @@ def start(request):
 #
 # Jede Abfrage ist auf das angemeldete Konto eingeschraenkt. Das ist keine
 # Bequemlichkeit, sondern die Zugriffstrennung: Ohne diese Einschraenkung
-# koennte ueber die Adresszeile ein fremder Datensatz erreicht werden.
+# könnte über die Adresszeile ein fremder Datensatz erreicht werden.
 # --------------------------------------------------------------------------
 
 
@@ -49,7 +49,7 @@ def standort_anlegen(request):
 @login_required
 def standort_bearbeiten(request, pk):
     # get_object_or_404 mit Filter auf den Besitzer: Ein fremder Standort
-    # fuehrt zu 404 und nicht zu 403, damit nicht einmal die Existenz eines
+    # führt zu 404 und nicht zu 403, damit nicht einmal die Existenz eines
     # fremden Datensatzes erkennbar wird.
     standort = get_object_or_404(Standort, pk=pk, besitzer=request.user)
     formular = StandortForm(request.POST or None, instance=standort)

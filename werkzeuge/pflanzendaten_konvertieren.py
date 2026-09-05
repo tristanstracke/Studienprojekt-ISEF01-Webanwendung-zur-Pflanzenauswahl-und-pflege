@@ -7,7 +7,7 @@ Aufruf:
 
 Die erzeugte Fixture wird versioniert und in jeder Umgebung mit
     python manage.py loaddata bodenarten pflanzenarten
-eingespielt. Der Umweg ueber eine Fixture statt eines direkten Imports hat
+eingespielt. Der Umweg über eine Fixture statt eines direkten Imports hat
 zwei Gruende: Die Anwendung braucht in der Produktion keine Excel-Bibliothek,
 und der eingespielte Datenbestand ist im Repository nachvollziehbar.
 """
@@ -20,10 +20,10 @@ from openpyxl import load_workbook
 
 # Die Recherche fasst die Bodenbeschreibungen zu fuenf Kategorien zusammen
 # (Blatt "Hinweis zur Datenaufbereitung"). Der Bodenart-Code der Tabelle
-# verweist unmittelbar auf diese Liste. Jede Kategorie traegt zusaetzlich
-# einen gelaeufigen Namen: Die fachliche Beschreibung allein - etwa
-# "humos, feucht" - kann eine Privatperson ueber ihren Balkon nicht
-# beantworten, und genau diese Angabe verlangt die Eignungspruefung.
+# verweist unmittelbar auf diese Liste. Jede Kategorie traegt zusätzlich
+# einen geläufigen Namen: Die fachliche Beschreibung allein - etwa
+# "humos, feucht" - kann eine Privatperson über ihren Balkon nicht
+# beantworten, und genau diese Angabe verlangt die Eignungsprüfung.
 BODENARTEN = [
     ("Blumenerde", "locker und durchlässig"),
     ("Kakteenerde oder Sandboden", "trocken und sehr durchlässig"),
@@ -55,8 +55,8 @@ def monate_in_tage(zeile, index):
 
 
 def spaltenindex(kopfzeile, teil):
-    """Sucht die Spalte. Eine genaue Uebereinstimmung geht vor, weil
-    "Pflanze" sonst auf "Pflanzen-ID" treffen wuerde."""
+    """Sucht die Spalte. Eine genaue Übereinstimmung geht vor, weil
+    "Pflanze" sonst auf "Pflanzen-ID" treffen würde."""
     for i, wert in enumerate(kopfzeile):
         if wert and str(wert).strip().lower() == teil.lower():
             return i
@@ -89,7 +89,7 @@ def konvertieren(pfad: Path):
         "rueckschnitt": spaltenindex(kopf, "Rückschnitt"),
     }
 
-    # Das Quellenblatt fuehrt je Art die Institution, den Link und den
+    # Das Quellenblatt führt je Art die Institution, den Link und den
     # botanischen Namen. Belegt wird mit Institution und Link, damit die
     # Angabe im Projektbericht nachvollziehbar ist.
     quellen, botanisch = {}, {}
@@ -145,7 +145,7 @@ def konvertieren(pfad: Path):
             ohne_quelle.append(name)
 
         # Aus der Recherche stammen Spannen ("giessen alle 7 bis 10 Tage").
-        # Uebernommen wird die Mitte, weil die Anwendung ein festes Intervall
+        # Übernommen wird die Mitte, weil die Anwendung ein festes Intervall
         # braucht; die Person kann es an ihrer Pflanze anpassen.
         # Ein Wert von 0 bedeutet in der Recherche "nicht vorgesehen".
         for taetigkeit, tage in [

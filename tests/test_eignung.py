@@ -1,9 +1,9 @@
 """
 Tests der Eignungslogik.
 
-Keine Datenbank noetig, weil die Regeln nur mit einfachen Werten arbeiten.
+Keine Datenbank nötig, weil die Regeln nur mit einfachen Werten arbeiten.
 Geprueft wird jede Regel an ihren Grenzen: genau passend, eine Stufe daneben,
-zwei Stufen daneben. Fehler treten erfahrungsgemaess an diesen Uebergaengen auf,
+zwei Stufen daneben. Fehler treten erfahrungsgemäß an diesen Übergaengen auf,
 nicht in der Mitte eines Wertebereichs.
 """
 

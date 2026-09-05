@@ -1,9 +1,9 @@
 """
-Django-Einstellungen fuer "Care for Plants".
+Django-Einstellungen für "Care for Plants".
 
 Alles, was sich zwischen lokaler Entwicklung und Produktion unterscheidet, kommt
 aus Umgebungsvariablen. Dadurch liegt kein Geheimnis im Repository und es gibt
-nur eine Einstellungsdatei statt mehrerer, die auseinanderlaufen koennen.
+nur eine Einstellungsdatei statt mehrerer, die auseinanderlaufen können.
 """
 
 import os
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # Liefert die statischen Dateien in der Produktion aus, damit kein
-    # zusaetzlicher Webserver noetig ist.
+    # zusätzlicher Webserver nötig ist.
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -75,7 +75,7 @@ TEMPLATES = [
 # --- Datenbank ------------------------------------------------------------
 
 # In der Produktion zeigt DATA_DIR auf das eingehaengte Volume. Ohne diese
-# Variable laege die Datei im Container und waere nach jeder Veroeffentlichung
+# Variable laege die Datei im Container und wäre nach jeder Veroeffentlichung
 # leer. Lokal liegt sie im Projektverzeichnis.
 DATA_DIR = Path(os.environ.get("DATA_DIR", BASE_DIR))
 
@@ -124,7 +124,7 @@ STORAGES = {
 
 # --- Sicherheit in der Produktion ----------------------------------------
 
-# Greift nur, wenn DEBUG abgeschaltet ist. Lokal wuerde die Weiterleitung auf
+# Greift nur, wenn DEBUG abgeschaltet ist. Lokal würde die Weiterleitung auf
 # HTTPS die Entwicklung verhindern.
 if not DEBUG:
     SECURE_SSL_REDIRECT = True

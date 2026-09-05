@@ -1,7 +1,7 @@
 """
-Eignungspruefung: Passt eine Pflanzenart zu einem Standort?
+Eignungsprüfung: Passt eine Pflanzenart zu einem Standort?
 
-Die einzelnen Regeln arbeiten ausschliesslich mit einfachen Werten und kennen
+Die einzelnen Regeln arbeiten ausschließlich mit einfachen Werten und kennen
 weder Django noch die Datenbank. Nur die Funktion `pruefe_eignung` liest die
 Werte aus den Modellobjekten aus. Dadurch laufen die Tests der Regeln ohne
 Datenbank und damit in Millisekunden.
@@ -20,7 +20,7 @@ class Bewertung(Enum):
 
 
 class Urteil(Enum):
-    """Gesamtergebnis der Pruefung."""
+    """Gesamtergebnis der Prüfung."""
 
     GEEIGNET = "geeignet"
     BEDINGT_GEEIGNET = "bedingt geeignet"
@@ -50,7 +50,7 @@ def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
     Licht ist eine Ordinalskala von 1 (sehr schattig) bis 5 (sonnig).
     Eine Stufe Abweichung gilt als vertretbar, zwei nicht mehr.
     Zu viel Licht wird ebenso bewertet wie zu wenig, da direkte Sonne
-    bei schattenliebenden Pflanzen zu Blattschaeden fuehrt.
+    bei schattenliebenden Pflanzen zu Blattschaeden führt.
     """
     abweichung = angebot - bedarf
     if abweichung == 0:
@@ -82,7 +82,7 @@ def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
 def bewerte_temperatur(standortminimum: int, untergrenze: int) -> Kriterium:
     """
     Ausschlusskriterium ohne Toleranzstufe nach unten: Faellt die Temperatur
-    unter die Untergrenze der Pflanze, erfriert sie. Das laesst sich durch
+    unter die Untergrenze der Pflanze, erfriert sie. Das lässt sich durch
     Pflege nicht ausgleichen. Ein Abstand von weniger als zwei Grad gilt als
     grenzwertig, weil die erfassten Werte Schaetzungen des Nutzers sind.
     """
@@ -141,7 +141,7 @@ def bewerte_feuchtigkeit(angebot: int, bedarf: int) -> Kriterium:
 
 def bewerte_bodenart(bodenart: str, geeignete: set[str], austauschbar: bool) -> Kriterium:
     """
-    Im Topf laesst sich das Substrat wechseln, im Garten nicht. Deshalb ist eine
+    Im Topf lässt sich das Substrat wechseln, im Garten nicht. Deshalb ist eine
     unpassende Bodenart bei Topfpflanzen nur grenzwertig, im Beet aber ein
     Ausschluss.
     """
@@ -191,7 +191,7 @@ def bewerte_giftigkeit(giftig: bool, erreichbar: bool) -> Kriterium:
 
 def bilde_urteil(kriterien: list[Kriterium]) -> Urteil:
     """
-    Ein verfehltes Kriterium genuegt fuer ein ablehnendes Urteil. Die Kriterien
+    Ein verfehltes Kriterium genuegt für ein ablehnendes Urteil. Die Kriterien
     werden also nicht gegeneinander verrechnet: Ein Standort, an dem die Pflanze
     erfriert, wird nicht dadurch geeignet, dass Licht und Boden stimmen.
     """
@@ -214,7 +214,7 @@ def pruefe_eignung(pflanzenart, standort) -> Ergebnis:
     """
     Vergleicht die Anforderungen einer Pflanzenart mit den Gegebenheiten eines
     Standorts. Nimmt bewusst die Art entgegen und nicht die Pflanze einer
-    Person: Die Pruefung soll auch fuer Arten moeglich sein, die noch auf
+    Person: Die Prüfung soll auch für Arten möglich sein, die noch auf
     keiner Wunschliste stehen.
     """
     kriterien = [

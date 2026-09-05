@@ -1,16 +1,16 @@
 # Care for Plants
 
-Webanwendung zur Unterstuetzung privater Nutzender bei Auswahl und Pflege von
+Webanwendung zur Unterstützung privater Nutzender bei Auswahl und Pflege von
 Pflanzen. Studienprojekt im Kurs ISEF01 (Projekt Software Engineering) an der
 IU Internationalen Hochschule.
 
-Umgesetzt sind zwei Anwendungsfaelle:
+Umgesetzt sind zwei Anwendungsfälle:
 
-- **UC1** Standorte anlegen, Pflanzen-Wunschliste fuehren, Eignung einer Pflanze
-  fuer einen Standort pruefen
+- **UC1** Standorte anlegen, Pflanzen-Wunschliste führen, Eignung einer Pflanze
+  für einen Standort prüfen
 - **UC2** Pflegeaufgaben je Pflanze mit Intervall, Kalenderansicht, Abhaken
 
-## Technischer Ueberblick
+## Technischer Überblick
 
 | | |
 |---|---|
@@ -42,10 +42,10 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Die Anwendung laeuft anschliessend unter http://127.0.0.1:8000/, die
-Administrationsoberflaeche unter http://127.0.0.1:8000/admin/.
+Die Anwendung läuft anschließend unter http://127.0.0.1:8000/, die
+Administrationsoberfläche unter http://127.0.0.1:8000/admin/.
 
-## Pruefungen
+## Prüfungen
 
 ```bash
 pytest                             # Tests
@@ -55,20 +55,20 @@ ruff format .                      # Formatierung
 python manage.py check --deploy    # Konfigurationspruefung fuer die Produktion
 ```
 
-Dieselben Schritte laufen bei jedem Push in GitHub Actions. Schlaegt einer fehl,
-laesst sich der Pull Request nicht zusammenfuehren.
+Dieselben Schritte laufen bei jedem Push in GitHub Actions. Schlägt einer fehl,
+lässt sich der Pull Request nicht zusammenführen.
 
 ## Umgebungsvariablen
 
 | Variable | Bedeutung | lokal | Produktion |
 |---|---|---|---|
-| `SECRET_KEY` | Signaturschluessel von Django | Platzhalter | zufaellig erzeugt |
+| `SECRET_KEY` | Signaturschlüssel von Django | Platzhalter | zufällig erzeugt |
 | `DEBUG` | Fehlersuchmodus | `True` | `False` |
 | `DATA_DIR` | Verzeichnis der Datenbankdatei | nicht gesetzt | `/data` (Volume) |
-| `RAILWAY_PUBLIC_DOMAIN` | oeffentliche Adresse | nicht gesetzt | von Railway gesetzt |
+| `RAILWAY_PUBLIC_DOMAIN` | öffentliche Adresse | nicht gesetzt | von Railway gesetzt |
 
 `DATA_DIR` ist die wichtigste Variable im Betrieb: Ohne sie liegt die
-Datenbankdatei im Container und ist nach jeder Veroeffentlichung leer.
+Datenbankdatei im Container und ist nach jeder Veröffentlichung leer.
 
 ## Aufbau
 
@@ -76,14 +76,14 @@ Datenbankdatei im Container und ist nach jeder Veroeffentlichung leer.
 config/     Projekteinstellungen, Adressen auf oberster Ebene
 plants/     Fachliche Anwendung
   models.py    Datenmodell
-  eignung.py   Regeln der Eignungspruefung, ohne Datenbankbezug
-  admin.py     Administrationsoberflaeche
-tests/      Tests der Fachlogik, ohne Datenbank lauffaehig
+  eignung.py   Regeln der Eignungsprüfung, ohne Datenbankbezug
+  admin.py     Administrationsoberfläche
+tests/      Tests der Fachlogik, ohne Datenbank lauffähig
 templates/  Gemeinsame Vorlagen
 ```
 
 ## Dokumentation
 
-Datenmodell, Entscheidungslog und die Erlaeuterungen zu einzelnen Codestellen
-liegen im uebergeordneten Projektordner und wandern mit dem naechsten Schritt
+Datenmodell, Entscheidungslog und die Erläuterungen zu einzelnen Codestellen
+liegen im übergeordneten Projektordner und wandern mit dem nächsten Schritt
 nach `docs/`.
