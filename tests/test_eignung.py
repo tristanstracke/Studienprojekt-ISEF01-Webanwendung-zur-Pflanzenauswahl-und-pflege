@@ -86,12 +86,12 @@ def test_bodenart_passend():
 
 
 def test_bodenart_unpassend_im_topf_ist_grenzwertig():
-    k = bewerte_bodenart("Kakteenerde", {"Blumenerde"}, austauschbar=True)
+    k = bewerte_bodenart("Kakteenerde oder Sandboden", {"Blumenerde"}, austauschbar=True)
     assert k.bewertung is Bewertung.GRENZWERTIG
 
 
 def test_bodenart_unpassend_im_garten_ist_verfehlt():
-    k = bewerte_bodenart("lehmiger Gartenboden", {"saure Erde"}, austauschbar=False)
+    k = bewerte_bodenart("Humose Feuchterde", {"Kakteenerde oder Sandboden"}, austauschbar=False)
     assert k.bewertung is Bewertung.VERFEHLT
 
 

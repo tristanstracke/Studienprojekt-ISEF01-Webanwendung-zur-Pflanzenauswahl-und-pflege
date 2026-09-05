@@ -73,6 +73,10 @@ class Bodenart(models.Model):
     """
 
     name = models.CharField("Bezeichnung", max_length=50, unique=True)
+    # Fachliche Beschreibung aus der Recherche. Sie steht neben dem
+    # gelaeufigen Namen, damit die Auswahl fachlich eindeutig bleibt und
+    # trotzdem von einer Privatperson beantwortet werden kann.
+    beschreibung = models.CharField("Beschreibung", max_length=100, blank=True)
 
     class Meta:
         verbose_name = "Bodenart"

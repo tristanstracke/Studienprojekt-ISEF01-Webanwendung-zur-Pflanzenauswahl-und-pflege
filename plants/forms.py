@@ -1,6 +1,14 @@
 from django import forms
 
-from .models import Standort
+from .models import Bodenart, Standort
+
+
+class BodenartAuswahl(forms.ModelChoiceField):
+    """Zeigt neben dem Namen die fachliche Beschreibung, damit die
+    Auswahl auch ohne Vorkenntnisse eindeutig ist."""
+
+    def label_from_instance(self, obj):
+        return f"{obj.name} – {obj.beschreibung}" if obj.beschreibung else obj.name
 
 
 class StandortForm(forms.ModelForm):
@@ -12,6 +20,12 @@ class StandortForm(forms.ModelForm):
     jemand beim Absenden eine fremde Benutzerkennung mitschicken und einen
     Standort in fremdem Namen anlegen.
     """
+
+    bodenart = BodenartAuswahl(
+        queryset=Bodenart.objects.all(),
+        label="Bodenart",
+        empty_label="bitte auswählen",
+    )
 
     class Meta:
         model = Standort

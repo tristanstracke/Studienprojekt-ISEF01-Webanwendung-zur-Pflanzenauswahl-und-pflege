@@ -18,39 +18,19 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-# Die Recherche unterscheidet 14 Bodenbeschreibungen. Fuer die
-# Eignungspruefung werden sie auf die Kategorien zusammengefasst, die auch
-# ein Nutzender fuer seinen Standort auswaehlen kann - "humos, feucht,
-# durchlaessig" kann niemand ueber seinen Balkon aussagen.
-BODENART_ZUORDNUNG = {
-    1: "Blumenerde",  # locker, durchlaessig
-    2: "Kakteenerde",  # sehr durchlaessig
-    3: "Blumenerde",  # locker, humos
-    4: "Kakteenerde",  # sandig, sehr durchlaessig
-    5: "Blumenerde",  # naehrstoffreich, humos
-    6: "Kakteenerde",  # sandig, durchlaessig
-    7: "lehmiger Gartenboden",  # kalkhaltig, durchlaessig
-    8: "Blumenerde",  # humos, locker
-    9: "Blumenerde",  # humos, feucht, durchlaessig
-    10: "Kakteenerde",  # Kakteenerde, durchlaessig
-    11: "Orchideensubstrat",  # Orchideensubstrat, luftig
-    12: "Blumenerde",  # locker, gut durchlaessig
-    13: "Kakteenerde",  # locker, sehr durchlaessig
-    14: "Blumenerde",  # humos, durchlaessig
-}
-
+# Die Recherche fasst die Bodenbeschreibungen zu fuenf Kategorien zusammen
+# (Blatt "Hinweis zur Datenaufbereitung"). Der Bodenart-Code der Tabelle
+# verweist unmittelbar auf diese Liste. Jede Kategorie traegt zusaetzlich
+# einen gelaeufigen Namen: Die fachliche Beschreibung allein - etwa
+# "humos, feucht" - kann eine Privatperson ueber ihren Balkon nicht
+# beantworten, und genau diese Angabe verlangt die Eignungspruefung.
 BODENARTEN = [
-    "Blumenerde",
-    "Kakteenerde",
-    "Orchideensubstrat",
-    "saure Erde",
-    "lehmiger Gartenboden",
+    ("Blumenerde", "locker und durchlässig"),
+    ("Kakteenerde oder Sandboden", "trocken und sehr durchlässig"),
+    ("Humose Blumenerde", "nährstoffreich und locker"),
+    ("Humose Feuchterde", "nährstoffreich und gleichmäßig feucht"),
+    ("Orchideensubstrat", "luftig und grob"),
 ]
-
-# Ohne recherchierten Wert wird die mittlere Stufe gesetzt und die Pflanze am
-# Ende aufgelistet. Ein geschaetzter Wert waere schlimmer als ein erkennbar
-# vorlaeufiger.
-LUFTFEUCHTIGKEIT_PLATZHALTER = 2
 
 
 def ganzzahl(zeile, index):
@@ -75,6 +55,11 @@ def monate_in_tage(zeile, index):
 
 
 def spaltenindex(kopfzeile, teil):
+    """Sucht die Spalte. Eine genaue Uebereinstimmung geht vor, weil
+    "Pflanze" sonst auf "Pflanzen-ID" treffen wuerde."""
+    for i, wert in enumerate(kopfzeile):
+        if wert and str(wert).strip().lower() == teil.lower():
+            return i
     for i, wert in enumerate(kopfzeile):
         if wert and teil.lower() in str(wert).lower():
             return i
@@ -104,16 +89,31 @@ def konvertieren(pfad: Path):
         "rueckschnitt": spaltenindex(kopf, "Rückschnitt"),
     }
 
-    quellen = {}
+    # Das Quellenblatt fuehrt je Art die Institution, den Link und den
+    # botanischen Namen. Belegt wird mit Institution und Link, damit die
+    # Angabe im Projektbericht nachvollziehbar ist.
+    quellen, botanisch = {}, {}
     if "Quellen" in wb.sheetnames:
-        for zeile in list(wb["Quellen"].values)[1:]:
-            if zeile and zeile[0] is not None:
-                quellen[zeile[0]] = zeile[1]
+        q = list(wb["Quellen"].values)
+        qkopf = list(q[0])
+        s_art = spaltenindex(qkopf, "Pflanze")
+        s_inst = spaltenindex(qkopf, "Institution")
+        s_link = spaltenindex(qkopf, "Direktlink")
+        for zeile in q[1:]:
+            if not zeile or not isinstance(zeile[0], int):
+                continue
+            teile = [zeile[i] for i in (s_inst, s_link) if i is not None and zeile[i]]
+            quellen[zeile[0]] = ", ".join(str(t).strip() for t in teile)[:300]
+            if s_art is not None and zeile[s_art] and "(" in str(zeile[s_art]):
+                botanisch[zeile[0]] = str(zeile[s_art]).split("(", 1)[1].rstrip(") ").strip()
 
-    bodenart_pk = {name: i for i, name in enumerate(BODENARTEN, start=1)}
     eintraege = [
-        {"model": "plants.bodenart", "pk": pk, "fields": {"name": name}}
-        for name, pk in bodenart_pk.items()
+        {
+            "model": "plants.bodenart",
+            "pk": i,
+            "fields": {"name": name, "beschreibung": beschreibung},
+        }
+        for i, (name, beschreibung) in enumerate(BODENARTEN, start=1)
     ]
 
     ohne_feuchte = []
@@ -132,12 +132,12 @@ def konvertieren(pfad: Path):
         pk += 1
         art_id = zeile[sp["id"]]
         boden_code = zeile[sp["boden"]]
-        bodenart = BODENART_ZUORDNUNG.get(boden_code, "Blumenerde")
+        if not isinstance(boden_code, int) or not 1 <= boden_code <= len(BODENARTEN):
+            sys.exit(f"Unbekannter Bodenart-Code {boden_code!r} bei {name}")
 
-        if sp["feuchte"] is not None and isinstance(zeile[sp["feuchte"]], int):
-            feuchte = zeile[sp["feuchte"]]
-        else:
-            feuchte = LUFTFEUCHTIGKEIT_PLATZHALTER
+        feuchte = zeile[sp["feuchte"]] if sp["feuchte"] is not None else None
+        if not isinstance(feuchte, int):
+            feuchte = 2
             ohne_feuchte.append(name)
 
         quelle = quellen.get(art_id, "")
@@ -175,11 +175,11 @@ def konvertieren(pfad: Path):
                 "pk": pk,
                 "fields": {
                     "name": str(name).strip(),
-                    "botanischer_name": "",
+                    "botanischer_name": botanisch.get(art_id, ""),
                     "lichtbedarf": licht,
                     "temperaturuntergrenze": zeile[sp["temp_min"]],
                     "feuchtigkeitsbedarf": feuchte,
-                    "geeignete_bodenarten": [bodenart_pk[bodenart]],
+                    "geeignete_bodenarten": [boden_code],
                     "giftig": bool(zeile[sp["giftig"]]),
                     "wasserbedarf": zeile[sp["wasser"]],
                     "endwuchshoehe_cm": zeile[sp["hoehe"]],
@@ -200,7 +200,7 @@ def konvertieren(pfad: Path):
     )
     if ohne_feuchte:
         print(
-            f"\nOhne recherchierte Luftfeuchtigkeit ({len(ohne_feuchte)}), "
+            f"\nACHTUNG - ohne recherchierte Luftfeuchtigkeit ({len(ohne_feuchte)}), "
             f"vorlaeufig auf 'normal' gesetzt:"
         )
         print("  " + ", ".join(ohne_feuchte))

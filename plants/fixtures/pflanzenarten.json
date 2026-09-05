@@ -3,35 +3,40 @@
     "model": "plants.bodenart",
     "pk": 1,
     "fields": {
-      "name": "Blumenerde"
+      "name": "Blumenerde",
+      "beschreibung": "locker und durchlässig"
     }
   },
   {
     "model": "plants.bodenart",
     "pk": 2,
     "fields": {
-      "name": "Kakteenerde"
+      "name": "Kakteenerde oder Sandboden",
+      "beschreibung": "trocken und sehr durchlässig"
     }
   },
   {
     "model": "plants.bodenart",
     "pk": 3,
     "fields": {
-      "name": "Orchideensubstrat"
+      "name": "Humose Blumenerde",
+      "beschreibung": "nährstoffreich und locker"
     }
   },
   {
     "model": "plants.bodenart",
     "pk": 4,
     "fields": {
-      "name": "saure Erde"
+      "name": "Humose Feuchterde",
+      "beschreibung": "nährstoffreich und gleichmäßig feucht"
     }
   },
   {
     "model": "plants.bodenart",
     "pk": 5,
     "fields": {
-      "name": "lehmiger Gartenboden"
+      "name": "Orchideensubstrat",
+      "beschreibung": "luftig und grob"
     }
   },
   {
@@ -42,14 +47,14 @@
       "botanischer_name": "",
       "lichtbedarf": 4,
       "temperaturuntergrenze": 18,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
         1
       ],
       "giftig": true,
       "wasserbedarf": 3,
       "endwuchshoehe_cm": 250,
-      "quelle": "https://www.rhs.org.uk/plants/swiss-cheese-plants/how-to-grow",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/11192/monstera-deliciosa-f/details",
       "erstellt_von": null
     }
   },
@@ -58,17 +63,17 @@
     "pk": 2,
     "fields": {
       "name": "Bogenhanf",
-      "botanischer_name": "",
+      "botanischer_name": "Dracaena trifasciata",
       "lichtbedarf": 3,
       "temperaturuntergrenze": 15,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
         2
       ],
       "giftig": true,
       "wasserbedarf": 1,
       "endwuchshoehe_cm": 120,
-      "quelle": "",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/dracaena-trifasciata/common-name/snake-plant/",
       "erstellt_von": null
     }
   },
@@ -77,17 +82,17 @@
     "pk": 3,
     "fields": {
       "name": "Grünlilie",
-      "botanischer_name": "",
+      "botanischer_name": "Chlorophytum comosum",
       "lichtbedarf": 3,
       "temperaturuntergrenze": 15,
       "feuchtigkeitsbedarf": 2,
       "geeignete_bodenarten": [
-        1
+        3
       ],
       "giftig": false,
       "wasserbedarf": 3,
-      "endwuchshoehe_cm": 60,
-      "quelle": "",
+      "endwuchshoehe_cm": 46,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/chlorophytum-comosum/common-name/spider-plant/",
       "erstellt_von": null
     }
   },
@@ -96,9 +101,9 @@
     "pk": 4,
     "fields": {
       "name": "Efeutute",
-      "botanischer_name": "",
+      "botanischer_name": "Epipremnum aureum",
       "lichtbedarf": 3,
-      "temperaturuntergrenze": 15,
+      "temperaturuntergrenze": 18,
       "feuchtigkeitsbedarf": 2,
       "geeignete_bodenarten": [
         1
@@ -106,7 +111,7 @@
       "giftig": true,
       "wasserbedarf": 3,
       "endwuchshoehe_cm": 200,
-      "quelle": "",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/epipremnum/growing-guide",
       "erstellt_von": null
     }
   },
@@ -118,14 +123,14 @@
       "botanischer_name": "",
       "lichtbedarf": 5,
       "temperaturuntergrenze": 10,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
         2
       ],
       "giftig": true,
       "wasserbedarf": 1,
       "endwuchshoehe_cm": 80,
-      "quelle": "",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/aloe?type=0",
       "erstellt_von": null
     }
   },
@@ -134,7 +139,7 @@
     "pk": 6,
     "fields": {
       "name": "Gummibaum",
-      "botanischer_name": "",
+      "botanischer_name": "Ficus elastica",
       "lichtbedarf": 4,
       "temperaturuntergrenze": 16,
       "feuchtigkeitsbedarf": 2,
@@ -144,7 +149,7 @@
       "giftig": true,
       "wasserbedarf": 3,
       "endwuchshoehe_cm": 300,
-      "quelle": "",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/ficus-elastica/",
       "erstellt_von": null
     }
   },
@@ -153,17 +158,17 @@
     "pk": 7,
     "fields": {
       "name": "Basilikum",
-      "botanischer_name": "",
+      "botanischer_name": "Ocimum basilicum",
       "lichtbedarf": 5,
       "temperaturuntergrenze": 15,
       "feuchtigkeitsbedarf": 2,
       "geeignete_bodenarten": [
-        1
+        3
       ],
       "giftig": false,
       "wasserbedarf": 5,
-      "endwuchshoehe_cm": 60,
-      "quelle": "",
+      "endwuchshoehe_cm": 90,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/ocimum-basilicum/",
       "erstellt_von": null
     }
   },
@@ -172,17 +177,17 @@
     "pk": 8,
     "fields": {
       "name": "Rosmarin",
-      "botanischer_name": "",
+      "botanischer_name": "Salvia rosmarinus",
       "lichtbedarf": 5,
       "temperaturuntergrenze": 5,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
         2
       ],
       "giftig": false,
       "wasserbedarf": 2,
       "endwuchshoehe_cm": 150,
-      "quelle": "",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/salvia-rosmarinus/",
       "erstellt_von": null
     }
   },
@@ -191,17 +196,17 @@
     "pk": 9,
     "fields": {
       "name": "Lavendel",
-      "botanischer_name": "",
+      "botanischer_name": "Lavandula angustifolia",
       "lichtbedarf": 5,
       "temperaturuntergrenze": -10,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
-        5
+        2
       ],
       "giftig": false,
       "wasserbedarf": 1,
-      "endwuchshoehe_cm": 100,
-      "quelle": "",
+      "endwuchshoehe_cm": 60,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/lavandula-angustifolia/",
       "erstellt_von": null
     }
   },
@@ -210,17 +215,17 @@
     "pk": 10,
     "fields": {
       "name": "Friedenslilie",
-      "botanischer_name": "",
+      "botanischer_name": "Spathiphyllum",
       "lichtbedarf": 3,
-      "temperaturuntergrenze": 18,
+      "temperaturuntergrenze": 12,
       "feuchtigkeitsbedarf": 2,
       "geeignete_bodenarten": [
-        1
+        3
       ],
       "giftig": true,
       "wasserbedarf": 4,
       "endwuchshoehe_cm": 100,
-      "quelle": "",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/peace-lilies/how-to-grow-peace-lilies",
       "erstellt_von": null
     }
   },
@@ -229,17 +234,17 @@
     "pk": 11,
     "fields": {
       "name": "Glücksfeder (Zamioculcas)",
-      "botanischer_name": "",
+      "botanischer_name": "Zamioculcas zamiifolia",
       "lichtbedarf": 2,
       "temperaturuntergrenze": 15,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
         2
       ],
       "giftig": true,
       "wasserbedarf": 1,
       "endwuchshoehe_cm": 100,
-      "quelle": "https://www.rhs.org.uk/shows-events/rhs-urban-show/houseplant-profiles/houseplants-for-shade",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/zamioculcas-zamiifolia/",
       "erstellt_von": null
     }
   },
@@ -248,7 +253,7 @@
     "pk": 12,
     "fields": {
       "name": "Herzblatt-Philodendron",
-      "botanischer_name": "",
+      "botanischer_name": "Philodendron hederaceum",
       "lichtbedarf": 3,
       "temperaturuntergrenze": 16,
       "feuchtigkeitsbedarf": 2,
@@ -258,7 +263,7 @@
       "giftig": true,
       "wasserbedarf": 3,
       "endwuchshoehe_cm": 200,
-      "quelle": "",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/philodendron-hederaceum/",
       "erstellt_von": null
     }
   },
@@ -267,17 +272,17 @@
     "pk": 13,
     "fields": {
       "name": "Korbmarante (Calathea)",
-      "botanischer_name": "",
+      "botanischer_name": "Calathea",
       "lichtbedarf": 3,
-      "temperaturuntergrenze": 18,
-      "feuchtigkeitsbedarf": 2,
+      "temperaturuntergrenze": 16,
+      "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
-        1
+        3
       ],
       "giftig": false,
       "wasserbedarf": 4,
       "endwuchshoehe_cm": 100,
-      "quelle": "",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/calathea/growing-guide",
       "erstellt_von": null
     }
   },
@@ -286,17 +291,17 @@
     "pk": 14,
     "fields": {
       "name": "Schwertfarn (Bostonfarn)",
-      "botanischer_name": "",
+      "botanischer_name": "Nephrolepis exaltata",
       "lichtbedarf": 3,
       "temperaturuntergrenze": 16,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
-        1
+        4
       ],
       "giftig": false,
       "wasserbedarf": 4,
-      "endwuchshoehe_cm": 90,
-      "quelle": "https://www.missouribotanicalgarden.org/Portals/0/Kemper%20Gardens/Fact%20Sheets/Houseplants%202022-pdf.pdf",
+      "endwuchshoehe_cm": 100,
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/11508/nephrolepis-exaltata/details",
       "erstellt_von": null
     }
   },
@@ -305,17 +310,17 @@
     "pk": 15,
     "fields": {
       "name": "Geldbaum (Crassula ovata)",
-      "botanischer_name": "",
+      "botanischer_name": "Crassula ovata",
       "lichtbedarf": 5,
       "temperaturuntergrenze": 10,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 1,
       "geeignete_bodenarten": [
         2
       ],
       "giftig": true,
       "wasserbedarf": 1,
-      "endwuchshoehe_cm": 150,
-      "quelle": "https://www.rhs.org.uk/plants/4739/crassula-ovata/details",
+      "endwuchshoehe_cm": 180,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/crassula-ovata/",
       "erstellt_von": null
     }
   },
@@ -324,17 +329,17 @@
     "pk": 16,
     "fields": {
       "name": "Schmetterlingsorchidee",
-      "botanischer_name": "",
-      "lichtbedarf": 4,
+      "botanischer_name": "Phalaenopsis",
+      "lichtbedarf": 2,
       "temperaturuntergrenze": 16,
-      "feuchtigkeitsbedarf": 2,
+      "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
-        3
+        5
       ],
       "giftig": false,
       "wasserbedarf": 2,
-      "endwuchshoehe_cm": 80,
-      "quelle": "",
+      "endwuchshoehe_cm": 60,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/phalaenopsis/",
       "erstellt_von": null
     }
   },
@@ -343,7 +348,7 @@
     "pk": 17,
     "fields": {
       "name": "Yucca-Palme",
-      "botanischer_name": "",
+      "botanischer_name": "Yucca gigantea / Y. elephantipes",
       "lichtbedarf": 5,
       "temperaturuntergrenze": 10,
       "feuchtigkeitsbedarf": 2,
@@ -353,7 +358,7 @@
       "giftig": true,
       "wasserbedarf": 1,
       "endwuchshoehe_cm": 250,
-      "quelle": "https://www.rhs.org.uk/plants/yucca/growing-guide",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/yucca-gigantea/common-name/giant-yucca/",
       "erstellt_von": null
     }
   },
@@ -362,17 +367,17 @@
     "pk": 18,
     "fields": {
       "name": "Drachenbaum (Dracaena)",
-      "botanischer_name": "",
+      "botanischer_name": "Dracaena fragrans",
       "lichtbedarf": 3,
-      "temperaturuntergrenze": 15,
+      "temperaturuntergrenze": 10,
       "feuchtigkeitsbedarf": 2,
       "geeignete_bodenarten": [
         1
       ],
       "giftig": true,
-      "wasserbedarf": 2,
+      "wasserbedarf": 3,
       "endwuchshoehe_cm": 250,
-      "quelle": "",
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/dracaena-fragrans/",
       "erstellt_von": null
     }
   },
@@ -381,7 +386,7 @@
     "pk": 19,
     "fields": {
       "name": "Efeu (Hedera helix)",
-      "botanischer_name": "",
+      "botanischer_name": "Hedera helix",
       "lichtbedarf": 3,
       "temperaturuntergrenze": -15,
       "feuchtigkeitsbedarf": 2,
@@ -391,7 +396,7 @@
       "giftig": true,
       "wasserbedarf": 3,
       "endwuchshoehe_cm": 200,
-      "quelle": "",
+      "quelle": "Royal Horticultural Society (RHS), https://www.rhs.org.uk/plants/ivy/ivy-as-a-houseplant",
       "erstellt_von": null
     }
   },
@@ -400,17 +405,17 @@
     "pk": 20,
     "fields": {
       "name": "Weihnachtskaktus",
-      "botanischer_name": "",
+      "botanischer_name": "Schlumbergera × buckleyi",
       "lichtbedarf": 4,
-      "temperaturuntergrenze": 10,
-      "feuchtigkeitsbedarf": 2,
+      "temperaturuntergrenze": 21,
+      "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
         1
       ],
       "giftig": false,
       "wasserbedarf": 3,
-      "endwuchshoehe_cm": 45,
-      "quelle": "https://www.rhs.org.uk/plants/christmas-cactus/how-to-grow",
+      "endwuchshoehe_cm": 30,
+      "quelle": "NC State Extension, https://plants.ces.ncsu.edu/plants/schlumbergera-x-buckleyi/",
       "erstellt_von": null
     }
   },
@@ -560,7 +565,7 @@
     "fields": {
       "art": 4,
       "taetigkeit": "umtopfen",
-      "intervall_tage": 540,
+      "intervall_tage": 900,
       "hinweis": ""
     }
   },
@@ -820,7 +825,7 @@
     "fields": {
       "art": 11,
       "taetigkeit": "duengen",
-      "intervall_tage": 56,
+      "intervall_tage": 270,
       "hinweis": ""
     }
   },
@@ -910,7 +915,7 @@
     "fields": {
       "art": 13,
       "taetigkeit": "umtopfen",
-      "intervall_tage": 540,
+      "intervall_tage": 1080,
       "hinweis": ""
     }
   },
@@ -1020,7 +1025,7 @@
     "fields": {
       "art": 16,
       "taetigkeit": "duengen",
-      "intervall_tage": 28,
+      "intervall_tage": 14,
       "hinweis": ""
     }
   },
@@ -1030,7 +1035,7 @@
     "fields": {
       "art": 16,
       "taetigkeit": "umtopfen",
-      "intervall_tage": 540,
+      "intervall_tage": 720,
       "hinweis": ""
     }
   },
@@ -1139,24 +1144,14 @@
     "pk": 73,
     "fields": {
       "art": 19,
-      "taetigkeit": "duengen",
-      "intervall_tage": 28,
+      "taetigkeit": "umtopfen",
+      "intervall_tage": 720,
       "hinweis": ""
     }
   },
   {
     "model": "plants.pflegeempfehlung",
     "pk": 74,
-    "fields": {
-      "art": 19,
-      "taetigkeit": "umtopfen",
-      "intervall_tage": 540,
-      "hinweis": ""
-    }
-  },
-  {
-    "model": "plants.pflegeempfehlung",
-    "pk": 75,
     "fields": {
       "art": 19,
       "taetigkeit": "schneiden",
@@ -1166,7 +1161,7 @@
   },
   {
     "model": "plants.pflegeempfehlung",
-    "pk": 76,
+    "pk": 75,
     "fields": {
       "art": 20,
       "taetigkeit": "giessen",
@@ -1176,7 +1171,7 @@
   },
   {
     "model": "plants.pflegeempfehlung",
-    "pk": 77,
+    "pk": 76,
     "fields": {
       "art": 20,
       "taetigkeit": "duengen",
@@ -1186,7 +1181,7 @@
   },
   {
     "model": "plants.pflegeempfehlung",
-    "pk": 78,
+    "pk": 77,
     "fields": {
       "art": 20,
       "taetigkeit": "umtopfen",
