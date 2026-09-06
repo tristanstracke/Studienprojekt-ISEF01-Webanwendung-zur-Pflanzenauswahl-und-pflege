@@ -1,24 +1,31 @@
-Eignungspruefung mit Begruendung, Anschaffen mit Pflegeplan
+Erscheinungsbild: Wortmarke, Farben und Formen der Anwendung
 
-Zweiter Teil von Anwendungsfall 1. Damit ist UC 1 vollstaendig.
+Die Anwendung sah bisher aus wie ein unformatiertes Formular, waehrend das
+Projektvideo eine gestaltete Marke zeigt. Beides ist jetzt dasselbe.
 
-- Eignungsansicht: eine Art wird gegen alle eigenen Standorte geprueft, der
-  am besten geeignete steht oben. Je Standort erscheinen das Gesamturteil
-  und alle fuenf Kriterien mit ihrer Begruendung, nicht nur ja oder nein.
-- Die Ampel ist ohne Farbe lesbar: Jede Stufe traegt zusaetzlich ein eigenes
-  Zeichen und eine Beschriftung. Farbe allein waere bei Farbsehschwaeche
-  nicht unterscheidbar.
-- Anschaffen: Statuswechsel mit Standortzuordnung. Aus den
-  Pflegeempfehlungen der Art entstehen dabei die Pflegevorlagen der Pflanze
-  samt erster faelliger Aufgabe.
-- Ein Standort mit Einschraenkungen bleibt waehlbar. Die Anwendung beraet,
-  sie entscheidet nicht: Wer bewusst anders pflanzt, sieht vorher, worauf er
-  achten muss.
-- Bestandsliste mit Standort und abgeleitetem Pflegeplan je Pflanze.
-- Beide Ansichten laden Standorte und Bodenarten vorab, sonst entstuende je
-  Standort eine eigene Abfrage.
+- Wortmarke aus dem Video als SVG, in Pfade umgewandelt: keine Schriftdatei
+  noetig, kein Abruf bei einem fremden Dienst. Die Blattmarke sitzt wie im
+  Video als Akzent ueber dem "e" von Care. Der obere Rand der Zeichenflaeche
+  wird aus der Schriftgeometrie berechnet, damit die Marke nicht beschnitten
+  wird.
+- Kopfzeile im Farbverlauf des Logos, Navigation in dunkler Schrift, die
+  Wortmarke bleibt weiss. Alle Schaltflaechen im Korallton mit dunkler
+  Schrift.
+- Zur Begruendung der dunklen Schrift: Weiss erreicht auf dem Korallton nur
+  ein Kontrastverhaeltnis von 2,6 zu 1 und verfehlt damit die Anforderung
+  von 4,5 fuer Beschriftungen; die dunkle Schrift erreicht 5,7. Ausgenommen
+  ist allein die Wortmarke, fuer die diese Anforderung nicht gilt.
+- Loeschen hebt sich mit roter Schrift auf hellem Grund ab, statt dieselbe
+  Flaeche wie die uebrigen Schaltflaechen zu tragen.
+- Ampel der Eignungspruefung als farbige Kapsel mit Zeichen und
+  Beschriftung, damit sie auch ohne Farbwahrnehmung lesbar bleibt.
+- Sichtbarer Tastaturfokus, Zustaende beim Ueberfahren, einheitliches
+  Abstandsraster, weichere Karten mit Schatten statt harter Rahmen.
+- STATICFILES_DIRS ohne Bedingung: Den Ordner gibt es jetzt immer.
 
-Zehn neue Tests. Der wichtigste prueft, dass sich beim Anschaffen kein
-fremder Standort unterschieben laesst: Wird die Nummer eines fremden
-Standorts abgeschickt, antwortet die Anwendung mit 404 und die Pflanze
-bleibt unveraendert auf der Wunschliste. 76 Tests gruen.
+Kein Rahmenwerk: Das Erscheinungsbild besteht aus rund 280 Zeilen CSS in
+einer Datei. Bootstrap oder Tailwind haetten entweder einen Abruf von einem
+fremden Server bedeutet, was der Zusage in MS 3 widerspricht, oder mehrere
+hundert Kilobyte fuer Bestandteile, die dieses Projekt nicht braucht.
+
+76 Tests gruen.

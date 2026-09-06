@@ -1,10 +1,25 @@
 {% extends "base.html" %}
 {% block titel %}Anmelden{% endblock %}
+
+{# Auf der Anmeldeseite steht die Marke gross statt in der Kopfzeile. #}
+{% block kopfzeile %}
+  <div class="markenblock">
+    {% comment %}
+      Direkt eingebunden statt als Bild: So übernimmt die Wortmarke über
+      currentColor die weiße Textfarbe des Blocks.
+    {% endcomment %}
+    {% include "marke-gestapelt.svg" %}
+  </div>
+{% endblock %}
+
 {% block inhalt %}
   <h1>Anmelden</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Anmelden</button>
-  </form>
+  <p class="leer">Melde dich an, um deine Standorte und Pflanzen zu sehen.</p>
+  <div class="karte">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="knopf">Anmelden</button>
+    </form>
+  </div>
 {% endblock %}
