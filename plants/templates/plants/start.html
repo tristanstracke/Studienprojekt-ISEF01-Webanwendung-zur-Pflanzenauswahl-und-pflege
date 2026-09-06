@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block inhalt %}
-  <h1>Willkommen</h1>
-  <p>Die Anwendung ist erreichbar, die Anmeldung funktioniert und der
-     Datenbestand ueberdauert eine Veroeffentlichung.</p>
+  <h1>Übersicht</h1>
+  <div class="karte">
+    <div class="zeile">
+      <div>
+        <strong>Standorte</strong>
+        <div class="merkmale">
+          {% if anzahl_standorte %}{{ anzahl_standorte }} angelegt{% else %}noch keiner angelegt{% endif %}
+        </div>
+      </div>
+      <span class="rechts"><a class="knopf" href="{% url 'standort_liste' %}">Öffnen</a></span>
+    </div>
+  </div>
+  <p class="leer">Wunschliste und Pflegekalender folgen.</p>
 {% endblock %}

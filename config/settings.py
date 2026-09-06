@@ -1,13 +1,16 @@
 """
-Django-Einstellungen fuer "Care for Plants".
+Django-Einstellungen für "Care for Plants".
 
 Alles, was sich zwischen lokaler Entwicklung und Produktion unterscheidet, kommt
 aus Umgebungsvariablen. Dadurch liegt kein Geheimnis im Repository und es gibt
-nur eine Einstellungsdatei statt mehrerer, die auseinanderlaufen koennen.
+nur eine Einstellungsdatei statt mehrerer, die auseinanderlaufen können.
 """
 
 import os
+import secrets
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,12 +21,24 @@ def env_flag(name: str, standard: bool = False) -> bool:
 
 # --- Grundeinstellungen ---------------------------------------------------
 
-# Lokal genuegt ein Platzhalter; in der Produktion ist die Variable gesetzt.
-SECRET_KEY = os.environ.get("SECRET_KEY", "nur-fuer-die-lokale-entwicklung")
+# Beide Schalter sind bewusst sicher voreingestellt: Fehlt eine Variable, soll
+# die Anwendung nicht offen weiterlaufen, sondern gar nicht erst starten.
+# Lokal wird DEBUG=1 gesetzt (siehe README), in der Produktion nichts.
+DEBUG = env_flag("DEBUG", standard=False)
 
-DEBUG = env_flag("DEBUG", standard=True)
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
+if not SECRET_KEY:
+    if DEBUG:
+        # Nur für die lokale Entwicklung. Bei jedem Start neu, damit dieser
+        # Wert niemals versehentlich in eine Produktionsumgebung geraet.
+        SECRET_KEY = secrets.token_urlsafe(64)
+    else:
+        raise ImproperlyConfigured(
+            "SECRET_KEY ist nicht gesetzt. In der Produktion muss die "
+            "Umgebungsvariable SECRET_KEY einen langen Zufallswert enthalten."
+        )
 
-# Railway stellt die oeffentliche Adresse als Umgebungsvariable bereit.
+# Railway stellt die öffentliche Adresse als Umgebungsvariable bereit.
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = []
 if domain := os.environ.get("RAILWAY_PUBLIC_DOMAIN"):
@@ -43,7 +58,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # Liefert die statischen Dateien in der Produktion aus, damit kein
-    # zusaetzlicher Webserver noetig ist.
+    # zusätzlicher Webserver nötig ist.
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -74,8 +89,8 @@ TEMPLATES = [
 
 # --- Datenbank ------------------------------------------------------------
 
-# In der Produktion zeigt DATA_DIR auf das eingehaengte Volume. Ohne diese
-# Variable laege die Datei im Container und waere nach jeder Veroeffentlichung
+# In der Produktion zeigt DATA_DIR auf das eingehängte Volume. Ohne diese
+# Variable läge die Datei im Container und wäre nach jeder Veröffentlichung
 # leer. Lokal liegt sie im Projektverzeichnis.
 DATA_DIR = Path(os.environ.get("DATA_DIR", BASE_DIR))
 
@@ -103,6 +118,17 @@ LOGIN_REDIRECT_URL = "start"
 LOGOUT_REDIRECT_URL = "login"
 
 
+# --- E-Mail ---------------------------------------------------------------
+
+# Die Anmeldung von Django bringt eine Strecke zum Zuruecksetzen des Kennworts
+# mit, die eine E-Mail verschickt. Ein Postausgangsserver ist für den
+# Prototyp nicht vorgesehen, deshalb wird die Nachricht in das Protokoll
+# geschrieben. Der Administrator kann den Link dort ablesen und weitergeben;
+# ohne diese Einstellung liefe der Aufruf in einen Serverfehler.
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "care-for-plants@example.org"
+
+
 # --- Sprache und Zeit -----------------------------------------------------
 
 LANGUAGE_CODE = "de-de"
@@ -124,12 +150,16 @@ STORAGES = {
 
 # --- Sicherheit in der Produktion ----------------------------------------
 
-# Greift nur, wenn DEBUG abgeschaltet ist. Lokal wuerde die Weiterleitung auf
+# Greift nur, wenn DEBUG abgeschaltet ist. Lokal würde die Weiterleitung auf
 # HTTPS die Entwicklung verhindern.
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    # Bewusst kurz: Eine lange Dauer wuerde den Browser der Pruefenden auch
+    # dann auf HTTPS festlegen, wenn die Anwendung spaeter unter einer anderen
+    # Adresse laeuft. Für einen Prototyp mit vier Wochen Laufzeit genügt eine
+    # Stunde. SECURE_HSTS_PRELOAD bleibt aus demselben Grund aus.
     SECURE_HSTS_SECONDS = 3600
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

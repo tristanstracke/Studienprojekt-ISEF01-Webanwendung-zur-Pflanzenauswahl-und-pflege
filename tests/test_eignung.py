@@ -1,9 +1,9 @@
 """
 Tests der Eignungslogik.
 
-Keine Datenbank noetig, weil die Regeln nur mit einfachen Werten arbeiten.
+Keine Datenbank nötig, weil die Regeln nur mit einfachen Werten arbeiten.
 Geprueft wird jede Regel an ihren Grenzen: genau passend, eine Stufe daneben,
-zwei Stufen daneben. Fehler treten erfahrungsgemaess an diesen Uebergaengen auf,
+zwei Stufen daneben. Fehler treten erfahrungsgemäß an diesen Übergaengen auf,
 nicht in der Mitte eines Wertebereichs.
 """
 
@@ -28,10 +28,14 @@ from plants.eignung import (
     "angebot, bedarf, erwartet",
     [
         (3, 3, Bewertung.ERFUELLT),  # genau passend
+        (1, 1, Bewertung.ERFUELLT),  # unteres Ende der Skala
+        (5, 5, Bewertung.ERFUELLT),  # oberes Ende der Skala
         (2, 3, Bewertung.GRENZWERTIG),  # eine Stufe zu dunkel
         (4, 3, Bewertung.GRENZWERTIG),  # eine Stufe zu hell
+        (4, 5, Bewertung.GRENZWERTIG),  # eine Stufe zu dunkel am oberen Rand
         (1, 3, Bewertung.VERFEHLT),  # zwei Stufen zu dunkel
-        (4, 1, Bewertung.VERFEHLT),  # drei Stufen zu hell
+        (5, 1, Bewertung.VERFEHLT),  # vier Stufen zu hell, groesste Abweichung
+        (1, 5, Bewertung.VERFEHLT),  # vier Stufen zu dunkel
     ],
 )
 def test_licht(angebot, bedarf, erwartet):
@@ -82,12 +86,12 @@ def test_bodenart_passend():
 
 
 def test_bodenart_unpassend_im_topf_ist_grenzwertig():
-    k = bewerte_bodenart("Kakteenerde", {"Blumenerde"}, austauschbar=True)
+    k = bewerte_bodenart("Kakteenerde oder Sandboden", {"Blumenerde"}, austauschbar=True)
     assert k.bewertung is Bewertung.GRENZWERTIG
 
 
 def test_bodenart_unpassend_im_garten_ist_verfehlt():
-    k = bewerte_bodenart("lehmiger Gartenboden", {"saure Erde"}, austauschbar=False)
+    k = bewerte_bodenart("Humose Feuchterde", {"Kakteenerde oder Sandboden"}, austauschbar=False)
     assert k.bewertung is Bewertung.VERFEHLT
 
 

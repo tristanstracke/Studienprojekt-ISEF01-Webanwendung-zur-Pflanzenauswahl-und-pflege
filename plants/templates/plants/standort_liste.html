@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titel %}Standorte{% endblock %}
+{% block inhalt %}
+  <div class="zeile">
+    <h1>Standorte</h1>
+    <span class="rechts"><a class="knopf" href="{% url 'standort_anlegen' %}">Standort anlegen</a></span>
+  </div>
+
+  {% for standort in standorte %}
+    <div class="karte">
+      <div class="zeile">
+        <div>
+          <strong>{{ standort.name }}</strong> — {{ standort.get_art_display }}
+          <div class="merkmale">
+            Licht: {{ standort.get_lichtangebot_display }} ·
+            bis {{ standort.minimaltemperatur }} °C ·
+            Luftfeuchtigkeit: {{ standort.get_luftfeuchtigkeit_display }} ·
+            Boden: {{ standort.bodenart }}
+            {% if standort.erreichbar_fuer_kinder_haustiere %}
+              · für Kinder oder Haustiere erreichbar
+            {% endif %}
+          </div>
+        </div>
+        <span class="rechts">
+          <a class="knopf leise" href="{% url 'standort_bearbeiten' standort.pk %}">Ändern</a>
+        </span>
+      </div>
+    </div>
+  {% empty %}
+    <div class="karte">
+      <p class="leer">Noch kein Standort angelegt.</p>
+      <p class="leer">Ein Standort ist ein Ort, an dem Pflanzen stehen — etwa das
+        Wohnzimmerfenster, der Balkon oder ein Beet im Garten. Die Anwendung prüft
+        anhand seiner Eigenschaften, welche Pflanzen dort gedeihen.</p>
+    </div>
+  {% endfor %}
+{% endblock %}

@@ -10,5 +10,10 @@ select = ["E", "F", "I", "UP", "DJ"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
+# Die Tests laufen unter Produktionsbedingungen, also mit abgeschaltetem
+# Fehlersuchmodus. Weil die Einstellungen dann ohne SECRET_KEY abbrechen,
+# setzt pytest-env hier einen festen Schluessel fuer den Testlauf. So prueft
+# die Pipeline dieselbe Konfiguration, die spaeter ausgeliefert wird.
+env = ["SECRET_KEY=nur-fuer-den-testlauf-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
 python_files = ["test_*.py"]
 addopts = "-q"

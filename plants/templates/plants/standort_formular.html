@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block titel %}{{ ueberschrift }}{% endblock %}
+{% block inhalt %}
+  <h1>{{ ueberschrift }}</h1>
+  <div class="karte">
+    <form method="post">
+      {% csrf_token %}
+      {% for feld in formular %}
+        <p>
+          <label for="{{ feld.id_for_label }}">{{ feld.label }}</label>
+          {{ feld }}
+          {% if feld.help_text %}<span class="hilfetext">{{ feld.help_text }}</span>{% endif %}
+          {% if feld.errors %}<ul class="fehler">{% for f in feld.errors %}<li>{{ f }}</li>{% endfor %}</ul>{% endif %}
+        </p>
+      {% endfor %}
+      <div class="zeile">
+        <button type="submit" class="knopf">Speichern</button>
+        <a class="knopf leise" href="{% url 'standort_liste' %}">Abbrechen</a>
+        {% if standort %}
+          <span class="rechts">
+            <a class="knopf warnung" href="{% url 'standort_loeschen' standort.pk %}">Löschen</a>
+          </span>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+{% endblock %}

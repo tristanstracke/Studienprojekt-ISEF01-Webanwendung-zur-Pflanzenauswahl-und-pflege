@@ -5,23 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block titel %}Care for Plants{% endblock %}</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background: #f7f8f6; color: #1d2b1f; }
-    header { background: #2f5d3a; color: #fff; padding: 1rem 1.5rem; }
-    header a { color: #fff; }
-    main { max-width: 52rem; margin: 0 auto; padding: 1.5rem; }
-    h1 { font-size: 1.4rem; }
+    :root { --gruen: #2f5d3a; --hell: #f7f8f6; --rand: #d8ded6; --text: #1d2b1f; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0;
+           background: var(--hell); color: var(--text); line-height: 1.5; }
+    header { background: var(--gruen); color: #fff; padding: .8rem 1.2rem;
+             display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    header .marke { font-weight: 700; font-size: 1.05rem; }
+    header nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    header a { color: #e6efe6; text-decoration: none; }
+    header a:hover { text-decoration: underline; }
+    header .rechts { margin-left: auto; display: flex; gap: .8rem; align-items: center;
+                     font-size: .9rem; }
+    main { max-width: 54rem; margin: 0 auto; padding: 1.5rem 1.2rem 4rem; }
+    h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 .6rem; }
+    .karte { background: #fff; border: 1px solid var(--rand); border-radius: 8px;
+             padding: 1rem 1.2rem; margin-bottom: .8rem; }
+    .knopf { display: inline-block; background: var(--gruen); color: #fff; border: 0;
+             padding: .55rem 1rem; border-radius: 6px; text-decoration: none;
+             font-size: .95rem; cursor: pointer; }
+    .knopf.leise { background: #fff; color: var(--text); border: 1px solid var(--rand); }
+    .knopf.warnung { background: #a13b2f; }
+    form p { margin: 0 0 .9rem; }
+    form label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: .2rem; }
+    input[type=text], input[type=number], input[type=password], select, textarea {
+      width: 100%; padding: .5rem; border: 1px solid var(--rand); border-radius: 6px;
+      font-size: 1rem; font-family: inherit; background: #fff; }
+    input[type=checkbox] { width: auto; }
+    .hilfetext { font-size: .85rem; color: #5d6b5d; display: block; margin-top: .15rem; }
+    ul.fehler { color: #a13b2f; font-size: .88rem; margin: .2rem 0; padding-left: 1.1rem; }
+    .meldung { background: #e7f1e7; border: 1px solid #b9d3b9; border-radius: 6px;
+               padding: .6rem .9rem; margin-bottom: 1rem; }
+    .leer { color: #5d6b5d; }
+    .zeile { display: flex; gap: .8rem; align-items: baseline; flex-wrap: wrap; }
+    .zeile .rechts { margin-left: auto; display: flex; gap: .6rem; }
+    .merkmale { font-size: .9rem; color: #4a5a4a; margin-top: .3rem; }
+    @media (max-width: 480px) { header .rechts { width: 100%; margin-left: 0; } }
   </style>
 </head>
 <body>
   <header>
-    <strong>Care for Plants</strong>
+    <span class="marke">Care for Plants</span>
     {% if user.is_authenticated %}
-      &mdash; angemeldet als {{ user.username }}
-      <form action="{% url 'logout' %}" method="post" style="display:inline">
-        {% csrf_token %}<button type="submit">Abmelden</button>
-      </form>
+      <nav>
+        <a href="{% url 'start' %}">Übersicht</a>
+        <a href="{% url 'standort_liste' %}">Standorte</a>
+      </nav>
+      <span class="rechts">
+        {{ user.username }}
+        <form action="{% url 'logout' %}" method="post" style="display:inline">
+          {% csrf_token %}
+          <button type="submit" class="knopf leise" style="padding:.25rem .6rem">Abmelden</button>
+        </form>
+      </span>
     {% endif %}
   </header>
-  <main>{% block inhalt %}{% endblock %}</main>
+  <main>
+    {% for meldung in messages %}<div class="meldung">{{ meldung }}</div>{% endfor %}
+    {% block inhalt %}{% endblock %}
+  </main>
 </body>
 </html>

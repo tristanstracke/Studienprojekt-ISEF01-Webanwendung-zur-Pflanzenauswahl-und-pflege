@@ -1,7 +1,7 @@
 """
-Eignungspruefung: Passt eine Pflanze zu einem Standort?
+Eignungsprüfung: Passt eine Pflanzenart zu einem Standort?
 
-Die einzelnen Regeln arbeiten ausschliesslich mit einfachen Werten und kennen
+Die einzelnen Regeln arbeiten ausschließlich mit einfachen Werten und kennen
 weder Django noch die Datenbank. Nur die Funktion `pruefe_eignung` liest die
 Werte aus den Modellobjekten aus. Dadurch laufen die Tests der Regeln ohne
 Datenbank und damit in Millisekunden.
@@ -20,7 +20,7 @@ class Bewertung(Enum):
 
 
 class Urteil(Enum):
-    """Gesamtergebnis der Pruefung."""
+    """Gesamtergebnis der Prüfung."""
 
     GEEIGNET = "geeignet"
     BEDINGT_GEEIGNET = "bedingt geeignet"
@@ -47,10 +47,10 @@ class Ergebnis:
 
 def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
     """
-    Licht ist eine Ordinalskala von 1 (schattig) bis 4 (vollsonnig).
+    Licht ist eine Ordinalskala von 1 (sehr schattig) bis 5 (sonnig).
     Eine Stufe Abweichung gilt als vertretbar, zwei nicht mehr.
     Zu viel Licht wird ebenso bewertet wie zu wenig, da direkte Sonne
-    bei schattenliebenden Pflanzen zu Blattschaeden fuehrt.
+    bei schattenliebenden Pflanzen zu Blattschäden führt.
     """
     abweichung = angebot - bedarf
     if abweichung == 0:
@@ -61,51 +61,51 @@ def bewerte_licht(angebot: int, bedarf: int) -> Kriterium:
         return Kriterium(
             "Licht",
             Bewertung.GRENZWERTIG,
-            "Der Standort ist eine Stufe dunkler als benoetigt. Die Pflanze waechst langsamer.",
+            "Der Standort ist eine Stufe dunkler als benötigt. Die Pflanze wächst langsamer.",
         )
     if abweichung == 1:
         return Kriterium(
             "Licht",
             Bewertung.GRENZWERTIG,
-            "Der Standort ist eine Stufe heller als benoetigt. "
-            "Ein Platz etwas weiter vom Fenster entfernt ist guenstiger.",
+            "Der Standort ist eine Stufe heller als benötigt. "
+            "Ein Platz etwas weiter vom Fenster entfernt ist günstiger.",
         )
     if abweichung < -1:
         return Kriterium(
-            "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu dunkel fuer diese Pflanze."
+            "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu dunkel für diese Pflanze."
         )
     return Kriterium(
-        "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu hell; es drohen Blattschaeden."
+        "Licht", Bewertung.VERFEHLT, "Der Standort ist deutlich zu hell; es drohen Blattschäden."
     )
 
 
 def bewerte_temperatur(standortminimum: int, untergrenze: int) -> Kriterium:
     """
-    Ausschlusskriterium ohne Toleranzstufe nach unten: Faellt die Temperatur
-    unter die Untergrenze der Pflanze, erfriert sie. Das laesst sich durch
+    Ausschlusskriterium ohne Toleranzstufe nach unten: Fällt die Temperatur
+    unter die Untergrenze der Pflanze, erfriert sie. Das lässt sich durch
     Pflege nicht ausgleichen. Ein Abstand von weniger als zwei Grad gilt als
-    grenzwertig, weil die erfassten Werte Schaetzungen des Nutzers sind.
+    grenzwertig, weil die erfassten Werte Schätzungen des Nutzers sind.
     """
     puffer = standortminimum - untergrenze
     if puffer >= 2:
         return Kriterium(
             "Temperatur",
             Bewertung.ERFUELLT,
-            f"Der Standort faellt auf {standortminimum} Grad; die Pflanze "
-            f"vertraegt {untergrenze} Grad.",
+            f"Der Standort fällt auf {standortminimum} Grad; die Pflanze "
+            f"verträgt {untergrenze} Grad.",
         )
     if puffer >= 0:
         return Kriterium(
             "Temperatur",
             Bewertung.GRENZWERTIG,
-            f"Mit {standortminimum} Grad liegt der Standort nur knapp ueber "
+            f"Mit {standortminimum} Grad liegt der Standort nur knapp über "
             f"der Untergrenze von {untergrenze} Grad.",
         )
     return Kriterium(
         "Temperatur",
         Bewertung.VERFEHLT,
-        f"Der Standort faellt auf {standortminimum} Grad, die Pflanze "
-        f"vertraegt nur {untergrenze} Grad.",
+        f"Der Standort fällt auf {standortminimum} Grad, die Pflanze "
+        f"verträgt nur {untergrenze} Grad.",
     )
 
 
@@ -120,13 +120,13 @@ def bewerte_feuchtigkeit(angebot: int, bedarf: int) -> Kriterium:
         return Kriterium(
             "Luftfeuchtigkeit",
             Bewertung.GRENZWERTIG,
-            "Es ist etwas zu trocken. Regelmaessiges Besprühen hilft.",
+            "Es ist etwas zu trocken. Regelmäßiges Besprühen hilft.",
         )
     if abweichung == 1:
         return Kriterium(
             "Luftfeuchtigkeit",
             Bewertung.GRENZWERTIG,
-            "Es ist etwas feuchter als noetig. Auf Luftbewegung achten.",
+            "Es ist etwas feuchter als nötig. Auf Luftbewegung achten.",
         )
     if abweichung < -1:
         return Kriterium(
@@ -135,25 +135,25 @@ def bewerte_feuchtigkeit(angebot: int, bedarf: int) -> Kriterium:
     return Kriterium(
         "Luftfeuchtigkeit",
         Bewertung.VERFEHLT,
-        "Der Standort ist deutlich zu feucht; es droht Faeulnis.",
+        "Der Standort ist deutlich zu feucht; es droht Fäulnis.",
     )
 
 
 def bewerte_bodenart(bodenart: str, geeignete: set[str], austauschbar: bool) -> Kriterium:
     """
-    Im Topf laesst sich das Substrat wechseln, im Garten nicht. Deshalb ist eine
+    Im Topf lässt sich das Substrat wechseln, im Garten nicht. Deshalb ist eine
     unpassende Bodenart bei Topfpflanzen nur grenzwertig, im Beet aber ein
     Ausschluss.
     """
     if bodenart in geeignete:
         return Kriterium(
-            "Bodenart", Bewertung.ERFUELLT, f"{bodenart} ist fuer diese Pflanze geeignet."
+            "Bodenart", Bewertung.ERFUELLT, f"{bodenart} ist für diese Pflanze geeignet."
         )
     if austauschbar:
         return Kriterium(
             "Bodenart",
             Bewertung.GRENZWERTIG,
-            f"{bodenart} passt nicht, laesst sich beim Umtopfen aber "
+            f"{bodenart} passt nicht, lässt sich beim Umtopfen aber "
             f"gegen ein geeignetes Substrat tauschen.",
         )
     return Kriterium(
@@ -175,12 +175,12 @@ def bewerte_giftigkeit(giftig: bool, erreichbar: bool) -> Kriterium:
         return Kriterium(
             "Giftigkeit",
             Bewertung.ERFUELLT,
-            "Die Pflanze ist giftig, der Standort aber fuer Kinder und Haustiere nicht erreichbar.",
+            "Die Pflanze ist giftig, der Standort aber für Kinder und Haustiere nicht erreichbar.",
         )
     return Kriterium(
         "Giftigkeit",
         Bewertung.VERFEHLT,
-        "Die Pflanze ist giftig und der Standort fuer Kinder oder Haustiere erreichbar.",
+        "Die Pflanze ist giftig und der Standort für Kinder oder Haustiere erreichbar.",
     )
 
 
@@ -191,7 +191,7 @@ def bewerte_giftigkeit(giftig: bool, erreichbar: bool) -> Kriterium:
 
 def bilde_urteil(kriterien: list[Kriterium]) -> Urteil:
     """
-    Ein verfehltes Kriterium genuegt fuer ein ablehnendes Urteil. Die Kriterien
+    Ein verfehltes Kriterium genügt für ein ablehnendes Urteil. Die Kriterien
     werden also nicht gegeneinander verrechnet: Ein Standort, an dem die Pflanze
     erfriert, wird nicht dadurch geeignet, dass Licht und Boden stimmen.
     """
@@ -210,16 +210,22 @@ def bilde_urteil(kriterien: list[Kriterium]) -> Urteil:
 BODEN_AUSTAUSCHBAR = {"innen": True, "balkon": True, "garten": False}
 
 
-def pruefe_eignung(pflanze, standort) -> Ergebnis:
+def pruefe_eignung(pflanzenart, standort) -> Ergebnis:
+    """
+    Vergleicht die Anforderungen einer Pflanzenart mit den Gegebenheiten eines
+    Standorts. Nimmt bewusst die Art entgegen und nicht die Pflanze einer
+    Person: Die Prüfung soll auch für Arten möglich sein, die noch auf
+    keiner Wunschliste stehen.
+    """
     kriterien = [
-        bewerte_licht(standort.lichtangebot, pflanze.lichtbedarf),
-        bewerte_temperatur(standort.minimaltemperatur, pflanze.temperaturuntergrenze),
-        bewerte_feuchtigkeit(standort.luftfeuchtigkeit, pflanze.feuchtigkeitsbedarf),
+        bewerte_licht(standort.lichtangebot, pflanzenart.lichtbedarf),
+        bewerte_temperatur(standort.minimaltemperatur, pflanzenart.temperaturuntergrenze),
+        bewerte_feuchtigkeit(standort.luftfeuchtigkeit, pflanzenart.feuchtigkeitsbedarf),
         bewerte_bodenart(
             standort.bodenart.name,
-            {b.name for b in pflanze.geeignete_bodenarten.all()},
+            {b.name for b in pflanzenart.geeignete_bodenarten.all()},
             BODEN_AUSTAUSCHBAR[standort.art],
         ),
-        bewerte_giftigkeit(pflanze.giftig, standort.erreichbar_fuer_kinder_haustiere),
+        bewerte_giftigkeit(pflanzenart.giftig, standort.erreichbar_fuer_kinder_haustiere),
     ]
     return Ergebnis(bilde_urteil(kriterien), kriterien)
