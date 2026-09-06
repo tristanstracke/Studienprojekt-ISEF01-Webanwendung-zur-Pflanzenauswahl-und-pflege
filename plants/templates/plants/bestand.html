@@ -22,6 +22,9 @@
             {% endfor %}
           </div>
         </div>
+        <span class="rechts">
+          <a class="knopf leise" href="{% url 'pflegeplan' pflanze.pk %}">Pflegeplan</a>
+        </span>
       </div>
     </div>
   {% empty %}

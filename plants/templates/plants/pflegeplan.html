@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titel %}Pflegeplan für {{ pflanze }}{% endblock %}
+{% block inhalt %}
+  <div class="zeile">
+    <h1>Pflegeplan für {{ pflanze }}</h1>
+    <span class="rechts">
+      <a class="knopf" href="{% url 'pflegevorlage_anlegen' pflanze.pk %}">Aufgabe aufnehmen</a>
+    </span>
+  </div>
+  <p class="leer">
+    {{ pflanze.art.name }}{% if pflanze.standort %} · Standort: {{ pflanze.standort.name }}{% endif %}
+  </p>
+
+  {% for vorlage in vorlagen %}
+    <div class="karte">
+      <div class="zeile">
+        <div>
+          <strong>{{ vorlage.get_taetigkeit_display }}</strong>
+          <div class="merkmale">
+            alle {{ vorlage.intervall_tage }} Tage
+            {% for aufgabe in vorlage.aufgaben.all %}
+              {% if not aufgabe.erledigt_am %}
+                · nächster Termin {{ aufgabe.faelligkeit|date:"d.m.Y" }}
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% if vorlage.hinweis %}<div class="merkmale">{{ vorlage.hinweis }}</div>{% endif %}
+        </div>
+        <span class="rechts">
+          <a class="knopf leise" href="{% url 'pflegevorlage_bearbeiten' vorlage.pk %}">Ändern</a>
+          <a class="knopf warnung" href="{% url 'pflegevorlage_loeschen' vorlage.pk %}">Entfernen</a>
+        </span>
+      </div>
+    </div>
+  {% empty %}
+    <div class="karte">
+      <p class="leer">Für diese Pflanze ist noch keine Pflege hinterlegt.</p>
+    </div>
+  {% endfor %}
+
+  <a class="knopf leise" href="{% url 'bestand' %}">Zurück zu meinen Pflanzen</a>
+{% endblock %}

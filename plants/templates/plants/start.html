@@ -38,5 +38,17 @@
     </div>
   </div>
 
-  <p class="leer">Der Pflegekalender folgt.</p>
+  <div class="karte">
+    <div class="zeile">
+      <div>
+        <strong>Pflegekalender</strong>
+        <div class="merkmale">
+          {% if anzahl_faellig %}
+            <span class="warnhinweis">{{ anzahl_faellig }} Aufgabe{{ anzahl_faellig|pluralize:"n" }} fällig</span>
+          {% else %}nichts fällig{% endif %}
+        </div>
+      </div>
+      <span class="rechts"><a class="knopf" href="{% url 'kalender' %}">Öffnen</a></span>
+    </div>
+  </div>
 {% endblock %}

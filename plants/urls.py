@@ -28,4 +28,22 @@ urlpatterns = [
         name="pflanze_anschaffen",
     ),
     path("bestand/", views.bestand, name="bestand"),
+    path("kalender/", views.kalender, name="kalender"),
+    path("aufgaben/<int:pk>/abhaken/", views.aufgabe_abhaken, name="aufgabe_abhaken"),
+    path("bestand/<int:pflanze_pk>/pflege/", views.pflegeplan, name="pflegeplan"),
+    path(
+        "bestand/<int:pflanze_pk>/pflege/neu/",
+        views.pflegevorlage_anlegen,
+        name="pflegevorlage_anlegen",
+    ),
+    path(
+        "pflege/<int:pk>/aendern/",
+        views.pflegevorlage_bearbeiten,
+        name="pflegevorlage_bearbeiten",
+    ),
+    path(
+        "pflege/<int:pk>/entfernen/",
+        views.pflegevorlage_loeschen,
+        name="pflegevorlage_loeschen",
+    ),
 ]

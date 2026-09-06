@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titel %}{{ ueberschrift }}{% endblock %}
+{% block inhalt %}
+  <h1>{{ ueberschrift }}</h1>
+  <p class="leer">für {{ pflanze }}</p>
+  <div class="karte">
+    <form method="post">
+      {% csrf_token %}
+      {% if formular.non_field_errors %}
+        <ul class="fehler">{% for f in formular.non_field_errors %}<li>{{ f }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% for feld in formular %}
+        <p>
+          <label for="{{ feld.id_for_label }}">{{ feld.label }}</label>
+          {{ feld }}
+          {% if feld.help_text %}<span class="hilfetext">{{ feld.help_text }}</span>{% endif %}
+          {% if feld.errors %}<ul class="fehler">{% for f in feld.errors %}<li>{{ f }}</li>{% endfor %}</ul>{% endif %}
+        </p>
+      {% endfor %}
+      <div class="zeile">
+        <button type="submit" class="knopf">Speichern</button>
+        <a class="knopf leise" href="{% url 'pflegeplan' pflanze.pk %}">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

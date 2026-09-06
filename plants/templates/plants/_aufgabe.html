@@ -1,0 +1,30 @@
+{% comment %}Eine Zeile im Kalender. Erwartet: aufgabe, heute{% endcomment %}
+<div class="karte aufgabe">
+  <div class="zeile">
+    <div>
+      <strong>{{ aufgabe.vorlage.get_taetigkeit_display }}</strong>
+      — {{ aufgabe.vorlage.pflanze }}
+      <div class="merkmale">
+        {% if aufgabe.faelligkeit < heute %}
+          <span class="ueberfaellig">seit {{ aufgabe.faelligkeit|date:"d.m.Y" }} fällig</span>
+        {% elif aufgabe.faelligkeit == heute %}
+          <span class="heute">heute fällig</span>
+        {% else %}
+          fällig am {{ aufgabe.faelligkeit|date:"d.m.Y" }}
+        {% endif %}
+        {% if aufgabe.vorlage.pflanze.standort %} · {{ aufgabe.vorlage.pflanze.standort.name }}{% endif %}
+        · alle {{ aufgabe.vorlage.intervall_tage }} Tage
+      </div>
+      {% if aufgabe.vorlage.hinweis %}
+        <div class="merkmale">{{ aufgabe.vorlage.hinweis }}</div>
+      {% endif %}
+    </div>
+    <span class="rechts">
+      <form method="post" action="{% url 'aufgabe_abhaken' aufgabe.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="zurueck" value="{{ request.path }}">
+        <button type="submit" class="knopf">Erledigt</button>
+      </form>
+    </span>
+  </div>
+</div>
