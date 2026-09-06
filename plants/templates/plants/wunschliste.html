@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block titel %}Wunschliste{% endblock %}
+{% block inhalt %}
+  <div class="zeile">
+    <h1>Wunschliste</h1>
+    <span class="rechts">
+      <a class="knopf" href="{% url 'pflanzenart_liste' %}">Pflanze suchen</a>
+    </span>
+  </div>
+
+  {% for pflanze in pflanzen %}
+    <div class="karte">
+      <div class="zeile">
+        <div>
+          <strong>{{ pflanze }}</strong>
+          {% if pflanze.eigener_name %}<em class="leer">{{ pflanze.art.name }}</em>{% endif %}
+          <div class="merkmale">
+            Licht: {{ pflanze.art.get_lichtbedarf_display }} ·
+            ab {{ pflanze.art.temperaturuntergrenze }} °C ·
+            Luftfeuchtigkeit: {{ pflanze.art.get_feuchtigkeitsbedarf_display }}
+            {% if pflanze.art.giftig %}· <span class="warnhinweis">giftig</span>{% endif %}
+          </div>
+          {% if pflanze.notiz %}<div class="merkmale">{{ pflanze.notiz }}</div>{% endif %}
+        </div>
+        <span class="rechts">
+          <a class="knopf leise" href="{% url 'pflanze_entfernen' pflanze.pk %}">Entfernen</a>
+        </span>
+      </div>
+    </div>
+  {% empty %}
+    <div class="karte">
+      <p class="leer">Deine Wunschliste ist leer.</p>
+      <p class="leer">
+        Auf der Wunschliste sammelst du Pflanzen, die du dir überlegst. Für jede
+        kannst du prüfen lassen, ob sie an einen deiner Standorte passt — und sie
+        anschließend anschaffen.
+      </p>
+    </div>
+  {% endfor %}
+{% endblock %}

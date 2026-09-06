@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titel %}Von der Wunschliste entfernen{% endblock %}
+{% block inhalt %}
+  <h1>Von der Wunschliste entfernen</h1>
+  <div class="karte">
+    <p>Soll <strong>{{ pflanze }}</strong> von der Wunschliste entfernt werden?</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="zeile">
+        <button type="submit" class="knopf warnung">Entfernen</button>
+        <a class="knopf leise" href="{% url 'wunschliste' %}">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titel %}{{ art.name }} merken{% endblock %}
+{% block inhalt %}
+  <h1>{{ art.name }} merken</h1>
+  <div class="karte">
+    <div class="merkmale">
+      {% if art.botanischer_name %}{{ art.botanischer_name }} ·{% endif %}
+      Licht: {{ art.get_lichtbedarf_display }} ·
+      ab {{ art.temperaturuntergrenze }} °C ·
+      Luftfeuchtigkeit: {{ art.get_feuchtigkeitsbedarf_display }}
+      {% if art.giftig %}· <span class="warnhinweis">giftig</span>{% endif %}
+    </div>
+  </div>
+
+  <div class="karte">
+    <form method="post">
+      {% csrf_token %}
+      {% for feld in formular %}
+        <p>
+          <label for="{{ feld.id_for_label }}">{{ feld.label }}</label>
+          {{ feld }}
+          {% if feld.help_text %}<span class="hilfetext">{{ feld.help_text }}</span>{% endif %}
+          {% if feld.errors %}<ul class="fehler">{% for f in feld.errors %}<li>{{ f }}</li>{% endfor %}</ul>{% endif %}
+        </p>
+      {% endfor %}
+      <div class="zeile">
+        <button type="submit" class="knopf">Auf die Wunschliste</button>
+        <a class="knopf leise" href="{% url 'pflanzenart_liste' %}">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

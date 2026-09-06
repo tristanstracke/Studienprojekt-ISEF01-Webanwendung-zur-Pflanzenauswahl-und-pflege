@@ -41,6 +41,11 @@
     .zeile { display: flex; gap: .8rem; align-items: baseline; flex-wrap: wrap; }
     .zeile .rechts { margin-left: auto; display: flex; gap: .6rem; }
     .merkmale { font-size: .9rem; color: #4a5a4a; margin-top: .3rem; }
+    .marke-eigen { font-size: .75rem; background: #e8ede6; color: #3f5540;
+                   border-radius: 10px; padding: .1rem .5rem; margin-left: .3rem;
+                   white-space: nowrap; }
+    .warnhinweis { color: #a13b2f; font-weight: 600; }
+    em.leer { font-style: italic; }
     @media (max-width: 480px) { header .rechts { width: 100%; margin-left: 0; } }
   </style>
 </head>
@@ -51,6 +56,8 @@
       <nav>
         <a href="{% url 'start' %}">Übersicht</a>
         <a href="{% url 'standort_liste' %}">Standorte</a>
+        <a href="{% url 'pflanzenart_liste' %}">Pflanzenarten</a>
+        <a href="{% url 'wunschliste' %}">Wunschliste</a>
       </nav>
       <span class="rechts">
         {{ user.username }}
