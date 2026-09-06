@@ -263,11 +263,23 @@ def bestand(request):
 @login_required
 def kalender(request):
     """Alle offenen Pflegeaufgaben, nach Faelligkeit gruppiert."""
-    aufgaben = offene_aufgaben(request.user)
+    aufgaben = list(offene_aufgaben(request.user))
+    gruppen = nach_faelligkeit(aufgaben)
+    # Bleiben nur kuenftige Termine uebrig, blendet die Ansicht die leeren
+    # Gruppen aus - eine einzelne Ueberschrift "Spaeter" ist dann ohne
+    # Vergleich schwer zu deuten. Deshalb nennt eine Zeile darueber das
+    # naechste Datum. Die Liste ist nach Faelligkeit sortiert, das erste
+    # Element ist also der naechste Termin.
+    nichts_faellig = aufgaben and not gruppen["ueberfaellig"] and not gruppen["heute"]
     return render(
         request,
         "plants/kalender.html",
-        {"gruppen": nach_faelligkeit(aufgaben), "anzahl": len(aufgaben), "heute": heute()},
+        {
+            "gruppen": gruppen,
+            "anzahl": len(aufgaben),
+            "heute": heute(),
+            "naechste": aufgaben[0] if nichts_faellig else None,
+        },
     )
 
 

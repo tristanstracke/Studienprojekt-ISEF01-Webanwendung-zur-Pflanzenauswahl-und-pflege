@@ -229,3 +229,32 @@ def test_vorlage_entfernen_loescht_die_termine(client, anna, erde):
     assert antwort.status_code == 302
     assert pflanze.pflegevorlagen.count() == 0
     assert Pflegeaufgabe.objects.count() == 0
+
+
+# --- Hinweiszeile bei leerem Tagesbestand ----------------------------------
+
+
+def test_hinweis_nennt_den_naechsten_termin(client, anna, erde):
+    """
+    Sind weder Aufgaben ueberfaellig noch heute faellig, blendet die Ansicht
+    beide Gruppen aus. Eine allein stehende Ueberschrift "Spaeter" waere ohne
+    Vergleich schwer zu deuten, deshalb nennt eine Zeile das naechste Datum.
+    """
+    naechster_termin = date.today() + timedelta(days=9)
+    pflanze_mit_vorlage(anna, erde, faellig=naechster_termin)
+    inhalt = angemeldet(client, anna).get(reverse("kalender")).content.decode()
+    assert "Nichts zu tun" in inhalt
+    assert naechster_termin.strftime("%d.%m.%Y") in inhalt
+
+
+def test_kein_hinweis_wenn_heute_etwas_ansteht(client, anna, erde):
+    pflanze_mit_vorlage(anna, erde, faellig=date.today())
+    pflanze_mit_vorlage(anna, erde, faellig=date.today() + timedelta(days=9), name="Zweite")
+    inhalt = angemeldet(client, anna).get(reverse("kalender")).content.decode()
+    assert "Nichts zu tun" not in inhalt
+
+
+def test_kein_hinweis_bei_ueberfaelliger_aufgabe(client, anna, erde):
+    pflanze_mit_vorlage(anna, erde, faellig=date.today() - timedelta(days=3))
+    inhalt = angemeldet(client, anna).get(reverse("kalender")).content.decode()
+    assert "Nichts zu tun" not in inhalt

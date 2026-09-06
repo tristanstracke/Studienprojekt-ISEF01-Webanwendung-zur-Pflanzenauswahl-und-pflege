@@ -7,6 +7,13 @@
   </div>
 
   {% if anzahl %}
+    {% if naechste %}
+      <p class="ruhe">
+        Nichts zu tun — die nächste Aufgabe steht am
+        {{ naechste.faelligkeit|date:"d.m.Y" }} an.
+      </p>
+    {% endif %}
+
     {% if gruppen.ueberfaellig %}
       <h2 class="abschnitt ueberfaellig">Überfällig ({{ gruppen.ueberfaellig|length }})</h2>
       {% for aufgabe in gruppen.ueberfaellig %}{% include "plants/_aufgabe.html" %}{% endfor %}
