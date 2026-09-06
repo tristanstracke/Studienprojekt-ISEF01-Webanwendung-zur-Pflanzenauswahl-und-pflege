@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block titel %}Meine Pflanzen{% endblock %}
 {% block inhalt %}
-  <div class="zeile">
-    <h1>Meine Pflanzen</h1>
-    <span class="rechts"><a class="knopf leise" href="{% url 'wunschliste' %}">Wunschliste</a></span>
-  </div>
+  <h1>Meine Pflanzen</h1>
 
   {% for pflanze in pflanzen %}
     <div class="karte">
@@ -23,7 +20,7 @@
           </div>
         </div>
         <span class="rechts">
-          <a class="knopf leise" href="{% url 'pflegeplan' pflanze.pk %}">Pflegeplan</a>
+          <a class="knopf" href="{% url 'pflegeplan' pflanze.pk %}">Pflegeplan</a>
         </span>
       </div>
     </div>

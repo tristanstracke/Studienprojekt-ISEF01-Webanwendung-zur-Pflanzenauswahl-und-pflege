@@ -27,7 +27,7 @@
           {% if vorlage.hinweis %}<div class="merkmale">{{ vorlage.hinweis }}</div>{% endif %}
         </div>
         <span class="rechts">
-          <a class="knopf leise" href="{% url 'pflegevorlage_bearbeiten' vorlage.pk %}">Ändern</a>
+          <a class="knopf" href="{% url 'pflegevorlage_bearbeiten' vorlage.pk %}">Ändern</a>
           <a class="knopf warnung" href="{% url 'pflegevorlage_loeschen' vorlage.pk %}">Entfernen</a>
         </span>
       </div>
@@ -38,5 +38,5 @@
     </div>
   {% endfor %}
 
-  <a class="knopf leise" href="{% url 'bestand' %}">Zurück zu meinen Pflanzen</a>
+  <a class="knopf" href="{% url 'bestand' %}">Zurück zu meinen Pflanzen</a>
 {% endblock %}

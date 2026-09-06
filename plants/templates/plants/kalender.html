@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block titel %}Pflegekalender{% endblock %}
 {% block inhalt %}
-  <div class="zeile">
-    <h1>Pflegekalender</h1>
-    <span class="rechts"><a class="knopf leise" href="{% url 'bestand' %}">Meine Pflanzen</a></span>
-  </div>
+  <h1>Pflegekalender</h1>
 
   {% if anzahl %}
     {% if naechste %}
@@ -30,7 +27,7 @@
     {% endif %}
 
     {% if gruppen.spaeter %}
-      <h2 class="abschnitt">Später ({{ gruppen.spaeter|length }})</h2>
+      <h2 class="abschnitt">Nach dieser Woche ({{ gruppen.spaeter|length }})</h2>
       {% for aufgabe in gruppen.spaeter %}{% include "plants/_aufgabe.html" %}{% endfor %}
     {% endif %}
   {% else %}

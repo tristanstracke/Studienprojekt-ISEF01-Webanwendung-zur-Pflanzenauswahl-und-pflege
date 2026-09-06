@@ -12,7 +12,7 @@
       {% csrf_token %}
       <div class="zeile">
         <button type="submit" class="knopf warnung">Entfernen</button>
-        <a class="knopf leise" href="{% url 'pflegeplan' vorlage.pflanze.pk %}">Abbrechen</a>
+        <a class="knopf" href="{% url 'pflegeplan' vorlage.pflanze.pk %}">Abbrechen</a>
       </div>
     </form>
   </div>

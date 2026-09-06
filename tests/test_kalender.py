@@ -258,3 +258,19 @@ def test_kein_hinweis_bei_ueberfaelliger_aufgabe(client, anna, erde):
     pflanze_mit_vorlage(anna, erde, faellig=date.today() - timedelta(days=3))
     inhalt = angemeldet(client, anna).get(reverse("kalender")).content.decode()
     assert "Nichts zu tun" not in inhalt
+
+
+# --- Navigation ------------------------------------------------------------
+
+
+def test_navigation_markiert_die_aktive_seite(client, anna, erde):
+    inhalt = angemeldet(client, anna).get(reverse("kalender")).content.decode()
+    assert f'href="{reverse("kalender")}" aria-current="page"' in inhalt
+
+
+def test_unterseite_markiert_ihren_oberpunkt(client, anna, erde):
+    """Der Pflegeplan hat keinen eigenen Menuepunkt und gehoert zu "Meine Pflanzen"."""
+    pflanze, _, _ = pflanze_mit_vorlage(anna, erde)
+    inhalt = angemeldet(client, anna).get(reverse("pflegeplan", args=[pflanze.pk])).content.decode()
+    assert f'href="{reverse("bestand")}" aria-current="page"' in inhalt
+    assert f'href="{reverse("kalender")}" aria-current="page"' not in inhalt
