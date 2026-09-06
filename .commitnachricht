@@ -1,0 +1,24 @@
+Eignungspruefung mit Begruendung, Anschaffen mit Pflegeplan
+
+Zweiter Teil von Anwendungsfall 1. Damit ist UC 1 vollstaendig.
+
+- Eignungsansicht: eine Art wird gegen alle eigenen Standorte geprueft, der
+  am besten geeignete steht oben. Je Standort erscheinen das Gesamturteil
+  und alle fuenf Kriterien mit ihrer Begruendung, nicht nur ja oder nein.
+- Die Ampel ist ohne Farbe lesbar: Jede Stufe traegt zusaetzlich ein eigenes
+  Zeichen und eine Beschriftung. Farbe allein waere bei Farbsehschwaeche
+  nicht unterscheidbar.
+- Anschaffen: Statuswechsel mit Standortzuordnung. Aus den
+  Pflegeempfehlungen der Art entstehen dabei die Pflegevorlagen der Pflanze
+  samt erster faelliger Aufgabe.
+- Ein Standort mit Einschraenkungen bleibt waehlbar. Die Anwendung beraet,
+  sie entscheidet nicht: Wer bewusst anders pflanzt, sieht vorher, worauf er
+  achten muss.
+- Bestandsliste mit Standort und abgeleitetem Pflegeplan je Pflanze.
+- Beide Ansichten laden Standorte und Bodenarten vorab, sonst entstuende je
+  Standort eine eigene Abfrage.
+
+Zehn neue Tests. Der wichtigste prueft, dass sich beim Anschaffen kein
+fremder Standort unterschieben laesst: Wird die Nummer eines fremden
+Standorts abgeschickt, antwortet die Anwendung mit 404 und die Pflanze
+bleibt unveraendert auf der Wunschliste. 76 Tests gruen.

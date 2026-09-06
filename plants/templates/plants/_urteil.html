@@ -1,0 +1,21 @@
+{% comment %}
+Zeigt ein Prüfergebnis: Gesamturteil und die fünf Kriterien mit Begründung.
+Ausgelagert, weil dieselbe Darstellung in der Eignungsprüfung und beim
+Anschaffen gebraucht wird.
+{% endcomment %}
+{% if ergebnis.urteil.value == "geeignet" %}
+  <span class="urteil geeignet">geeignet</span>
+{% elif ergebnis.urteil.value == "bedingt geeignet" %}
+  <span class="urteil bedingt">bedingt geeignet</span>
+{% else %}
+  <span class="urteil ungeeignet">ungeeignet</span>
+{% endif %}
+<ul class="kriterien">
+  {% for kriterium in ergebnis.kriterien %}
+    <li class="{{ kriterium.bewertung.value }}">
+      <span class="zeichen">{% if kriterium.bewertung.value == "erfuellt" %}✓{% elif kriterium.bewertung.value == "grenzwertig" %}!{% else %}×{% endif %}</span>
+      <span class="name">{{ kriterium.bezeichnung }}</span>
+      <span>{{ kriterium.begruendung }}</span>
+    </li>
+  {% endfor %}
+</ul>

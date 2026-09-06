@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titel %}Passt {{ art.name }}?{% endblock %}
+{% block inhalt %}
+  <h1>Passt {{ art.name }} zu deinen Standorten?</h1>
+
+  <div class="karte">
+    <div class="merkmale">
+      {% if art.botanischer_name %}{{ art.botanischer_name }} ·{% endif %}
+      braucht {{ art.get_lichtbedarf_display }} ·
+      verträgt bis {{ art.temperaturuntergrenze }} °C ·
+      Luftfeuchtigkeit {{ art.get_feuchtigkeitsbedarf_display }}
+      {% if art.giftig %}· <span class="warnhinweis">giftig</span>{% endif %}
+    </div>
+  </div>
+
+  {% for standort, ergebnis in ergebnisse %}
+    <div class="karte">
+      <div class="zeile">
+        <div><strong>{{ standort.name }}</strong> — {{ standort.get_art_display }}</div>
+        <span class="rechts">{% include "plants/_ampel.html" %}</span>
+      </div>
+      {% include "plants/_kriterien.html" %}
+    </div>
+  {% empty %}
+    <div class="karte">
+      <p class="leer">Du hast noch keinen Standort angelegt.</p>
+      <p class="leer">
+        Die Prüfung vergleicht die Ansprüche der Pflanze mit den Eigenschaften
+        eines Ortes — Licht, tiefste Temperatur, Luftfeuchtigkeit, Bodenart und
+        Erreichbarkeit für Kinder und Haustiere.
+      </p>
+      <a class="knopf" href="{% url 'standort_anlegen' %}">Ersten Standort anlegen</a>
+    </div>
+  {% endfor %}
+
+  <div class="zeile">
+    {% if vorgemerkt %}
+      <a class="knopf" href="{% url 'pflanze_anschaffen' vorgemerkt.pk %}">Anschaffen</a>
+    {% else %}
+      <a class="knopf" href="{% url 'pflanze_hinzufuegen' art.pk %}">Auf die Wunschliste</a>
+    {% endif %}
+    <a class="knopf leise" href="{% url 'pflanzenart_liste' %}">Zurück zu den Arten</a>
+  </div>
+{% endblock %}

@@ -26,5 +26,17 @@
     </div>
   </div>
 
-  <p class="leer">Eignungsprüfung und Pflegekalender folgen.</p>
+  <div class="karte">
+    <div class="zeile">
+      <div>
+        <strong>Meine Pflanzen</strong>
+        <div class="merkmale">
+          {% if anzahl_bestand %}{{ anzahl_bestand }} angeschafft{% else %}noch keine angeschafft{% endif %}
+        </div>
+      </div>
+      <span class="rechts"><a class="knopf" href="{% url 'bestand' %}">Öffnen</a></span>
+    </div>
+  </div>
+
+  <p class="leer">Der Pflegekalender folgt.</p>
 {% endblock %}

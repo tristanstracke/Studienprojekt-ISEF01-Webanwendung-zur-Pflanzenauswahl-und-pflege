@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titel %}{{ pflanze }} anschaffen{% endblock %}
+{% block inhalt %}
+  <h1>{{ pflanze }} anschaffen</h1>
+  <p class="leer">
+    Wähle den Standort, an dem die Pflanze stehen soll. Aus den Pflegeempfehlungen
+    der Art entstehen dabei automatisch die Pflegeaufgaben.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for standort, ergebnis in bewertungen %}
+      <div class="karte">
+        <div class="zeile">
+          <label style="font-weight:600">
+            <input type="radio" name="standort" value="{{ standort.pk }}"
+                   {% if forloop.first %}checked{% endif %}>
+            {{ standort.name }} — {{ standort.get_art_display }}
+          </label>
+          <span class="rechts">{% include "plants/_ampel.html" %}</span>
+        </div>
+        {% include "plants/_kriterien.html" %}
+      </div>
+    {% empty %}
+      <div class="karte">
+        <p class="leer">Ohne Standort lässt sich keine Pflanze anschaffen.</p>
+        <a class="knopf" href="{% url 'standort_anlegen' %}">Standort anlegen</a>
+      </div>
+    {% endfor %}
+
+    {% if bewertungen %}
+      <div class="zeile">
+        <button type="submit" class="knopf">Anschaffen</button>
+        <a class="knopf leise" href="{% url 'wunschliste' %}">Abbrechen</a>
+      </div>
+      <p class="leer" style="margin-top:.8rem">
+        Auch ein Standort mit Einschränkungen ist wählbar — die Anwendung
+        entscheidet nicht für dich, sie sagt dir nur, worauf du achten musst.
+      </p>
+    {% endif %}
+  </form>
+{% endblock %}

@@ -17,4 +17,15 @@ urlpatterns = [
     ),
     path("wunschliste/", views.wunschliste, name="wunschliste"),
     path("wunschliste/<int:pk>/entfernen/", views.pflanze_entfernen, name="pflanze_entfernen"),
+    path(
+        "pflanzenarten/<int:art_pk>/eignung/",
+        views.eignung_pruefen,
+        name="eignung_pruefen",
+    ),
+    path(
+        "wunschliste/<int:pk>/anschaffen/",
+        views.pflanze_anschaffen,
+        name="pflanze_anschaffen",
+    ),
+    path("bestand/", views.bestand, name="bestand"),
 ]

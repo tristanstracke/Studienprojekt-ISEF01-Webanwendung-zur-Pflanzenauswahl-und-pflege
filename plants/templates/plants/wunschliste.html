@@ -23,6 +23,8 @@
           {% if pflanze.notiz %}<div class="merkmale">{{ pflanze.notiz }}</div>{% endif %}
         </div>
         <span class="rechts">
+          <a class="knopf leise" href="{% url 'eignung_pruefen' pflanze.art.pk %}">Passt sie?</a>
+          <a class="knopf" href="{% url 'pflanze_anschaffen' pflanze.pk %}">Anschaffen</a>
           <a class="knopf leise" href="{% url 'pflanze_entfernen' pflanze.pk %}">Entfernen</a>
         </span>
       </div>
