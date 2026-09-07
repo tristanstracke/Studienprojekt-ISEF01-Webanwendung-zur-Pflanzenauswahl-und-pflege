@@ -81,3 +81,21 @@ def test_ohne_katalog_bricht_das_kommando_ab(db, capsys):
     call_command("testdaten")
     assert get_user_model().objects.count() == 0
     assert "Pflanzenkatalog ist leer" in capsys.readouterr().err
+
+
+def test_pflanzen_stehen_an_passenden_standorten(katalog):
+    """
+    Die Beispieldaten sollen der Eignungspruefung nicht widersprechen: Kein
+    Exemplar darf an einem Standort stehen, den die Pruefung ablehnt, solange
+    ein besserer verfuegbar ist.
+    """
+    from plants.eignung import Urteil, pruefe_eignung
+
+    call_command("testdaten")
+    benutzer = get_user_model().objects.get(username="kai")
+    for pflanze in Pflanze.objects.filter(besitzer=benutzer, status=Pflanze.Status.BESTAND):
+        andere = [s for s in pflanze.besitzer.standorte.all()]
+        urteile = [pruefe_eignung(pflanze.art, s).urteil for s in andere]
+        eigenes = pruefe_eignung(pflanze.art, pflanze.standort).urteil
+        rang = {Urteil.GEEIGNET: 0, Urteil.BEDINGT_GEEIGNET: 1, Urteil.UNGEEIGNET: 2}
+        assert rang[eigenes] == min(rang[u] for u in urteile)

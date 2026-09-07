@@ -154,3 +154,13 @@ def test_gleicher_name_bei_verschiedenen_personen_ist_erlaubt(client, anna, bern
     )
 
     assert Standort.objects.filter(name__iexact="Balkon").count() == 2
+
+
+def test_formularseiten_zeigen_ihre_ueberschrift(client, anna):
+    """
+    Django meldet fehlende Vorlagenvariablen nicht, sondern setzt eine leere
+    Zeichenkette ein. Ein Tippfehler im Namen bleibt dadurch unbemerkt, bis
+    jemand die Seite ansieht - deshalb dieser Test.
+    """
+    client.force_login(anna)
+    assert "Standort anlegen" in client.get(reverse("standort_anlegen")).content.decode()

@@ -232,6 +232,14 @@
     em.leer { font-style: italic; }
     .zeile { display: flex; gap: .9rem; align-items: baseline; flex-wrap: wrap; }
     .zeile .rechts { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
+    /* In Karten steht die Aktion immer oben rechts neben dem Text. Zuvor
+       richtete sie sich an der Schriftlinie aus und rutschte bei langen
+       Angaben in die naechste Zeile - dadurch sassen die Schaltflaechen je
+       nach Textlaenge mal oben, mal unten. Der Textblock darf schrumpfen,
+       die Schaltflaeche nicht. */
+    .karte > .zeile { align-items: flex-start; flex-wrap: nowrap; }
+    .karte > .zeile > :first-child { flex: 1 1 auto; min-width: 0; }
+    .karte > .zeile > .rechts { flex-shrink: 0; }
     .merkmale { font-size: .9rem; color: var(--text-leise); margin-top: .35rem; }
     .marke-eigen {
       font-size: .72rem;

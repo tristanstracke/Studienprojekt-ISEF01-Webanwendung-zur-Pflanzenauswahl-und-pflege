@@ -33,6 +33,7 @@ from plants.models import (
     Standortart,
     Taetigkeit,
 )
+from plants.eignung import Urteil, pruefe_eignung
 from plants.pflege import erzeuge_pflegevorlagen, heute
 
 # Die Kennwoerter stehen bewusst im Klartext: Es sind Zugaenge zu einer
@@ -149,9 +150,13 @@ class Command(BaseCommand):
             )
             standorte.append(standort)
 
-        # Drei Arten in den Bestand, zwei auf die Wunschliste. Die Auswahl ist
-        # willkuerlich, aber fest, damit alle Testzugaenge dasselbe zeigen.
-        for art, standort in zip(arten[:3], standorte, strict=False):
+        # Drei Arten in den Bestand, zwei auf die Wunschliste. Jede Art kommt
+        # an den Standort, an dem sie am besten gedeiht. Das ist nicht nur
+        # Kosmetik: Stuenden Beispielpflanzen an Standorten, die die
+        # Eignungspruefung ablehnt, widerspraeche der Bestand der eigenen
+        # Empfehlung - im Benutzerhandbuch waere das kaum zu erklaeren.
+        for art in arten[:3]:
+            standort = self.bester_standort(art, standorte)
             pflanze, neu = Pflanze.objects.get_or_create(
                 besitzer=benutzer,
                 art=art,
@@ -165,6 +170,17 @@ class Command(BaseCommand):
             Pflanze.objects.get_or_create(besitzer=benutzer, art=art, status=Pflanze.Status.WUNSCH)
 
         self.setze_faelligkeiten(benutzer)
+
+    @staticmethod
+    def bester_standort(art, standorte):
+        """
+        Waehlt den Standort mit dem guenstigsten Urteil.
+
+        Gibt es keinen geeigneten, wird der am wenigsten schlechte genommen:
+        Der Bestand soll auch dann bestueckt sein, wenn keine Art perfekt passt.
+        """
+        rang = {Urteil.GEEIGNET: 0, Urteil.BEDINGT_GEEIGNET: 1, Urteil.UNGEEIGNET: 2}
+        return min(standorte, key=lambda ort: rang[pruefe_eignung(art, ort).urteil])
 
     def setze_faelligkeiten(self, benutzer):
         """

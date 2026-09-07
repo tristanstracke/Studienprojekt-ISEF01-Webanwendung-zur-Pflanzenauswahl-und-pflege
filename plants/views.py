@@ -64,7 +64,7 @@ def standort_anlegen(request):
     return render(
         request,
         "plants/standort_formular.html",
-        {"formular": formular, "überschrift": "Standort anlegen"},
+        {"formular": formular, "ueberschrift": "Standort anlegen"},
     )
 
 
@@ -82,7 +82,7 @@ def standort_bearbeiten(request, pk):
     return render(
         request,
         "plants/standort_formular.html",
-        {"formular": formular, "überschrift": "Standort ändern", "standort": standort},
+        {"formular": formular, "ueberschrift": "Standort ändern", "standort": standort},
     )
 
 
