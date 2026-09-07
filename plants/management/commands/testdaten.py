@@ -22,6 +22,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from plants.eignung import Urteil, pruefe_eignung
 from plants.models import (
     Bodenart,
     Feuchtigkeit,
@@ -33,7 +34,6 @@ from plants.models import (
     Standortart,
     Taetigkeit,
 )
-from plants.eignung import Urteil, pruefe_eignung
 from plants.pflege import erzeuge_pflegevorlagen, heute
 
 # Die Kennwoerter stehen bewusst im Klartext: Es sind Zugaenge zu einer
