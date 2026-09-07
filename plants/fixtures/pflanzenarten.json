@@ -407,7 +407,7 @@
       "name": "Weihnachtskaktus",
       "botanischer_name": "Schlumbergera × buckleyi",
       "lichtbedarf": 4,
-      "temperaturuntergrenze": 21,
+      "temperaturuntergrenze": 10,
       "feuchtigkeitsbedarf": 3,
       "geeignete_bodenarten": [
         1
