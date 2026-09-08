@@ -447,3 +447,34 @@ wählt jetzt den Standort mit dem günstigsten Urteil, damit der
 Beispielbestand der eigenen Empfehlung nicht widerspricht. Drittens saß die
 Schaltfläche in den Karten je nach Textlänge mal oben, mal unten, weil sie
 bei langen Angaben umbrach.
+
+**2026-09-08 — Terminlogik aus den Ansichten in die Fachlogik verschoben**
+Alternativen: die Berechnung in den Ansichten belassen; sie in das Formular
+verlagern.
+Begründung: Die technische Dokumentation nennt als Entwurfsregel, dass die
+Ansichten keine Fachlogik enthalten. Zwei Stellen verstießen dagegen: Beim
+Anlegen einer Pflegevorlage wurde der erste Termin in der Ansicht berechnet,
+beim Ändern des Intervalls der offene Termin ebenfalls. Beide Regeln sind
+fachliche Festlegungen und stehen nun als erste_aufgabe und
+verschiebe_offenen_termin in plants/pflege.py, wo sie ohne HTTP-Anfrage
+prüfbar sind und erkennbar dieselbe Regel wie erzeuge_pflegevorlagen
+verwenden. Der Befund stammt aus einer erneuten Durchsicht des Quelltextes;
+er zeigt, dass eine dokumentierte Entwurfsregel ohne wiederholte Prüfung
+allmählich unterlaufen wird.
+
+**2026-09-08 — Vorlage und erster Termin entstehen in einer Transaktion**
+Bislang wurden Pflegevorlage und zugehörige erste Aufgabe nacheinander und
+ohne gemeinsame Klammer gespeichert. Schlüge der zweite Schritt fehl, bliebe
+eine Vorlage ohne Termin zurück; sie wäre im Kalender unsichtbar und fiele
+erst beim nächsten Bearbeiten auf. Beide Schreibvorgänge laufen nun in einer
+Transaktion. Dasselbe gilt für das Ändern eines Intervalls samt Verschiebung
+des offenen Termins.
+
+**2026-09-08 — Fehlendes Vorabladen beim Anschaffen**
+Die Ansicht zum Anschaffen prüft die Eignung gegen jeden Standort. Die
+geeigneten Bodenarten der Art wurden dabei nicht vorab geladen, sodass je
+Standort eine zusätzliche Abfrage entstand. In der Ansicht der
+Eignungsprüfung war das bereits berücksichtigt; hier fehlte es. Ergänzt um
+prefetch_related. Bei drei Standorten sind das drei eingesparte Abfragen —
+für sich genommen unerheblich, als Muster jedoch der Grund, weshalb solche
+Ansichten mit wachsender Datenmenge langsam werden.

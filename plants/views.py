@@ -1,7 +1,6 @@
-from datetime import timedelta
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -9,11 +8,13 @@ from .eignung import Urteil, pruefe_eignung
 from .forms import PflanzeForm, PflanzenartForm, PflegevorlageForm, StandortForm
 from .models import Pflanze, Pflanzenart, Pflegeaufgabe, Pflegevorlage, Standort
 from .pflege import (
+    erste_aufgabe,
     erzeuge_pflegevorlagen,
     hake_ab,
     heute,
     nach_faelligkeit,
     offene_aufgaben,
+    verschiebe_offenen_termin,
 )
 
 
@@ -215,8 +216,11 @@ def pflanze_anschaffen(request, pk):
     diese Pruefung liesse sich beim Absenden die Nummer eines fremden
     Standorts unterschieben - in der Oberflaeche waere davon nichts zu sehen.
     """
+    # Die Bodenarten der Art werden vorab geladen: Die Eignungspruefung
+    # unten laeuft je Standort einmal und griffe sonst jedes Mal erneut auf
+    # die Datenbank zu.
     pflanze = get_object_or_404(
-        Pflanze.objects.select_related("art"),
+        Pflanze.objects.select_related("art").prefetch_related("art__geeignete_bodenarten"),
         pk=pk,
         besitzer=request.user,
         status=Pflanze.Status.WUNSCH,
@@ -333,12 +337,11 @@ def pflegevorlage_anlegen(request, pflanze_pk):
     vorlage = Pflegevorlage(pflanze=pflanze)
     formular = PflegevorlageForm(request.POST or None, instance=vorlage)
     if request.method == "POST" and formular.is_valid():
-        formular.save()
-        # Damit die neue Taetigkeit nicht ohne Termin bleibt.
-        Pflegeaufgabe.objects.create(
-            vorlage=vorlage,
-            faelligkeit=heute() + timedelta(days=vorlage.intervall_tage),
-        )
+        # Beides oder nichts: Eine Vorlage ohne Termin waere im Kalender
+        # unsichtbar und wuerde erst beim naechsten Bearbeiten auffallen.
+        with transaction.atomic():
+            formular.save()
+            erste_aufgabe(vorlage)
         messages.success(request, f"{vorlage.get_taetigkeit_display()} wurde aufgenommen.")
         return redirect("pflegeplan", pflanze_pk=pflanze.pk)
     return render(
@@ -356,17 +359,13 @@ def pflegevorlage_bearbeiten(request, pk):
     altes_intervall = vorlage.intervall_tage
     formular = PflegevorlageForm(request.POST or None, instance=vorlage)
     if request.method == "POST" and formular.is_valid():
-        formular.save()
         hinweis = ""
-        if vorlage.intervall_tage != altes_intervall:
-            # Der naechste offene Termin wird auf das neue Intervall umgerechnet,
-            # sonst wirkte die Aenderung erst nach dem naechsten Abhaken.
-            offene = vorlage.aufgaben.filter(erledigt_am__isnull=True).order_by("faelligkeit")
-            if offene.exists():
-                naechste = offene.first()
-                naechste.faelligkeit = heute() + timedelta(days=vorlage.intervall_tage)
-                naechste.save(update_fields=["faelligkeit"])
-                hinweis = f" Nächster Termin: {naechste.faelligkeit:%d.%m.%Y}."
+        with transaction.atomic():
+            formular.save()
+            if vorlage.intervall_tage != altes_intervall:
+                naechste = verschiebe_offenen_termin(vorlage)
+                if naechste is not None:
+                    hinweis = f" Nächster Termin: {naechste.faelligkeit:%d.%m.%Y}."
         messages.success(request, f"Die Pflegeaufgabe wurde geändert.{hinweis}")
         return redirect("pflegeplan", pflanze_pk=vorlage.pflanze_id)
     return render(

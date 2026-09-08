@@ -274,3 +274,46 @@ def test_unterseite_markiert_ihren_oberpunkt(client, anna, erde):
     inhalt = angemeldet(client, anna).get(reverse("pflegeplan", args=[pflanze.pk])).content.decode()
     assert f'href="{reverse("bestand")}" aria-current="page"' in inhalt
     assert f'href="{reverse("kalender")}" aria-current="page"' not in inhalt
+
+
+# --- Fachlogik der Vorlagen ------------------------------------------------
+
+
+def test_erste_aufgabe_liegt_ein_intervall_in_der_zukunft(anna, erde):
+    from plants.pflege import erste_aufgabe
+
+    pflanze, vorlage, _ = pflanze_mit_vorlage(anna, erde, intervall=12)
+    zweite = Pflegevorlage.objects.create(
+        pflanze=pflanze, taetigkeit=Taetigkeit.DUENGEN, intervall_tage=30
+    )
+    aufgabe = erste_aufgabe(zweite)
+    assert aufgabe.faelligkeit == date.today() + timedelta(days=30)
+
+
+def test_verschieben_ohne_offenen_termin_ist_kein_fehler(anna, erde):
+    """
+    Wurde die letzte Aufgabe einer Vorlage abgehakt und die Folgeaufgabe
+    geloescht, gibt es nichts zu verschieben. Die Funktion darf dann nicht
+    scheitern, sondern meldet, dass kein Termin betroffen war.
+    """
+    from plants.pflege import verschiebe_offenen_termin
+
+    _, vorlage, aufgabe = pflanze_mit_vorlage(anna, erde)
+    Pflegeaufgabe.objects.filter(vorlage=vorlage).delete()
+    assert verschiebe_offenen_termin(vorlage) is None
+
+
+def test_neue_vorlage_und_ihr_termin_entstehen_gemeinsam(client, anna, erde):
+    """
+    Vorlage und erster Termin entstehen in einer Transaktion. Eine Vorlage
+    ohne Termin waere im Kalender unsichtbar.
+    """
+    pflanze, _, _ = pflanze_mit_vorlage(anna, erde)
+    antwort = angemeldet(client, anna).post(
+        reverse("pflegevorlage_anlegen", args=[pflanze.pk]),
+        {"taetigkeit": Taetigkeit.UMTOPFEN, "intervall_tage": 400, "hinweis": ""},
+    )
+    assert antwort.status_code == 302
+    vorlage = Pflegevorlage.objects.get(pflanze=pflanze, taetigkeit=Taetigkeit.UMTOPFEN)
+    assert vorlage.aufgaben.count() == 1
+    assert vorlage.aufgaben.first().faelligkeit == date.today() + timedelta(days=400)
