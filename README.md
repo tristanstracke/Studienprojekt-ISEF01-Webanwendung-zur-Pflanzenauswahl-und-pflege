@@ -34,7 +34,7 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 
 pip install -r requirements-dev.txt
 
-export DEBUG=1                     # ohne diese Zeile bricht der Start ab
+cp .env.example .env               # ohne DEBUG=1 bricht der Start ab
 
 python manage.py migrate
 python manage.py createsuperuser

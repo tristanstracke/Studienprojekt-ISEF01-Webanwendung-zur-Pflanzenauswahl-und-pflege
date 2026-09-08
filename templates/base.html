@@ -84,6 +84,15 @@
       transition: background .15s, color .15s;
     }
     header nav a:hover { background: rgba(255, 255, 255, .32); }
+    /* Die aktive Seite wird zweifach ausgezeichnet - helle Flaeche und
+       fetter Schnitt. Eine Auszeichnung allein ueber Farbe waere fuer
+       Menschen mit Farbsehschwaeche nicht erkennbar. Die Flaeche greift die
+       Form des Ueberfahrzustands auf, ist aber deckend. */
+    header nav a[aria-current="page"] {
+      background: var(--flaeche);
+      font-weight: 600;
+    }
+    header nav a[aria-current="page"]:hover { background: var(--flaeche); }
     header .rechts {
       margin-left: auto;
       display: flex;
@@ -139,12 +148,25 @@
     }
     .knopf:hover { background: var(--koralle-dunkel); border-color: var(--koralle-dunkel); }
     .knopf:active { transform: translateY(1px); }
-    .knopf.leise {
+    /* Helle Variante fuer Schaltflaechen, die neben der Hauptaktion einer
+       Zeile stehen und ihr nicht die Aufmerksamkeit nehmen sollen. */
+    .knopf.hell {
       background: var(--flaeche);
       color: var(--text);
       border-color: var(--rand-stark);
     }
-    .knopf.leise:hover { background: #fdf0e8; border-color: var(--koralle); }
+    .knopf.hell:hover { background: #fdf0e8; border-color: var(--koralle); }
+
+    /* Im Kopf steht der Knopf auf oranger Flaeche. Dort waere ein oranger
+       Knopf nicht zu erkennen, deshalb ist die Flaeche hier hell - die
+       dunkle Schrift bleibt wie bei allen anderen Schaltflaechen. */
+    .knopf.kopfknopf {
+      background: var(--flaeche);
+      border-color: var(--flaeche);
+      padding: .3rem .75rem;
+      font-size: .85rem;
+    }
+    .knopf.kopfknopf:hover { background: #fff; border-color: #fff; }
     /* Loeschen bekommt keine eigene Flaeche, sondern eine rote Schrift auf
        hellem Grund: Es soll sich von den uebrigen Schaltflaechen abheben,
        ohne eine zweite kraeftige Farbe einzufuehren. */
@@ -210,6 +232,14 @@
     em.leer { font-style: italic; }
     .zeile { display: flex; gap: .9rem; align-items: baseline; flex-wrap: wrap; }
     .zeile .rechts { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
+    /* In Karten steht die Aktion immer oben rechts neben dem Text. Zuvor
+       richtete sie sich an der Schriftlinie aus und rutschte bei langen
+       Angaben in die naechste Zeile - dadurch sassen die Schaltflaechen je
+       nach Textlaenge mal oben, mal unten. Der Textblock darf schrumpfen,
+       die Schaltflaeche nicht. */
+    .karte > .zeile { align-items: flex-start; flex-wrap: nowrap; }
+    .karte > .zeile > :first-child { flex: 1 1 auto; min-width: 0; }
+    .karte > .zeile > .rechts { flex-shrink: 0; }
     .merkmale { font-size: .9rem; color: var(--text-leise); margin-top: .35rem; }
     .marke-eigen {
       font-size: .72rem;
@@ -224,6 +254,15 @@
       white-space: nowrap;
     }
     .warnhinweis { color: var(--fehler); font-weight: 600; }
+
+    /* Abschnitte des Pflegekalenders */
+    p.ruhe { color: var(--text-leise); margin: .2rem 0 0; }
+    h2.abschnitt { font-size: 1rem; margin: 1.8rem 0 .7rem; letter-spacing: 0; }
+    h2.abschnitt.ueberfaellig { color: var(--fehler); }
+    h2.abschnitt.heute { color: #7a4e0c; }
+    .aufgabe .ueberfaellig { color: var(--fehler); font-weight: 600; }
+    .aufgabe .heute { color: #7a4e0c; font-weight: 600; }
+    .aufgabe form { display: inline; }
 
     /* --- Markenblock der Anmeldeseite ---------------------------------- */
 
@@ -304,17 +343,23 @@
     </a>
     {% if user.is_authenticated %}
       <nav>
-        <a href="{% url 'start' %}">Übersicht</a>
-        <a href="{% url 'standort_liste' %}">Standorte</a>
-        <a href="{% url 'pflanzenart_liste' %}">Pflanzenarten</a>
-        <a href="{% url 'wunschliste' %}">Wunschliste</a>
-        <a href="{% url 'bestand' %}">Meine Pflanzen</a>
+        {% comment %}
+          aria-current="page" markiert die aktive Seite. Das Attribut dient
+          zugleich als Aufhaenger fuer die Gestaltung, sodass Bildschirmleser
+          und Auge dieselbe Auskunft bekommen.
+        {% endcomment %}
+        <a href="{% url 'start' %}"{% if navigationsbereich == "start" %} aria-current="page"{% endif %}>Übersicht</a>
+        <a href="{% url 'standort_liste' %}"{% if navigationsbereich == "standorte" %} aria-current="page"{% endif %}>Standorte</a>
+        <a href="{% url 'pflanzenart_liste' %}"{% if navigationsbereich == "arten" %} aria-current="page"{% endif %}>Pflanzenarten</a>
+        <a href="{% url 'wunschliste' %}"{% if navigationsbereich == "wunschliste" %} aria-current="page"{% endif %}>Wunschliste</a>
+        <a href="{% url 'bestand' %}"{% if navigationsbereich == "bestand" %} aria-current="page"{% endif %}>Meine Pflanzen</a>
+        <a href="{% url 'kalender' %}"{% if navigationsbereich == "kalender" %} aria-current="page"{% endif %}>Pflegekalender</a>
       </nav>
       <span class="rechts">
         {{ user.username }}
         <form action="{% url 'logout' %}" method="post" style="display:inline">
           {% csrf_token %}
-          <button type="submit" class="knopf leise" style="padding:.3rem .75rem;font-size:.85rem">Abmelden</button>
+          <button type="submit" class="knopf kopfknopf">Abmelden</button>
         </form>
       </span>
     {% endif %}

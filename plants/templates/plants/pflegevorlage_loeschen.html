@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titel %}Pflegeaufgabe entfernen{% endblock %}
+{% block inhalt %}
+  <h1>Pflegeaufgabe entfernen</h1>
+  <div class="karte">
+    <p>
+      Soll <strong>{{ vorlage.get_taetigkeit_display }}</strong> aus dem Pflegeplan
+      von {{ vorlage.pflanze }} entfernt werden?
+    </p>
+    <p class="leer">Die zugehörigen Termine werden dabei mitgelöscht.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="zeile">
+        <button type="submit" class="knopf warnung">Entfernen</button>
+        <a class="knopf" href="{% url 'pflegeplan' vorlage.pflanze.pk %}">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

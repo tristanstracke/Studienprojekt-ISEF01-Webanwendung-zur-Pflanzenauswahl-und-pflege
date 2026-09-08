@@ -12,6 +12,9 @@ media/
 # Umgebung: enthaelt Geheimnisse und gehoert nicht ins Repository
 .env
 
+# Arbeitsdateien: Entwuerfe von Commit-Nachrichten gehoeren nicht ins Repository
+.commitnachricht
+
 # Werkzeuge
 .pytest_cache/
 .ruff_cache/

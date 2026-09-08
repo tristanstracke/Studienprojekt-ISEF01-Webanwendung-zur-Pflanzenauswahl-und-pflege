@@ -15,6 +15,34 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def lies_env_datei(pfad: Path) -> None:
+    """
+    Uebernimmt die Zeilen einer .env-Datei in die Umgebung.
+
+    Ohne das muesste jeder Entwickler DEBUG=1 in jedem neuen Terminalfenster
+    von Hand setzen; wer es vergisst, bekommt einen Startabbruch, dessen
+    Ursache nicht offensichtlich ist. Auf dem Server existiert die Datei
+    nicht, dort kommen die Werte weiterhin aus der Umgebung. Bereits
+    gesetzte Variablen werden nicht ueberschrieben, damit ein bewusst
+    gesetzter Wert immer Vorrang vor der Datei hat.
+
+    Eine Bibliothek wie python-dotenv leistet dasselbe. Fuer eine einzige
+    Aufgabe dieser Groesse waere eine weitere Abhaengigkeit samt Pflege
+    unverhaeltnismaessig.
+    """
+    if not pfad.is_file():
+        return
+    for zeile in pfad.read_text(encoding="utf-8").splitlines():
+        zeile = zeile.strip()
+        if not zeile or zeile.startswith("#") or "=" not in zeile:
+            continue
+        name, wert = zeile.split("=", 1)
+        os.environ.setdefault(name.strip(), wert.strip().strip("\"'"))
+
+
+lies_env_datei(BASE_DIR / ".env")
+
+
 def env_flag(name: str, standard: bool = False) -> bool:
     return os.environ.get(name, str(standard)).lower() in {"1", "true", "yes"}
 
@@ -81,6 +109,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "plants.navigation.bereich_der_seite",
             ],
         },
     },

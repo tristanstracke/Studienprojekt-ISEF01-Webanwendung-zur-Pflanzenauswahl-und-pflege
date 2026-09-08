@@ -1,15 +1,14 @@
 {% extends "base.html" %}
-{% block titel %}Eigene Pflanzenart anlegen{% endblock %}
+{% block titel %}{{ ueberschrift }}{% endblock %}
 {% block inhalt %}
-  <h1>Eigene Pflanzenart anlegen</h1>
-  <p class="leer">
-    Für Pflanzen, die nicht im Katalog stehen. Der Eintrag ist nur für dich
-    sichtbar. Die Angaben werden für die Eignungsprüfung gebraucht — trage sie
-    so genau ein, wie du sie recherchieren kannst.
-  </p>
+  <h1>{{ ueberschrift }}</h1>
+  <p class="leer">für {{ pflanze }}</p>
   <div class="karte">
     <form method="post">
       {% csrf_token %}
+      {% if formular.non_field_errors %}
+        <ul class="fehler">{% for f in formular.non_field_errors %}<li>{{ f }}</li>{% endfor %}</ul>
+      {% endif %}
       {% for feld in formular %}
         <p>
           <label for="{{ feld.id_for_label }}">{{ feld.label }}</label>
@@ -19,8 +18,8 @@
         </p>
       {% endfor %}
       <div class="zeile">
-        <button type="submit" class="knopf">Anlegen und merken</button>
-        <a class="knopf" href="{% url 'pflanzenart_liste' %}">Abbrechen</a>
+        <button type="submit" class="knopf">Speichern</button>
+        <a class="knopf" href="{% url 'pflegeplan' pflanze.pk %}">Abbrechen</a>
       </div>
     </form>
   </div>

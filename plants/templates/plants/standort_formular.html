@@ -15,7 +15,7 @@
       {% endfor %}
       <div class="zeile">
         <button type="submit" class="knopf">Speichern</button>
-        <a class="knopf leise" href="{% url 'standort_liste' %}">Abbrechen</a>
+        <a class="knopf" href="{% url 'standort_liste' %}">Abbrechen</a>
         {% if standort %}
           <span class="rechts">
             <a class="knopf warnung" href="{% url 'standort_loeschen' standort.pk %}">Löschen</a>

@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models
 
-from .models import Bodenart, Pflanze, Pflanzenart, Standort
+from .models import Bodenart, Pflanze, Pflanzenart, Pflegevorlage, Standort
 
 
 class BodenartAuswahl(forms.ModelChoiceField):
@@ -134,3 +134,44 @@ class PflanzenartForm(forms.ModelForm):
                 "entweder im Katalog oder unter deinen eigenen."
             )
         return name
+
+
+class PflegevorlageForm(forms.ModelForm):
+    """
+    Eine wiederkehrende Pflegetaetigkeit einer Pflanze.
+
+    Die Pflanze wird in der Ansicht gesetzt: Sie stammt aus der Adresse und
+    ist dort bereits auf das angemeldete Konto eingeschraenkt.
+    """
+
+    class Meta:
+        model = Pflegevorlage
+        fields = ["taetigkeit", "intervall_tage", "hinweis"]
+        widgets = {
+            "intervall_tage": forms.NumberInput(attrs={"min": 1, "max": 730}),
+            "hinweis": forms.TextInput(attrs={"placeholder": "z. B. nur von unten gießen"}),
+        }
+        help_texts = {
+            "intervall_tage": "Nach wie vielen Tagen die Tätigkeit erneut ansteht.",
+        }
+
+    def clean(self):
+        """
+        Je Pflanze und Tätigkeit gibt es hoechstens eine Vorlage. Die Datenbank
+        stellt das sicher; hier wird derselbe Fall abgefangen, damit eine
+        verstaendliche Meldung erscheint statt eines Datenbankfehlers.
+        """
+        daten = super().clean()
+        taetigkeit = daten.get("taetigkeit")
+        if not taetigkeit:
+            return daten
+        vorhandene = Pflegevorlage.objects.filter(
+            pflanze=self.instance.pflanze_id, taetigkeit=taetigkeit
+        )
+        if self.instance.pk:
+            vorhandene = vorhandene.exclude(pk=self.instance.pk)
+        if vorhandene.exists():
+            raise forms.ValidationError(
+                "Für diese Pflanze gibt es bereits eine Vorlage mit dieser Tätigkeit."
+            )
+        return daten

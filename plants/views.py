@@ -1,12 +1,20 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .eignung import Urteil, pruefe_eignung
-from .forms import PflanzeForm, PflanzenartForm, StandortForm
-from .models import Pflanze, Pflanzenart, Standort
-from .pflege import erzeuge_pflegevorlagen
+from .forms import PflanzeForm, PflanzenartForm, PflegevorlageForm, StandortForm
+from .models import Pflanze, Pflanzenart, Pflegeaufgabe, Pflegevorlage, Standort
+from .pflege import (
+    erzeuge_pflegevorlagen,
+    hake_ab,
+    heute,
+    nach_faelligkeit,
+    offene_aufgaben,
+)
 
 
 @login_required
@@ -23,6 +31,9 @@ def start(request):
             "anzahl_bestand": Pflanze.objects.filter(
                 besitzer=request.user, status=Pflanze.Status.BESTAND
             ).count(),
+            "anzahl_faellig": offene_aufgaben(request.user)
+            .filter(faelligkeit__lte=heute())
+            .count(),
         },
     )
 
@@ -53,7 +64,7 @@ def standort_anlegen(request):
     return render(
         request,
         "plants/standort_formular.html",
-        {"formular": formular, "überschrift": "Standort anlegen"},
+        {"formular": formular, "ueberschrift": "Standort anlegen"},
     )
 
 
@@ -71,7 +82,7 @@ def standort_bearbeiten(request, pk):
     return render(
         request,
         "plants/standort_formular.html",
-        {"formular": formular, "überschrift": "Standort ändern", "standort": standort},
+        {"formular": formular, "ueberschrift": "Standort ändern", "standort": standort},
     )
 
 
@@ -242,3 +253,143 @@ def bestand(request):
         .prefetch_related("pflegevorlagen")
     )
     return render(request, "plants/bestand.html", {"pflanzen": pflanzen})
+
+
+# --------------------------------------------------------------------------
+# Pflegekalender
+# --------------------------------------------------------------------------
+
+
+@login_required
+def kalender(request):
+    """Alle offenen Pflegeaufgaben, nach Faelligkeit gruppiert."""
+    aufgaben = list(offene_aufgaben(request.user))
+    gruppen = nach_faelligkeit(aufgaben)
+    # Bleiben nur kuenftige Termine uebrig, blendet die Ansicht die leeren
+    # Gruppen aus - eine einzelne Ueberschrift "Spaeter" ist dann ohne
+    # Vergleich schwer zu deuten. Deshalb nennt eine Zeile darueber das
+    # naechste Datum. Die Liste ist nach Faelligkeit sortiert, das erste
+    # Element ist also der naechste Termin.
+    nichts_faellig = aufgaben and not gruppen["ueberfaellig"] and not gruppen["heute"]
+    return render(
+        request,
+        "plants/kalender.html",
+        {
+            "gruppen": gruppen,
+            "anzahl": len(aufgaben),
+            "heute": heute(),
+            "naechste": aufgaben[0] if nichts_faellig else None,
+        },
+    )
+
+
+@login_required
+def aufgabe_abhaken(request, pk):
+    """
+    Hakt eine Aufgabe ab und legt die Folgeaufgabe an.
+
+    Nur ueber POST erreichbar: Ein Aufruf, der Daten veraendert, darf nicht
+    durch das blosse Oeffnen einer Adresse ausgeloest werden.
+    """
+    aufgabe = get_object_or_404(
+        Pflegeaufgabe.objects.select_related("vorlage__pflanze"),
+        pk=pk,
+        vorlage__pflanze__besitzer=request.user,
+    )
+    if request.method != "POST":
+        return redirect("kalender")
+
+    folge = hake_ab(aufgabe)
+    if folge is None:
+        messages.info(request, "Diese Aufgabe war bereits erledigt.")
+    else:
+        messages.success(
+            request,
+            f"{aufgabe.vorlage.get_taetigkeit_display()} bei {aufgabe.vorlage.pflanze} "
+            f"erledigt. Nächster Termin: {folge.faelligkeit:%d.%m.%Y}.",
+        )
+    return redirect(request.POST.get("zurueck") or "kalender")
+
+
+@login_required
+def pflegeplan(request, pflanze_pk):
+    """Die Pflegevorlagen einer Pflanze, mit ihrer jeweils naechsten Aufgabe."""
+    pflanze = get_object_or_404(
+        Pflanze.objects.select_related("art", "standort"),
+        pk=pflanze_pk,
+        besitzer=request.user,
+    )
+    vorlagen = pflanze.pflegevorlagen.prefetch_related("aufgaben")
+    return render(
+        request,
+        "plants/pflegeplan.html",
+        {"pflanze": pflanze, "vorlagen": vorlagen, "heute": heute()},
+    )
+
+
+@login_required
+def pflegevorlage_anlegen(request, pflanze_pk):
+    pflanze = get_object_or_404(Pflanze, pk=pflanze_pk, besitzer=request.user)
+    vorlage = Pflegevorlage(pflanze=pflanze)
+    formular = PflegevorlageForm(request.POST or None, instance=vorlage)
+    if request.method == "POST" and formular.is_valid():
+        formular.save()
+        # Damit die neue Taetigkeit nicht ohne Termin bleibt.
+        Pflegeaufgabe.objects.create(
+            vorlage=vorlage,
+            faelligkeit=heute() + timedelta(days=vorlage.intervall_tage),
+        )
+        messages.success(request, f"{vorlage.get_taetigkeit_display()} wurde aufgenommen.")
+        return redirect("pflegeplan", pflanze_pk=pflanze.pk)
+    return render(
+        request,
+        "plants/pflegevorlage_formular.html",
+        {"formular": formular, "pflanze": pflanze, "ueberschrift": "Pflegeaufgabe aufnehmen"},
+    )
+
+
+@login_required
+def pflegevorlage_bearbeiten(request, pk):
+    vorlage = get_object_or_404(
+        Pflegevorlage.objects.select_related("pflanze"), pk=pk, pflanze__besitzer=request.user
+    )
+    altes_intervall = vorlage.intervall_tage
+    formular = PflegevorlageForm(request.POST or None, instance=vorlage)
+    if request.method == "POST" and formular.is_valid():
+        formular.save()
+        hinweis = ""
+        if vorlage.intervall_tage != altes_intervall:
+            # Der naechste offene Termin wird auf das neue Intervall umgerechnet,
+            # sonst wirkte die Aenderung erst nach dem naechsten Abhaken.
+            offene = vorlage.aufgaben.filter(erledigt_am__isnull=True).order_by("faelligkeit")
+            if offene.exists():
+                naechste = offene.first()
+                naechste.faelligkeit = heute() + timedelta(days=vorlage.intervall_tage)
+                naechste.save(update_fields=["faelligkeit"])
+                hinweis = f" Nächster Termin: {naechste.faelligkeit:%d.%m.%Y}."
+        messages.success(request, f"Die Pflegeaufgabe wurde geändert.{hinweis}")
+        return redirect("pflegeplan", pflanze_pk=vorlage.pflanze_id)
+    return render(
+        request,
+        "plants/pflegevorlage_formular.html",
+        {
+            "formular": formular,
+            "pflanze": vorlage.pflanze,
+            "vorlage": vorlage,
+            "ueberschrift": "Pflegeaufgabe ändern",
+        },
+    )
+
+
+@login_required
+def pflegevorlage_loeschen(request, pk):
+    vorlage = get_object_or_404(
+        Pflegevorlage.objects.select_related("pflanze"), pk=pk, pflanze__besitzer=request.user
+    )
+    if request.method == "POST":
+        pflanze_pk = vorlage.pflanze_id
+        bezeichnung = vorlage.get_taetigkeit_display()
+        vorlage.delete()
+        messages.success(request, f"{bezeichnung} wurde aus dem Pflegeplan entfernt.")
+        return redirect("pflegeplan", pflanze_pk=pflanze_pk)
+    return render(request, "plants/pflegevorlage_loeschen.html", {"vorlage": vorlage})

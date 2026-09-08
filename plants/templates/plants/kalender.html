@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titel %}Pflegekalender{% endblock %}
+{% block inhalt %}
+  <h1>Pflegekalender</h1>
+
+  {% if anzahl %}
+    {% if naechste %}
+      <p class="ruhe">
+        Nichts zu tun — die nächste Aufgabe steht am
+        {{ naechste.faelligkeit|date:"d.m.Y" }} an.
+      </p>
+    {% endif %}
+
+    {% if gruppen.ueberfaellig %}
+      <h2 class="abschnitt ueberfaellig">Überfällig ({{ gruppen.ueberfaellig|length }})</h2>
+      {% for aufgabe in gruppen.ueberfaellig %}{% include "plants/_aufgabe.html" %}{% endfor %}
+    {% endif %}
+
+    {% if gruppen.heute %}
+      <h2 class="abschnitt heute">Heute ({{ gruppen.heute|length }})</h2>
+      {% for aufgabe in gruppen.heute %}{% include "plants/_aufgabe.html" %}{% endfor %}
+    {% endif %}
+
+    {% if gruppen.woche %}
+      <h2 class="abschnitt">Diese Woche ({{ gruppen.woche|length }})</h2>
+      {% for aufgabe in gruppen.woche %}{% include "plants/_aufgabe.html" %}{% endfor %}
+    {% endif %}
+
+    {% if gruppen.spaeter %}
+      <h2 class="abschnitt">Nach dieser Woche ({{ gruppen.spaeter|length }})</h2>
+      {% for aufgabe in gruppen.spaeter %}{% include "plants/_aufgabe.html" %}{% endfor %}
+    {% endif %}
+  {% else %}
+    <div class="karte">
+      <p class="leer">Keine offenen Pflegeaufgaben.</p>
+      <p class="leer">
+        Sobald du eine Pflanze anschaffst, entsteht aus den Pflegeempfehlungen
+        ihrer Art automatisch ein Plan — Gießen, Düngen, Umtopfen und
+        Zurückschneiden mit den jeweils empfohlenen Abständen.
+      </p>
+      <a class="knopf" href="{% url 'wunschliste' %}">Zur Wunschliste</a>
+    </div>
+  {% endif %}
+{% endblock %}

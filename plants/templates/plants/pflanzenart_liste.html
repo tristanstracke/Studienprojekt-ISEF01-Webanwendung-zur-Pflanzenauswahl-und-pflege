@@ -4,7 +4,7 @@
   <div class="zeile">
     <h1>Pflanzenarten</h1>
     <span class="rechts">
-      <a class="knopf leise" href="{% url 'pflanzenart_anlegen' %}">Eigene Art anlegen</a>
+      <a class="knopf" href="{% url 'pflanzenart_anlegen' %}">Eigene Art anlegen</a>
     </span>
   </div>
 
@@ -13,7 +13,7 @@
       <input type="text" name="suche" value="{{ suche }}"
              placeholder="Name oder botanischer Name" style="max-width:22rem">
       <button type="submit" class="knopf">Suchen</button>
-      {% if suche %}<a class="knopf leise" href="{% url 'pflanzenart_liste' %}">Zurücksetzen</a>{% endif %}
+      {% if suche %}<a class="knopf" href="{% url 'pflanzenart_liste' %}">Zurücksetzen</a>{% endif %}
     </div>
   </form>
 
@@ -38,7 +38,7 @@
           </div>
         </div>
         <span class="rechts">
-          <a class="knopf leise" href="{% url 'eignung_pruefen' art.pk %}">Passt sie?</a>
+          <a class="knopf hell" href="{% url 'eignung_pruefen' art.pk %}">Passt sie?</a>
           <a class="knopf" href="{% url 'pflanze_hinzufuegen' art.pk %}">Merken</a>
         </span>
       </div>
