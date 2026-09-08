@@ -38,10 +38,10 @@ def katalog(db):
     return erde
 
 
-def test_legt_vier_zugaenge_und_einen_administrator_an(katalog):
+def test_legt_sechs_zugaenge_und_einen_administrator_an(katalog):
     call_command("testdaten")
     Benutzer = get_user_model()
-    assert Benutzer.objects.count() == 5
+    assert Benutzer.objects.count() == 7
     verwaltung = Benutzer.objects.get(username="admin")
     assert verwaltung.is_superuser and verwaltung.is_staff
 
@@ -53,7 +53,7 @@ def test_zweiter_lauf_verdoppelt_nichts(katalog):
     call_command("testdaten")
     assert Pflanze.objects.count() == anzahl_pflanzen
     assert Pflegeaufgabe.objects.count() == anzahl_aufgaben
-    assert get_user_model().objects.count() == 5
+    assert get_user_model().objects.count() == 7
 
 
 def test_kalender_zeigt_ueberfaellige_und_heutige_aufgaben(katalog):

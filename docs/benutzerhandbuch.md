@@ -33,6 +33,8 @@ Für die Prüfung stehen folgende Zugänge bereit:
 
 | Benutzername | Kennwort | Inhalt |
 |---|---|---|
+| `tutor` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |
+| `tutor-neu` | `Pflanze-Test-2026` | leer, zum Ausprobieren von vorne |
 | `kai` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |
 | `kai-neu` | `Pflanze-Test-2026` | leer, zum Ausprobieren von vorne |
 | `kilian` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |

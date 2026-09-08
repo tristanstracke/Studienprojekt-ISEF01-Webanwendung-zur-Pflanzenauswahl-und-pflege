@@ -203,10 +203,16 @@ die Schritte 5 und 6 aus Abschnitt 4. Dauer wenige Minuten.
 | Zugang | Kennwort | Zweck |
 |---|---|---|
 | `admin` | `Pflanze-Admin-2026` | Administrationsoberfläche unter `/admin/` |
+| `tutor` | `Pflanze-Test-2026` | Prüfzugang mit Standorten, Pflanzen und Pflegeaufgaben |
+| `tutor-neu` | `Pflanze-Test-2026` | Prüfzugang ohne Daten, für den Einstieg von null |
 | `kai` | `Pflanze-Test-2026` | Testzugang mit Standorten, Pflanzen und Pflegeaufgaben |
 | `kai-neu` | `Pflanze-Test-2026` | Testzugang ohne Daten, für den Einstieg von null |
 | `kilian` | `Pflanze-Test-2026` | wie `kai` |
 | `kilian-neu` | `Pflanze-Test-2026` | wie `kai-neu` |
+
+Die Zugänge des Tutors sind bewusst von denen des Teams getrennt: So bleibt
+seine Prüfung von Änderungen des Teams unberührt, und umgekehrt kann er
+nichts verändern, was für die Nachvollziehbarkeit noch gebraucht wird.
 
 Die bestückten Zugänge enthalten drei Standorte, drei Pflanzen im Bestand,
 zwei auf der Wunschliste sowie Pflegeaufgaben, die auf alle vier Gruppen des
