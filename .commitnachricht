@@ -1,0 +1,31 @@
+Erscheinungsbild: Wortmarke, Farben und Formen der Anwendung
+
+Die Anwendung sah bisher aus wie ein unformatiertes Formular, waehrend das
+Projektvideo eine gestaltete Marke zeigt. Beides ist jetzt dasselbe.
+
+- Wortmarke aus dem Video als SVG, in Pfade umgewandelt: keine Schriftdatei
+  noetig, kein Abruf bei einem fremden Dienst. Die Blattmarke sitzt wie im
+  Video als Akzent ueber dem "e" von Care. Der obere Rand der Zeichenflaeche
+  wird aus der Schriftgeometrie berechnet, damit die Marke nicht beschnitten
+  wird.
+- Kopfzeile im Farbverlauf des Logos, Navigation in dunkler Schrift, die
+  Wortmarke bleibt weiss. Alle Schaltflaechen im Korallton mit dunkler
+  Schrift.
+- Zur Begruendung der dunklen Schrift: Weiss erreicht auf dem Korallton nur
+  ein Kontrastverhaeltnis von 2,6 zu 1 und verfehlt damit die Anforderung
+  von 4,5 fuer Beschriftungen; die dunkle Schrift erreicht 5,7. Ausgenommen
+  ist allein die Wortmarke, fuer die diese Anforderung nicht gilt.
+- Loeschen hebt sich mit roter Schrift auf hellem Grund ab, statt dieselbe
+  Flaeche wie die uebrigen Schaltflaechen zu tragen.
+- Ampel der Eignungspruefung als farbige Kapsel mit Zeichen und
+  Beschriftung, damit sie auch ohne Farbwahrnehmung lesbar bleibt.
+- Sichtbarer Tastaturfokus, Zustaende beim Ueberfahren, einheitliches
+  Abstandsraster, weichere Karten mit Schatten statt harter Rahmen.
+- STATICFILES_DIRS ohne Bedingung: Den Ordner gibt es jetzt immer.
+
+Kein Rahmenwerk: Das Erscheinungsbild besteht aus rund 280 Zeilen CSS in
+einer Datei. Bootstrap oder Tailwind haetten entweder einen Abruf von einem
+fremden Server bedeutet, was der Zusage in MS 3 widerspricht, oder mehrere
+hundert Kilobyte fuer Bestandteile, die dieses Projekt nicht braucht.
+
+76 Tests gruen.

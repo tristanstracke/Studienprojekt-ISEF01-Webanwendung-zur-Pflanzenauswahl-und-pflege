@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titel %}Pflanzenarten{% endblock %}
+{% block inhalt %}
+  <div class="zeile">
+    <h1>Pflanzenarten</h1>
+    <span class="rechts">
+      <a class="knopf leise" href="{% url 'pflanzenart_anlegen' %}">Eigene Art anlegen</a>
+    </span>
+  </div>
+
+  <form method="get" class="karte">
+    <div class="zeile">
+      <input type="text" name="suche" value="{{ suche }}"
+             placeholder="Name oder botanischer Name" style="max-width:22rem">
+      <button type="submit" class="knopf">Suchen</button>
+      {% if suche %}<a class="knopf leise" href="{% url 'pflanzenart_liste' %}">Zurücksetzen</a>{% endif %}
+    </div>
+  </form>
+
+  <p class="leer">{{ anzahl }} Art{{ anzahl|pluralize:"en" }}{% if suche %} gefunden{% endif %}.</p>
+
+  {% for art in arten %}
+    <div class="karte">
+      <div class="zeile">
+        <div>
+          <strong>{{ art.name }}</strong>
+          {% if art.botanischer_name %}<em class="leer">{{ art.botanischer_name }}</em>{% endif %}
+          {% if not art.gehoert_zum_katalog %}<span class="marke-eigen">eigene Art</span>{% endif %}
+          <div class="merkmale">
+            Licht: {{ art.get_lichtbedarf_display }} ·
+            ab {{ art.temperaturuntergrenze }} °C ·
+            Luftfeuchtigkeit: {{ art.get_feuchtigkeitsbedarf_display }} ·
+            Wasser: {{ art.get_wasserbedarf_display }}
+            {% if art.giftig %}· <span class="warnhinweis">giftig</span>{% endif %}
+          </div>
+          <div class="merkmale">
+            Boden: {% for boden in art.geeignete_bodenarten.all %}{{ boden.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          </div>
+        </div>
+        <span class="rechts">
+          <a class="knopf leise" href="{% url 'eignung_pruefen' art.pk %}">Passt sie?</a>
+          <a class="knopf" href="{% url 'pflanze_hinzufuegen' art.pk %}">Merken</a>
+        </span>
+      </div>
+    </div>
+  {% empty %}
+    <div class="karte">
+      <p class="leer">
+        {% if suche %}Zu „{{ suche }}" gibt es keine Art.{% else %}Der Katalog ist leer.{% endif %}
+      </p>
+    </div>
+  {% endfor %}
+{% endblock %}

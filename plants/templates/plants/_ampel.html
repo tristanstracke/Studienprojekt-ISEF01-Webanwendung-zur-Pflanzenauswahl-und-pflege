@@ -1,0 +1,4 @@
+{% comment %}Nur das Gesamturteil als Ampel. Erwartet: ergebnis{% endcomment %}
+{% if ergebnis.urteil.value == "geeignet" %}<span class="urteil geeignet">geeignet</span>
+{% elif ergebnis.urteil.value == "bedingt geeignet" %}<span class="urteil bedingt">bedingt geeignet</span>
+{% else %}<span class="urteil ungeeignet">ungeeignet</span>{% endif %}

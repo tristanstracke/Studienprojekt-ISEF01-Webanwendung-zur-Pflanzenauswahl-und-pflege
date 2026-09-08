@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block inhalt %}
   <h1>Übersicht</h1>
+
   <div class="karte">
     <div class="zeile">
       <div>
@@ -12,5 +13,30 @@
       <span class="rechts"><a class="knopf" href="{% url 'standort_liste' %}">Öffnen</a></span>
     </div>
   </div>
-  <p class="leer">Wunschliste und Pflegekalender folgen.</p>
+
+  <div class="karte">
+    <div class="zeile">
+      <div>
+        <strong>Wunschliste</strong>
+        <div class="merkmale">
+          {% if anzahl_wunsch %}{{ anzahl_wunsch }} Pflanze{{ anzahl_wunsch|pluralize:"n" }} vorgemerkt{% else %}noch nichts vorgemerkt{% endif %}
+        </div>
+      </div>
+      <span class="rechts"><a class="knopf" href="{% url 'wunschliste' %}">Öffnen</a></span>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="zeile">
+      <div>
+        <strong>Meine Pflanzen</strong>
+        <div class="merkmale">
+          {% if anzahl_bestand %}{{ anzahl_bestand }} angeschafft{% else %}noch keine angeschafft{% endif %}
+        </div>
+      </div>
+      <span class="rechts"><a class="knopf" href="{% url 'bestand' %}">Öffnen</a></span>
+    </div>
+  </div>
+
+  <p class="leer">Der Pflegekalender folgt.</p>
 {% endblock %}

@@ -1,11 +1,3 @@
-{% load static %}<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block titel %}Care for Plants{% endblock %}</title>
-  <link rel="icon" href="{% static 'sinnbild.svg' %}" type="image/svg+xml">
-  <style>
     /* --------------------------------------------------------------------
        Erscheinungsbild von "Care for Plants"
 
@@ -17,15 +9,12 @@
        einem fremden Server geladen.
        -------------------------------------------------------------------- */
     :root {
-      /* Marke. Der Korallton stammt aus der Wortmarke und traegt sowohl die
-         Kopfzeile als auch jede Schaltflaeche. Die Schrift darauf ist dunkel:
-         Weiss erreicht auf diesem Ton nur ein Kontrastverhaeltnis von 2,6 zu 1
-         und waere damit schlecht lesbar, die dunkle Schrift erreicht 5,7. */
+      /* Marke */
+      --gruen: #2f5d3a;
+      --gruen-dunkel: #24462d;
+      --gruen-hell: #eaf1e9;
       --koralle: #ef8348;
       --koralle-hell: #f5a98e;
-      --koralle-dunkel: #e0713a;
-      --gruen: #2f5d3a;
-      --gruen-hell: #eaf1e9;
 
       /* Flaechen und Text */
       --grund: #f6f7f4;
@@ -60,9 +49,14 @@
 
     /* --- Kopfzeile ---------------------------------------------------- */
 
+    .markenstreifen {
+      height: 4px;
+      background: linear-gradient(90deg, var(--koralle-hell), var(--koralle));
+    }
+
     header {
-      background: linear-gradient(100deg, var(--koralle-hell), var(--koralle));
-      color: var(--text);
+      background: var(--gruen);
+      color: #fff;
       padding: .9rem 1.5rem;
       display: flex;
       flex-wrap: wrap;
@@ -70,27 +64,24 @@
       align-items: center;
     }
     header .marke { display: flex; align-items: center; }
-    /* Die Wortmarke bleibt weiss wie im Projektvideo. Logos sind von der
-       Kontrastanforderung ausgenommen; fuer alle uebrigen Beschriftungen
-       gilt sie weiterhin. */
     header .marke svg { height: 1.4rem; width: auto; display: block; color: #fff; }
     header nav { display: flex; gap: .25rem; flex-wrap: wrap; }
     header nav a {
-      color: var(--text);
+      color: #dfeadf;
       text-decoration: none;
       padding: .35rem .7rem;
       border-radius: var(--radius-klein);
       font-size: .95rem;
       transition: background .15s, color .15s;
     }
-    header nav a:hover { background: rgba(255, 255, 255, .32); }
+    header nav a:hover { background: rgba(255, 255, 255, .12); color: #fff; }
     header .rechts {
       margin-left: auto;
       display: flex;
       gap: .8rem;
       align-items: center;
       font-size: .9rem;
-      color: var(--text);
+      color: #cfe0cf;
     }
 
     /* --- Grundgeruest -------------------------------------------------- */
@@ -124,9 +115,9 @@
       display: inline-flex;
       align-items: center;
       gap: .4rem;
-      background: var(--koralle);
-      color: var(--text);
-      border: 1px solid var(--koralle);
+      background: var(--gruen);
+      color: #fff;
+      border: 1px solid var(--gruen);
       padding: .55rem 1.1rem;
       border-radius: var(--radius-klein);
       text-decoration: none;
@@ -137,29 +128,22 @@
       white-space: nowrap;
       transition: background .15s, border-color .15s, transform .05s;
     }
-    .knopf:hover { background: var(--koralle-dunkel); border-color: var(--koralle-dunkel); }
+    .knopf:hover { background: var(--gruen-dunkel); border-color: var(--gruen-dunkel); }
     .knopf:active { transform: translateY(1px); }
     .knopf.leise {
       background: var(--flaeche);
       color: var(--text);
       border-color: var(--rand-stark);
     }
-    .knopf.leise:hover { background: #fdf0e8; border-color: var(--koralle); }
-    /* Loeschen bekommt keine eigene Flaeche, sondern eine rote Schrift auf
-       hellem Grund: Es soll sich von den uebrigen Schaltflaechen abheben,
-       ohne eine zweite kraeftige Farbe einzufuehren. */
-    .knopf.warnung {
-      background: var(--flaeche);
-      color: var(--fehler);
-      border-color: var(--fehler);
-    }
-    .knopf.warnung:hover { background: #fbeae8; }
+    .knopf.leise:hover { background: var(--gruen-hell); border-color: var(--gruen); }
+    .knopf.warnung { background: var(--fehler); border-color: var(--fehler); }
+    .knopf.warnung:hover { background: #8e2f24; border-color: #8e2f24; }
 
     /* Sichtbarer Tastaturfokus: Wer ohne Maus bedient, muss sehen, wo er
        steht. Der Ring erscheint nur bei Tastaturbedienung. */
     a:focus-visible, button:focus-visible, input:focus-visible,
     select:focus-visible, textarea:focus-visible {
-      outline: 2px solid var(--text);
+      outline: 2px solid var(--koralle);
       outline-offset: 2px;
     }
 
@@ -179,12 +163,12 @@
       background: var(--flaeche);
       transition: border-color .15s, box-shadow .15s;
     }
-    input:hover, select:hover, textarea:hover { border-color: var(--koralle); }
+    input:hover, select:hover, textarea:hover { border-color: var(--gruen); }
     input:focus, select:focus, textarea:focus {
-      border-color: var(--koralle);
-      box-shadow: 0 0 0 3px rgba(239, 131, 72, .22);
+      border-color: var(--gruen);
+      box-shadow: 0 0 0 3px rgba(47, 93, 58, .12);
     }
-    input[type=checkbox], input[type=radio] { width: auto; accent-color: var(--koralle-dunkel); }
+    input[type=checkbox], input[type=radio] { width: auto; accent-color: var(--gruen); }
     ul#id_geeignete_bodenarten { list-style: none; padding: 0; margin: 0; }
     ul#id_geeignete_bodenarten li { padding: .15rem 0; }
     ul#id_geeignete_bodenarten label { display: inline; font-weight: 400; }
@@ -216,8 +200,8 @@
       font-weight: 600;
       letter-spacing: .02em;
       text-transform: uppercase;
-      background: #fdeee4;
-      color: #9c4a17;
+      background: var(--gruen-hell);
+      color: var(--gruen);
       border-radius: 999px;
       padding: .15rem .55rem;
       margin-left: .4rem;
@@ -233,7 +217,7 @@
       padding: 3rem 1.5rem 2.6rem;
       text-align: center;
     }
-    .markenblock svg { width: 210px; height: auto; color: #fff; }
+    .markenblock img { width: 190px; height: auto; }
 
     /* --- Ampel der Eignungspruefung ------------------------------------
        Jede Stufe traegt neben der Farbe ein eigenes Zeichen und eine
@@ -294,35 +278,3 @@
       .kriterien .name { flex-basis: 100%; }
       .kriterien li { flex-wrap: wrap; }
     }
-  </style>
-</head>
-<body>
-{% block kopfzeile %}
-  <header>
-    <a class="marke" href="{% url 'start' %}" aria-label="Care for Plants, zur Übersicht">
-      {% include "marke.svg" %}
-    </a>
-    {% if user.is_authenticated %}
-      <nav>
-        <a href="{% url 'start' %}">Übersicht</a>
-        <a href="{% url 'standort_liste' %}">Standorte</a>
-        <a href="{% url 'pflanzenart_liste' %}">Pflanzenarten</a>
-        <a href="{% url 'wunschliste' %}">Wunschliste</a>
-        <a href="{% url 'bestand' %}">Meine Pflanzen</a>
-      </nav>
-      <span class="rechts">
-        {{ user.username }}
-        <form action="{% url 'logout' %}" method="post" style="display:inline">
-          {% csrf_token %}
-          <button type="submit" class="knopf leise" style="padding:.3rem .75rem;font-size:.85rem">Abmelden</button>
-        </form>
-      </span>
-    {% endif %}
-  </header>
-{% endblock %}
-  <main>
-    {% for meldung in messages %}<div class="meldung">{{ meldung }}</div>{% endfor %}
-    {% block inhalt %}{% endblock %}
-  </main>
-</body>
-</html>

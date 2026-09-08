@@ -1,6 +1,7 @@
 from django import forms
+from django.db import models
 
-from .models import Bodenart, Standort
+from .models import Bodenart, Pflanze, Pflanzenart, Standort
 
 
 class BodenartAuswahl(forms.ModelChoiceField):
@@ -56,4 +57,80 @@ class StandortForm(forms.ModelForm):
             vorhandene = vorhandene.exclude(pk=self.instance.pk)
         if vorhandene.exists():
             raise forms.ValidationError("Einen Standort mit diesem Namen gibt es bereits.")
+        return name
+
+
+class PflanzeForm(forms.ModelForm):
+    """
+    Uebernimmt eine Art aus dem Katalog auf die Wunschliste.
+
+    Die Art wird in der Ansicht gesetzt, nicht im Formular: Sichtbar sind fuer
+    eine Person nur der mitgelieferte Katalog und ihre eigenen Arten. Stuende
+    das Feld im Formular, liesse sich beim Absenden die Nummer einer fremden
+    Art unterschieben.
+    """
+
+    class Meta:
+        model = Pflanze
+        fields = ["eigener_name", "notiz"]
+        widgets = {
+            "eigener_name": forms.TextInput(attrs={"placeholder": "z. B. die große im Flur"}),
+            "notiz": forms.Textarea(attrs={"rows": 3}),
+        }
+
+
+class PflanzenartForm(forms.ModelForm):
+    """
+    Anlage einer eigenen Pflanzenart, wenn eine Pflanze nicht im Katalog steht.
+
+    Die Angaben sind dieselben, die auch der Katalog fuehrt, denn die
+    Eignungspruefung braucht sie unabhaengig von der Herkunft der Art.
+    'erstellt_von' fehlt bewusst und wird in der Ansicht gesetzt.
+    """
+
+    geeignete_bodenarten = forms.ModelMultipleChoiceField(
+        queryset=Bodenart.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="geeignete Bodenarten",
+        help_text="Mindestens eine auswählen.",
+    )
+
+    class Meta:
+        model = Pflanzenart
+        fields = [
+            "name",
+            "botanischer_name",
+            "lichtbedarf",
+            "temperaturuntergrenze",
+            "feuchtigkeitsbedarf",
+            "geeignete_bodenarten",
+            "giftig",
+            "wasserbedarf",
+            "endwuchshoehe_cm",
+            "quelle",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "z. B. Zimmerlinde"}),
+            "botanischer_name": forms.TextInput(attrs={"placeholder": "z. B. Sparmannia africana"}),
+            "temperaturuntergrenze": forms.NumberInput(attrs={"min": -30, "max": 40}),
+            "quelle": forms.TextInput(attrs={"placeholder": "Woher stammen die Angaben?"}),
+        }
+
+    def clean_name(self):
+        """
+        Der Name muss innerhalb der sichtbaren Arten eindeutig sein, sonst
+        stehen in der Auswahlliste zwei gleich benannte Eintraege.
+        """
+        name = self.cleaned_data["name"].strip()
+        sichtbare = Pflanzenart.objects.filter(name__iexact=name).filter(
+            models.Q(erstellt_von__isnull=True)
+            | models.Q(erstellt_von=self.instance.erstellt_von_id)
+        )
+        if self.instance.pk:
+            sichtbare = sichtbare.exclude(pk=self.instance.pk)
+        if sichtbare.exists():
+            raise forms.ValidationError(
+                "Eine Pflanzenart mit diesem Namen gibt es bereits - "
+                "entweder im Katalog oder unter deinen eigenen."
+            )
         return name

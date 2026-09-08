@@ -259,6 +259,18 @@ class Pflanze(models.Model):
         verbose_name = "Pflanze"
         verbose_name_plural = "Pflanzen"
         ordering = ["art__name"]
+        constraints = [
+            # Eine Pflanze auf der Wunschliste hat noch keinen Platz; eine
+            # angeschaffte Pflanze steht irgendwo. Ohne diese Bedingung koennte
+            # ein Zwischenzustand entstehen, den keine Ansicht sinnvoll
+            # darstellen kann - etwa wenn ein Standort geloescht wird und die
+            # Zuordnung dabei auf leer gesetzt wird.
+            models.CheckConstraint(
+                condition=models.Q(status="wunsch", standort__isnull=True)
+                | models.Q(status="bestand", standort__isnull=False),
+                name="standort_nur_bei_pflanzen_im_bestand",
+            )
+        ]
 
     def __str__(self):
         return self.eigener_name or self.art.name
@@ -283,6 +295,13 @@ class Pflegevorlage(models.Model):
     class Meta:
         verbose_name = "Pflegevorlage"
         verbose_name_plural = "Pflegevorlagen"
+        ordering = ["taetigkeit"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["pflanze", "taetigkeit"],
+                name="eine_vorlage_je_pflanze_und_taetigkeit",
+            )
+        ]
 
     def __str__(self):
         return f"{self.pflanze}: {self.get_taetigkeit_display()} alle {self.intervall_tage} Tage"
