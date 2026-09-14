@@ -4,8 +4,19 @@
   <h1>Standort löschen</h1>
   <div class="karte">
     <p>Soll der Standort <strong>{{ standort.name }}</strong> wirklich gelöscht werden?</p>
-    <p class="merkmale">Pflanzen, die diesem Standort zugeordnet sind, bleiben erhalten und
-      verlieren nur die Zuordnung.</p>
+    {% if betroffen %}
+      <p class="merkmale">Diese {{ betroffen|length }} Pflanze{{ betroffen|pluralize:"n" }}
+        stehen dort und werden mitgelöscht, samt ihren Pflegeaufgaben:</p>
+      <ul class="merkmale">
+        {% for pflanze in betroffen %}
+          <li>{{ pflanze }}</li>
+        {% endfor %}
+      </ul>
+      <p class="merkmale">Sollen sie erhalten bleiben, weisen Sie ihnen zuerst über
+        <em>Meine Pflanzen</em> einen anderen Standort zu.</p>
+    {% else %}
+      <p class="merkmale">An diesem Standort steht keine Pflanze.</p>
+    {% endif %}
     <form method="post">
       {% csrf_token %}
       <div class="zeile">

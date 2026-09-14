@@ -89,12 +89,25 @@ def standort_bearbeiten(request, pk):
 @login_required
 def standort_loeschen(request, pk):
     standort = get_object_or_404(Standort, pk=pk, besitzer=request.user)
+    betroffen = list(standort.pflanzen.select_related("art"))
     if request.method == "POST":
         name = standort.name
+        anzahl = len(betroffen)
         standort.delete()
-        messages.success(request, f"Standort {name} wurde gelöscht.")
+        if anzahl:
+            messages.success(
+                request,
+                f"Standort {name} wurde gelöscht, zusammen mit "
+                f"{anzahl} Pflanze{'n' if anzahl != 1 else ''} und deren Pflegeaufgaben.",
+            )
+        else:
+            messages.success(request, f"Standort {name} wurde gelöscht.")
         return redirect("standort_liste")
-    return render(request, "plants/standort_loeschen.html", {"standort": standort})
+    return render(
+        request,
+        "plants/standort_loeschen.html",
+        {"standort": standort, "betroffen": betroffen},
+    )
 
 
 # --------------------------------------------------------------------------
