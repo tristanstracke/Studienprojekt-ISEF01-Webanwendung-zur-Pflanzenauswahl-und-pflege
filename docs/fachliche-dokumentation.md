@@ -1,6 +1,6 @@
 # Fachliche Dokumentation – Care for Plants
 
-Stand: 07.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
+Stand: 14.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
 Projekt ISEF01, IU Internationale Hochschule
 
 Dieses Dokument beschreibt, **was** die Anwendung fachlich leistet und nach
@@ -93,19 +93,7 @@ Orte passt, und versteht warum.
 
 **Ablauf als Diagramm**
 
-```mermaid
-flowchart TD
-    A[Standort anlegen] --> C[Katalog durchsuchen]
-    C --> D{Art im Katalog?}
-    D -- nein --> E[Eigene Art anlegen]
-    D -- ja --> F[Auf die Wunschliste]
-    E --> F
-    F --> G[Eignung prüfen]
-    G --> H[Urteil je Standort<br/>mit Begründung]
-    H --> I{Entscheidung}
-    I -- anschaffen --> J[Weiter mit UC 2]
-    I -- verwerfen --> K[Von der Liste entfernen]
-```
+![Abbildung 1: Ablauf des ersten Anwendungsfalls](bilder/ablauf-uc1.svg)
 
 **Fachliche Festlegungen**
 
@@ -223,19 +211,7 @@ zu recherchieren oder zu verwalten.
 
 **Ablauf als Diagramm**
 
-```mermaid
-flowchart TD
-    A[Pflanze anschaffen] --> B[Standort zuweisen]
-    B --> C[Vorlagen aus den<br/>Pflegeempfehlungen]
-    C --> D[Erste Aufgabe:<br/>heute plus Intervall]
-    D --> E[Kalender in vier Gruppen]
-    E --> F{Abhaken?}
-    F -- ja --> G[Erledigungsdatum setzen]
-    G --> H[Neue Aufgabe ab<br/>Erledigungstag]
-    H --> E
-    F -- Intervall ändern --> J[Vorlage anpassen,<br/>Termin verschieben]
-    J --> E
-```
+![Abbildung 2: Ablauf des zweiten Anwendungsfalls](bilder/ablauf-uc2.svg)
 
 **Fachliche Festlegungen mit Begründung**
 
@@ -269,9 +245,22 @@ flowchart TD
 | Fotos zu Pflanzen | Dateiablage, Speicherplatz und Rechtefragen ohne fachlichen Beitrag zu UC 1 und UC 2 |
 | Mehrere Personen je Haushalt | Der Zuschnitt richtet sich an Einzelpersonen; gemeinsame Bestände hätten ein Rechtekonzept erfordert |
 
-[EIGENE EINSCHÄTZUNG: Hier gehört dein Urteil hin, welche dieser Streichungen
-sich im Nachhinein als richtig erwiesen hat und welche du bei mehr Zeit als
-Erstes nachziehen würdest. Ein Satz genügt, aber er sollte begründet sein.]
+**Bewertung der Streichungen.** Am klarsten bestätigt hat sich der Verzicht
+auf die automatischen Pflanzenvorschläge. Ein Vorschlagsverfahren hätte
+Gewichtungen zwischen den fünf Merkmalen erfordert, für die keine Datengrundlage
+vorliegt; es hätte damit denselben Einwand getragen, der in Kapitel 5 zu den
+Schwellenwerten der Eignungsprüfung festgehalten ist, nur an einer Stelle mit
+deutlich größerer Wirkung auf das Urteil.
+
+Als Erstes nachgezogen würde die Benachrichtigung bei fälligen Aufgaben, und
+zwar nicht in der Form, in der sie gestrichen wurde. Der Verzicht galt dem
+Versand über einen Postausgangsserver oder eine Push-Infrastruktur, also
+einem Ausfallpunkt außerhalb der eigenen Kontrolle. Ein Hinweis innerhalb der
+Anwendung, der beim Anmelden die Zahl der überfälligen Aufgaben nennt, ist
+davon nicht betroffen: Er benötigt keine zusätzliche Infrastruktur und wurde
+mit rund einer Stunde Aufwand geschätzt. Ohne ihn wirkt der Kalender nur,
+wenn der Nutzer ihn von sich aus aufruft, und genau daran scheitert die
+regelmäßige Pflege im Alltag.
 
 ---
 

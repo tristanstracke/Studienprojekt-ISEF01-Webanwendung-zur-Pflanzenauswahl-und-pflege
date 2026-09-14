@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1340" width="1400" height="1340"
+     font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="pfeil" markerWidth="11" markerHeight="11" refX="9.5" refY="3.6"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,7.2 L10,3.6 z" fill="#1d2b1f"/>
+    </marker>
+    <style>
+      .kasten  { fill: #ffffff; stroke: #1d2b1f; stroke-width: 2.4; }
+      .betont  { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 3.6; }
+      .raute   { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .rahmen  { fill: #fafbf9; stroke: #1d2b1f; stroke-width: 2.2;
+                 stroke-dasharray: 10 7; }
+      .kopf    { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .txt     { font-size: 30px; fill: #1d2b1f; }
+      .fett    { font-size: 30px; font-weight: 700; fill: #1d2b1f; }
+      .feld    { font-size: 26px; fill: #3d4a3f; }
+      .kante   { fill: none; stroke: #1d2b1f; stroke-width: 2.4;
+                 marker-end: url(#pfeil); }
+      .linie   { fill: none; stroke: #1d2b1f; stroke-width: 2.4; }
+      .marke   { font-size: 26px; fill: #5f6d60; }
+      .karte   { font-size: 26px; font-weight: 700; fill: #1d2b1f; }
+      .rolle   { font-size: 26px; fill: #5f6d60; font-style: italic; }
+    </style>
+  </defs>
+<rect class="kasten" x="298" y="40" width="345" height="76" rx="8"/><text class="txt" x="470" y="88" text-anchor="middle">Pflanze anschaffen</text><rect class="kasten" x="306" y="170" width="328" height="76" rx="8"/><text class="txt" x="470" y="218" text-anchor="middle">Standort zuweisen</text><rect class="kasten" x="264" y="300" width="411" height="116" rx="8"/><text class="txt" x="470" y="348" text-anchor="middle">Pflegevorlagen aus den</text><text class="txt" x="470" y="388" text-anchor="middle">Pflegeempfehlungen</text><rect class="kasten" x="281" y="470" width="378" height="116" rx="8"/><text class="txt" x="470" y="518" text-anchor="middle">Erster Termin:</text><text class="txt" x="470" y="558" text-anchor="middle">heute plus Intervall</text><rect class="betont" x="322" y="640" width="296" height="116" rx="8"/><text class="txt" x="470" y="688" text-anchor="middle">Pflegekalender</text><text class="txt" x="470" y="728" text-anchor="middle">in vier Gruppen</text><polygon class="raute" points="470,801.0 715.0,860 470,919.0 225.0,860"/><text class="txt" x="470" y="870" text-anchor="middle">Nächster Schritt?</text><rect class="kasten" x="94" y="990" width="312" height="116" rx="8"/><text class="txt" x="250" y="1038" text-anchor="middle">Erledigungsdatum</text><text class="txt" x="250" y="1078" text-anchor="middle">setzen</text><rect class="kasten" x="102" y="1150" width="296" height="116" rx="8"/><text class="txt" x="250" y="1198" text-anchor="middle">Neuer Termin ab</text><text class="txt" x="250" y="1238" text-anchor="middle">Erledigungstag</text><rect class="kasten" x="908" y="990" width="345" height="116" rx="8"/><text class="txt" x="1080" y="1038" text-anchor="middle">Vorlage anpassen,</text><text class="txt" x="1080" y="1078" text-anchor="middle">Termin verschieben</text><path class="kante" d="M470,116 L470,162"/><path class="kante" d="M470,246 L470,292"/><path class="kante" d="M470,416 L470,462"/><path class="kante" d="M470,586 L470,632"/><path class="kante" d="M470,756 L470,793"/><path class="kante" d="M225,860 L250,860 L250,982"/><text class="marke" x="203" y="844" text-anchor="end">abhaken</text><path class="kante" d="M250,1106 L250,1142"/><path class="kante" d="M250,1266 L250,1290 L70,1290 L70,695 L314,695"/><path class="kante" d="M715,860 L1080,860 L1080,982"/><text class="marke" x="737" y="844" text-anchor="start">Intervall ändern</text><path class="kante" d="M1080,1106 L1080,1210 L1330,1210 L1330,695 L626,695"/></svg>

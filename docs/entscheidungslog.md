@@ -478,3 +478,56 @@ Eignungsprüfung war das bereits berücksichtigt; hier fehlte es. Ergänzt um
 prefetch_related. Bei drei Standorten sind das drei eingesparte Abfragen —
 für sich genommen unerheblich, als Muster jedoch der Grund, weshalb solche
 Ansichten mit wachsender Datenmenge langsam werden.
+
+
+**2026-09-14 — Trennung von Inhalt und Layout in den MS-4-Dokumenten**
+Die vier Dokumente lagen zunaechst in der Optik der MS-3-Abgabe vor
+(Deckblatt, Kopf- und Fusszeile, Inhaltsverzeichnis). Geprueft wurden zwei
+Wege: die Entwicklung liefert fertig gestaltete Dokumente, oder sie liefert
+nur Ueberschriften und Text und die Projektleitung vergibt das Layout
+einheitlich fuer alle Abgaben. Gewaehlt wurde der zweite Weg, weil eine
+einheitliche Gestaltung ueber alle Meilensteine zur Bewertungsdimension
+Dokumentation zaehlt und eine geteilte Zustaendigkeit fuer dasselbe Dokument
+zu abweichenden Fassungen fuehrt. Die gestalteten Fassungen wurden entfernt,
+damit kein zweiter Stand entsteht.
+
+**2026-09-14 — Diagramme werden erzeugt statt gezeichnet**
+Die Diagramme lagen zuerst als Mermaid-Quelltext, danach als von Hand
+geschriebene SVG vor. Beide Wege erwiesen sich als untauglich: Mermaid
+erzeugte Bilder im Seitenverhaeltnis 930 zu 2362, die Word auf 7,9 cm Breite
+verkleinert und damit unleserlich macht; bei den handgeschriebenen SVG lief
+der Text aus den Kaesten, sobald die Schrift auf eine im Dokument lesbare
+Groesse gebracht wurde. Geprueft wurde zusaetzlich ein Zeichenwerkzeug mit
+grafischer Oberflaeche, verworfen wegen des Aufwands bei jeder Textaenderung
+und weil die Quelle dann nicht versionierbar waere. Die Diagramme entstehen
+nun aus zwei Python-Skripten im Repository, die Kastenbreiten aus der
+Textlaenge berechnen und einem festen Raster folgen. Damit ist jede Aenderung
+am Text eine Aenderung am Quelltext und nicht am Bild.
+
+
+**2026-09-14 — Formalia der IU auf die MS-4-Dokumente angewandt**
+Die Aufgabenstellung nennt fuer Meilenstein 4 nur, welche Dokumente abzugeben
+sind, keine Form. Die Formvorgaben der IU (Richtlinien fuer die Gestaltung
+wissenschaftlicher Arbeiten, Stand 01.10.2025, und Allgemeiner Zitierleitfaden)
+gelten dem Wortlaut nach dem Projektbericht in Meilenstein 6. Geprueft wurden
+zwei Wege: die vier Dokumente frei gestalten, oder sie derselben Form
+unterwerfen wie den Bericht. Gewaehlt wurde der zweite Weg, weil die
+Bewertungsdimension Dokumentation die Einhaltung formaler Kriterien ueber alle
+Liefergegenstaende misst und eine einheitliche Form dem Tutor die Zuordnung
+erleichtert. Umgesetzt sind Arial 11 mit Zeilenabstand 1,5, Blocksatz,
+Raender von 2,00 cm, DIN A4, Ueberschriften mit 16, 14 und 11 Punkt, die
+Seitenzaehlung roemisch im Vorspann und arabisch ab dem ersten Kapitel sowie
+Abbildungs- und Tabellenbeschriftungen als Ueberschrift mit Quellenangabe
+darunter. Nicht uebernommen wurde das Deckblatt; es entsteht zusammen mit dem
+Layout der uebrigen Abgaben in der Projektleitung.
+
+**2026-09-14 — Verzeichnisse mit festen Seitenzahlen statt Feldern**
+Word fuehrt Inhalts-, Abbildungs- und Tabellenverzeichnis ueblicherweise als
+Feld, das beim Oeffnen aktualisiert wird. Beim Export nach PDF ohne
+vorheriges Aktualisieren bleibt an dieser Stelle jedoch nur die Ueberschrift
+stehen, und genau dieser Weg fuehrt zur Abgabe. Geprueft wurde, das Feld zu
+belassen und im Ablauf einen manuellen Schritt zu ergaenzen; verworfen, weil
+ein Schritt, an den sich jemand erinnern muss, unter Zeitdruck ausfaellt. Der
+Bau laeuft nun zweimal: Der erste Durchlauf erzeugt ein PDF, aus dem die
+tatsaechlichen Seiten abgelesen werden, der zweite setzt sie ein. Die
+Verzeichnisse sind damit auch ohne Word korrekt.

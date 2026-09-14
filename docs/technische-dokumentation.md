@@ -1,11 +1,11 @@
 # Technische Dokumentation – Care for Plants
 
-Stand: 07.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
+Stand: 14.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
 Projekt ISEF01, IU Internationale Hochschule
 
 ---
 
-## 0 Vorbemerkung: Ordnungsrahmen und bewusste Verkürzung
+## 1 Vorbemerkung: Ordnungsrahmen und bewusste Verkürzung
 
 Dieses Dokument folgt **arc42**. Von den zwölf vorgesehenen Kapiteln werden
 sieben verwendet: Randbedingungen, Kontextabgrenzung, Lösungsstrategie,
@@ -21,6 +21,7 @@ Nicht verwendet werden:
 | Laufzeitsicht | Die Anwendung hat keine nebenläufigen oder verteilten Abläufe. Jede Interaktion ist ein Anfrage-Antwort-Zyklus; ein Sequenzdiagramm hätte keinen Erkenntniswert |
 | Risiken und technische Schulden | im Projektbericht und im Entscheidungslog geführt |
 | Glossar | Der Fachbereich umfasst rund fünfzehn Begriffe, die im Text erklärt werden |
+| Einführung und Ziele | steht in der fachlichen Dokumentation, Kapitel 1; eine zweite Fassung liefe auseinander |
 
 Diese Reduktion ist eine bewusste Abwandlung des Rahmenwerks. Sie folgt der
 Empfehlung von arc42, nur die Kapitel zu füllen, die für das jeweilige
@@ -29,7 +30,7 @@ Konfiguration.
 
 ---
 
-## 1 Randbedingungen
+## 2 Randbedingungen
 
 **Technisch.** Python 3.12, Django 5.2.17, SQLite. Der Betrieb erfolgt auf
 Railway; die Anwendung muss ohne Installation über einen Browser erreichbar
@@ -48,11 +49,11 @@ Pflanzenvorschläge – ist ausgeschlossen.
 **Daraus folgende Leitlinie.** Jede Entscheidung wurde daran gemessen, ob
 sie die Erreichbarkeit für den Prüfenden gefährdet. Technisch interessantere
 Lösungen mit höherem Betriebsrisiko wurden verworfen; die Begründungen
-stehen in Kapitel 7.
+stehen in Kapitel 8.
 
 ---
 
-## 2 Kontextabgrenzung
+## 3 Kontextabgrenzung
 
 Die Anwendung ist in ihrem Umfeld nahezu isoliert. Es gibt weder eine
 Anbindung an Fremdsysteme noch eingehende Schnittstellen für Dritte.
@@ -73,7 +74,7 @@ abgerufen.
 
 ---
 
-## 3 Lösungsstrategie
+## 4 Lösungsstrategie
 
 | Ziel | Lösungsansatz |
 |---|---|
@@ -92,32 +93,26 @@ Testdichte an genau diesen Stellen erst möglich macht.
 
 ---
 
-## 4 Bausteinsicht
+## 5 Bausteinsicht
 
-### 4.1 Ebene 1 – Gesamtsystem
+### 5.1 Ebene 1 – Gesamtsystem
 
-```mermaid
-flowchart LR
-    config["config<br/><br/>settings · urls · wsgi"]
-    plants["plants<br/><br/>models · views · forms · urls<br/>eignung · pflege · admin · navigation"]
-    vorlagen["templates/"]
-    config --> plants --> vorlagen
-```
+![Abbildung 1: Bausteinsicht, Ebene 1](bilder/bausteinsicht.svg)
 
 `config` enthält Konfiguration und Einstiegspunkte, `plants` die gesamte
 Fachlichkeit. Eine Aufteilung in mehrere Django-Anwendungen wurde geprüft
-und verworfen: Bei zwei Anwendungsfällen und rund 1 650 Zeilen Quelltext
+und verworfen: Bei zwei Anwendungsfällen und rund 1 900 Zeilen Quelltext
 hätte sie Importwege verlängert, ohne Zuständigkeiten zu klären.
 
-### 4.2 Ebene 2 – Bausteine innerhalb von `plants`
+### 5.2 Ebene 2 – Bausteine innerhalb von `plants`
 
 | Baustein | Zeilen | Aufgabe |
 |---|---|---|
 | `models.py` | 331 | Datenmodell, Wertebereiche als Aufzählungen, Bedingungen auf Datenbankebene |
-| `views.py` | 395 | Ansichten: Anfrage entgegennehmen, Fachfunktion aufrufen, Vorlage füllen |
+| `views.py` | 394 | Ansichten: Anfrage entgegennehmen, Fachfunktion aufrufen, Vorlage füllen |
 | `eignung.py` | 231 | Eignungsprüfung: fünf Kriterien, ein Gesamturteil – ohne Datenbankzugriff |
 | `forms.py` | 177 | Formulare und Eingabeprüfung |
-| `pflege.py` | 126 | Ableitung der Pflegeaufgaben, Fälligkeiten, Gruppierung für den Kalender |
+| `pflege.py` | 158 | Ableitung der Pflegeaufgaben, Fälligkeiten, Gruppierung für den Kalender |
 | `admin.py` | 64 | Administrationsoberfläche |
 | `urls.py` | 49 | Zuordnung von Adressen zu Ansichten |
 | `navigation.py` | 34 | Zuordnung von Ansicht zu Menüpunkt für die Navigationsleiste |
@@ -149,26 +144,9 @@ mitzuschleppen.
 
 ---
 
-## 5 Verteilungssicht
+## 6 Verteilungssicht
 
-```mermaid
-flowchart LR
-    subgraph rechner["Entwicklungsrechner"]
-        lokal["Python 3.12<br/>SQLite lokal<br/>Entwicklungsserver"]
-    end
-    subgraph github["GitHub"]
-        repo["Repository<br/>Actions: Ruff, Systemcheck, pytest"]
-    end
-    subgraph railway["Railway"]
-        container["Container<br/>Gunicorn und Django"]
-        volume[("Volume /data<br/>db.sqlite3")]
-        container --- volume
-    end
-    browser["Browser des Nutzers"]
-    lokal -- push --> repo
-    repo -- deploy --> container
-    container -- "https, Port 8080" --> browser
-```
+![Abbildung 2: Verteilungssicht](bilder/verteilungssicht.svg)
 
 Ein einziger Prozess bedient alle Anfragen; statische Dateien liefert
 WhiteNoise aus demselben Prozess aus. Es gibt keinen zweiten Dienst, keinen
@@ -178,7 +156,7 @@ Betriebsdokumentation.
 
 ---
 
-## 6 Querschnittskonzepte
+## 7 Querschnittskonzepte
 
 **Zugriffstrennung.** Jede Abfrage auf Daten einer Person ist auf
 `besitzer=request.user` eingeschränkt; der Zugriff auf einen fremden
@@ -218,13 +196,14 @@ Schriftschnitt erkennbar, nicht über Farbe allein.
 
 **Prüfung und Auslieferung.** Ruff, Systemcheck einschließlich `--deploy`
 und die Testreihe laufen vor jeder Veröffentlichung; nur ein vollständig
-grüner Lauf erlaubt die Auslieferung. Derzeit umfasst die Testreihe 83
-Testfunktionen, mit einem Schwerpunkt auf Eignungsprüfung und
+grüner Lauf erlaubt die Auslieferung. Derzeit umfasst die Testreihe 88
+Testfunktionen, die durch Parametrisierung 110 Testfälle ergeben, mit einem
+Schwerpunkt auf Eignungsprüfung und
 Pflegeableitung, deren Anweisungsüberdeckung bei 100 Prozent liegt.
 
 ---
 
-## 7 Architekturentscheidungen
+## 8 Architekturentscheidungen
 
 Geführt als **Architecture Decision Records** nach Nygard, allerdings in
 verkürzter Form: Datum, Entscheidung, geprüfte Alternativen, Begründung –
@@ -238,7 +217,7 @@ tragenden Entscheidungen; die Records enthalten zusätzlich die sichere
 Voreinstellung der Konfiguration (ADR 0005) und das Qualitätstor
 (ADR 0006).
 
-**7.1 Django statt eines kleineren Rahmenwerks.**
+**8.1 Django statt eines kleineren Rahmenwerks.**
 Geprüft: Flask oder FastAPI mit getrenntem Frontend. Django bringt
 Anmeldung, Rechteverwaltung, ORM, Migrationen, Formularprüfung und eine
 Administrationsoberfläche mit. Bei vier Wochen Laufzeit ist das der
@@ -246,63 +225,63 @@ Unterschied zwischen Umsetzung der Fachlichkeit und Nachbau von
 Infrastruktur. Der Preis ist ein größerer Rahmen, als zwei Anwendungsfälle
 erfordern.
 
-**7.2 SQLite statt PostgreSQL.**
+**8.2 SQLite statt PostgreSQL.**
 Geprüft: verwalteter PostgreSQL-Dienst. SQLite braucht keinen zweiten
 Dienst, keine Zugangsdaten und keine Netzwerkverbindung; auf einem
 dauerhaften Volume übersteht die Datei jede Veröffentlichung. Die
 Einschränkung – ein Schreibzugriff zur Zeit, keine Verteilung auf mehrere
-Instanzen – ist bei fünf Testkonten ohne Bedeutung. Da ausschließlich der
+Instanzen – ist bei sechs Testkonten ohne Bedeutung. Da ausschließlich der
 ORM verwendet wird, wäre ein Wechsel später eine Konfigurationsänderung.
 
-**7.3 Serverseitiges Rendern statt Einzelseitenanwendung.**
+**8.3 Serverseitiges Rendern statt Einzelseitenanwendung.**
 Geprüft: React oder Vue mit einer REST-Schnittstelle. Eine getrennte
 Oberfläche hätte einen zweiten Bauprozess, einen zweiten Auslieferungsweg
 und eine eigene Zustandsverwaltung bedeutet. Der fachliche Gewinn wäre
 gering, da beide Anwendungsfälle aus Formularen und Listen bestehen.
 
-**7.4 Fachlogik ohne Datenbankzugriff.**
+**8.4 Fachlogik ohne Datenbankzugriff.**
 Geprüft: Bewertung als Methoden der Modelle. Reine Funktionen lassen sich
 ohne Datenbank prüfen, was schnelle und zahlreiche Tests ermöglicht. Der
 Preis ist ein Übersetzungsschritt in der Ansicht, die Modellwerte in
 einfache Werte überführt.
 
-[EIGENE EINSCHÄTZUNG: Hier gehört dein Urteil hin, welche dieser vier
-Entscheidungen sich im Verlauf als richtig erwiesen hat und wo du heute
-anders entscheiden würdest. Eine Entscheidung, die du im Rückblick
-kritisch siehst, ist für die Bewertung wertvoller als vier, die du
-verteidigst.]
+**Bewertung im Rückblick.** Alle vier Entscheidungen würden erneut so
+getroffen. Die folgenreichste ist 8.4: Die Trennung der Fachlogik von
+Datenzugriff und Oberfläche hat die hohe Testabdeckung erst ermöglicht und
+mehrfach Fehler aufgedeckt, bevor sie die Oberfläche erreichten. Der
+Übersetzungsschritt in der Ansicht ist der angemessene Preis dafür.
+
+Kritisch zu bewerten ist nicht eine der vier Entscheidungen selbst, sondern
+ein Kriterium, das bei 8.2 nicht geprüft wurde. Die Plattform wurde nach
+Erreichbarkeit, Kosten und Aufwand der Einrichtung ausgewählt; die Frage, ob
+eine Sicherung des Datenbestands im gewählten Tarif enthalten ist, wurde erst
+gestellt, als die Betriebsdokumentation entstand, und dann verneint. Für
+einen Prototyp, dessen Datenbestand über ein Verwaltungskommando
+reproduzierbar ist, trägt diese Begründung. Sie hätte nicht getragen, wenn im
+Verlauf echte Nutzerdaten entstanden wären. Bei einer erneuten Auswahl
+gehörte die Verfügbarkeit automatischer Sicherungen im gewählten Tarif zu den
+Ausschlusskriterien und nicht zu den Merkmalen, die im Nachhinein geprüft
+werden.
 
 ---
 
-## 8 Datenmodell
+## 9 Datenmodell
 
-```mermaid
-erDiagram
-    BENUTZER ||--o{ STANDORT : besitzt
-    BENUTZER ||--o{ PFLANZE : besitzt
-    BENUTZER ||--o{ PFLANZENART : "legt eigene an"
-    PFLANZENART ||--o{ PFLANZE : "ist von der Art"
-    PFLANZENART }o--o{ BODENART : "gedeiht in"
-    PFLANZENART ||--o{ PFLEGEEMPFEHLUNG : empfiehlt
-    STANDORT ||--o{ PFLANZE : "beherbergt"
-    STANDORT }o--|| BODENART : "hat"
-    PFLANZE ||--o{ PFLEGEVORLAGE : "hat"
-    PFLEGEVORLAGE ||--o{ PFLEGEAUFGABE : "erzeugt"
-```
+![Abbildung 3: Datenmodell als Entity-Relationship-Diagramm](bilder/datenmodell.svg)
 
-### 8.1 Tabellen
+### 9.1 Tabellen
 
 | Tabelle | Zweck | Wesentliche Felder |
 |---|---|---|
 | `Bodenart` | Substratkategorien des Katalogs | Bezeichnung, Beschreibung |
-| `Pflanzenart` | Katalog und selbst angelegte Arten | Name, botanischer Name, Lichtbedarf, Temperaturuntergrenze, Luftfeuchtigkeit, Wasserbedarf, giftig, geeignete Bodenarten, Quelle, `erstellt_von` |
+| `Pflanzenart` | Katalog und selbst angelegte Arten | Name, botanischer Name, Lichtbedarf, Temperaturuntergrenze, Luftfeuchtigkeit, Wasserbedarf, giftig, Endwuchshöhe, geeignete Bodenarten, Quelle, `erstellt_von` |
 | `Pflegeempfehlung` | Empfohlene Tätigkeit je Art | Tätigkeit, Intervall in Tagen, Hinweis |
-| `Standort` | Ort beim Nutzer | Bezeichnung, Art (innen/Balkon/Garten), Lichtangebot, Minimaltemperatur, Luftfeuchtigkeit, Bodenart, erreichbar für Kinder und Haustiere |
+| `Standort` | Ort beim Nutzer | Besitzer, Bezeichnung, Art (innen/Balkon/Garten), Lichtangebot, Minimaltemperatur, Luftfeuchtigkeit, Bodenart, erreichbar für Kinder oder Haustiere |
 | `Pflanze` | Wunsch oder Bestand | Besitzer, Art, eigene Bezeichnung, Status, Standort, Notiz |
 | `Pflegevorlage` | Pflegeplan je Pflanze | Tätigkeit, Intervall, Hinweis |
 | `Pflegeaufgabe` | Einzelner Termin | Fälligkeit, erledigt am |
 
-### 8.2 Begründungen zum Entwurf
+### 9.2 Begründungen zum Entwurf
 
 **Warum `Pflanzenart` und `Pflanze` getrennt sind.** Die Art trägt die
 allgemeingültigen Eigenschaften, die Pflanze das Exemplar beim Nutzer. Ohne

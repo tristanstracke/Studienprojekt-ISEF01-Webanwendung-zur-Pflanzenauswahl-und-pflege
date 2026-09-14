@@ -1,6 +1,6 @@
 # Betriebsdokumentation – Care for Plants
 
-Stand: 07.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
+Stand: 14.09.2026 · Verantwortlich: Tristan Stracke (Rolle Entwickler) ·
 Projekt ISEF01, IU Internationale Hochschule
 
 ---
@@ -124,7 +124,7 @@ Datenbestand verloren ist. Alle Schritte sind wiederholbar.
 6. **Zugänge und Testdaten anlegen:**
    `railway run python manage.py testdaten`
 
-Schritt 6 legt den Administrator und die vier Testzugänge an (Abschnitt 7).
+Schritt 6 legt den Administrator und die sechs Testzugänge an (Abschnitt 7).
 Das Kommando ist mehrfach ausführbar, ohne Daten zu verdoppeln.
 
 ---
@@ -254,8 +254,14 @@ am 01.10.2026, die Abgabe erfolgt am 28.09.2026. Ohne Wechsel auf einen
 bezahlten Tarif wäre die Anwendung während der Bewertung nicht erreichbar,
 und die Anforderung, dass der Tutor sie ohne Installation bedienen kann,
 wäre verletzt. Das Team hat deshalb den Wechsel auf das kostenpflichtige
-Programm beschlossen. [ANNAHME: Der Wechsel ist zum Zeitpunkt dieses Standes
-noch nicht vollzogen – bitte Datum ergänzen, sobald er erfolgt ist.]
+Programm beschlossen; er wird am 15.09.2026 vollzogen. Die
+Entscheidung gegen den nächsthöheren Tarif fiel bewusst: Dessen einziger für
+dieses System relevanter Mehrwert wären Sicherungen des Volumes, und der
+Datenbestand lässt sich über das Verwaltungskommando `testdaten`
+reproduzieren. Nach dem Wechsel ist der Verbrauch im Dashboard der Plattform weiterhin zu
+beobachten; ein aufgebrauchtes Guthaben macht die Anwendung ohne
+Fehlermeldung unerreichbar und ist damit der einzige Weg, auf dem die
+Anforderung der Erreichbarkeit ohne Installation scheitern kann.
 
 ---
 
@@ -264,7 +270,7 @@ noch nicht vollzogen – bitte Datum ergänzen, sobald er erfolgt ist.]
 Zur Einordnung, was hier bewusst *nicht* geleistet wird:
 
 - **Keine Überwachung.** Ein Ausfall fällt auf, wenn jemand die Seite
-  aufruft. Für eine Anwendung mit fünf Testkonten ist das angemessen.
+  aufruft. Für eine Anwendung mit sechs Testkonten ist das angemessen.
 - **Kein Bereitschaftsdienst,** keine Reaktionszeiten, keine Eskalation.
 - **Ein Dienst ohne Ausfallsicherheit.** SQLite auf einem Volume lässt sich
   nicht auf mehrere Instanzen verteilen. Für den Prototyp ist das richtig;
@@ -274,8 +280,18 @@ Zur Einordnung, was hier bewusst *nicht* geleistet wird:
 - **Kein Postausgang.** Das Zurücksetzen von Kennwörtern läuft über das
   Protokoll und den Administrator.
 
-[EIGENE EINSCHÄTZUNG: Hier gehört ein Satz hin, was du im Betrieb dieser
-vier Wochen tatsächlich als lästig oder riskant empfunden hast – etwa das
-manuelle Nachladen der Testdaten nach jedem Neuaufbau oder die Abhängigkeit
-von einem einzigen Anbieter. Das ist der Teil, den nur du beantworten
-kannst.]
+**Was sich im laufenden Betrieb als hinderlich erwiesen hat.** Zwei Punkte
+sind zu nennen. Der erste betrifft die Testdaten: Sie wurden über mehrere
+Wochen von Hand angelegt und gingen bei jedem Neuaufbau der lokalen Umgebung
+verloren. Das Verwaltungskommando, das sie in einem Aufruf erzeugt, entstand
+erst, als das Team Zugänge zur gegenseitigen Prüfung anforderte. Sein Aufwand
+betrug wenige Stunden und lag damit unter der Summe der zuvor wiederholt von
+Hand ausgeführten Schritte. Als Regel formuliert: Ein Schritt, der zum
+dritten Mal von Hand ausgeführt wird, ist ein Kandidat für Automatisierung.
+
+Der zweite Punkt betrifft die Abhängigkeit von einem einzigen Anbieter. Sie
+ist für den Zuschnitt dieses Projekts vertretbar, weil kein Datenbestand
+verloren gehen kann, der sich nicht reproduzieren lässt. Sie ist zugleich die
+Stelle, an der ein Dauerbetrieb zuerst Aufwand erzeugen würde: Ein Wechsel
+des Anbieters bedeutete, Laufzeitumgebung, Volume und Auslieferungsweg
+gleichzeitig neu einzurichten.

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1230 750" width="1230" height="750"
+     font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="pfeil" markerWidth="11" markerHeight="11" refX="9.5" refY="3.6"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,7.2 L10,3.6 z" fill="#1d2b1f"/>
+    </marker>
+    <style>
+      .kasten  { fill: #ffffff; stroke: #1d2b1f; stroke-width: 2.4; }
+      .betont  { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 3.6; }
+      .raute   { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .rahmen  { fill: #fafbf9; stroke: #1d2b1f; stroke-width: 2.2;
+                 stroke-dasharray: 10 7; }
+      .kopf    { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .txt     { font-size: 30px; fill: #1d2b1f; }
+      .fett    { font-size: 30px; font-weight: 700; fill: #1d2b1f; }
+      .feld    { font-size: 26px; fill: #3d4a3f; }
+      .kante   { fill: none; stroke: #1d2b1f; stroke-width: 2.4;
+                 marker-end: url(#pfeil); }
+      .linie   { fill: none; stroke: #1d2b1f; stroke-width: 2.4; }
+      .marke   { font-size: 26px; fill: #5f6d60; }
+      .karte   { font-size: 26px; font-weight: 700; fill: #1d2b1f; }
+      .rolle   { font-size: 26px; fill: #5f6d60; font-style: italic; }
+    </style>
+  </defs>
+<rect class="rahmen" x="30" y="30" width="405" height="300" rx="10"/><text class="fett" x="60" y="76">Entwicklungsrechner</text><rect class="rahmen" x="535" y="30" width="422" height="300" rx="10"/><text class="fett" x="565" y="76">GitHub</text><rect class="kasten" x="60" y="105" width="345" height="190" rx="8"/><text class="txt" x="232" y="170" text-anchor="middle">Python 3.12</text><text class="txt" x="232" y="210" text-anchor="middle">SQLite lokal</text><text class="txt" x="232" y="250" text-anchor="middle">Entwicklungsserver</text><rect class="kasten" x="565" y="105" width="362" height="190" rx="8"/><text class="txt" x="746" y="150" text-anchor="middle">Repository</text><text class="txt" x="746" y="190" text-anchor="middle">Actions: Ruff,</text><text class="txt" x="746" y="230" text-anchor="middle">pytest, Systemcheck</text><text class="txt" x="746" y="270" text-anchor="middle">Auslieferung</text><rect class="rahmen" x="30" y="420" width="738" height="230" rx="10"/><text class="fett" x="60" y="466">Railway</text><rect class="kasten" x="60" y="490" width="362" height="130" rx="8"/><text class="txt" x="241" y="545" text-anchor="middle">Container</text><text class="txt" x="241" y="585" text-anchor="middle">Gunicorn und Django</text><rect class="betont" x="462" y="505" width="246" height="100" rx="8"/><text class="txt" x="585" y="545" text-anchor="middle">Volume /data</text><text class="txt" x="585" y="585" text-anchor="middle">db.sqlite3</text><rect class="kasten" x="828" y="490" width="362" height="76" rx="8"/><text class="txt" x="1009" y="538" text-anchor="middle">Browser des Nutzers</text><path class="kante" d="M404,200 L527,200"/><text class="marke" x="485" y="182" text-anchor="middle">push</text><path class="kante" d="M746,295 L746,370 L241,370 L241,412"/><text class="marke" x="441" y="354" text-anchor="start">deploy</text><path class="kante" d="M422,555 L454,555"/><path class="kante" d="M1009,566 L1009,700 L241,700 L241,628"/><text class="marke" x="441" y="684" text-anchor="start">https</text></svg>
