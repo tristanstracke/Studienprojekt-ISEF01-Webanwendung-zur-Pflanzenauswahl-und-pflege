@@ -29,16 +29,9 @@ Sie brauchen nichts zu installieren. Die Anwendung läuft im Browser unter
 ## 2 Anmelden
 
 Rufen Sie die Adresse auf. Es erscheint die Anmeldeseite mit zwei Feldern.
-Für die Prüfung stehen folgende Zugänge bereit:
-
-| Benutzername | Kennwort | Inhalt |
-|---|---|---|
-| `tutor` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |
-| `tutor-neu` | `Pflanze-Test-2026` | leer, zum Ausprobieren von vorne |
-| `kai` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |
-| `kai-neu` | `Pflanze-Test-2026` | leer, zum Ausprobieren von vorne |
-| `kilian` | `Pflanze-Test-2026` | mit Standorten, Pflanzen und Pflegeaufgaben |
-| `kilian-neu` | `Pflanze-Test-2026` | leer, zum Ausprobieren von vorne |
+Die Zugänge für die Prüfung stehen im Dokument *Liste mit Test-Accounts*.
+Dort ist zu jedem Zugang vermerkt, ob er bereits Standorte und Pflanzen
+enthält oder leer ist und sich zum Durchspielen von null eignet.
 
 Nach der Anmeldung sehen Sie die **Übersicht** mit vier Kacheln: Standorte,
 Wunschliste, Meine Pflanzen und Pflegekalender. Jede nennt den aktuellen

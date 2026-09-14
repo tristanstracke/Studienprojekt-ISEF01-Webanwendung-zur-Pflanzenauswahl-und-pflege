@@ -200,15 +200,18 @@ die Schritte 5 und 6 aus Abschnitt 4. Dauer wenige Minuten.
 
 ## 7 Zugänge
 
+Der administrative Zugang zur Anwendung:
+
 | Zugang | Kennwort | Zweck |
 |---|---|---|
 | `admin` | `Pflanze-Admin-2026` | Administrationsoberfläche unter `/admin/` |
-| `tutor` | `Pflanze-Test-2026` | Prüfzugang mit Standorten, Pflanzen und Pflegeaufgaben |
-| `tutor-neu` | `Pflanze-Test-2026` | Prüfzugang ohne Daten, für den Einstieg von null |
-| `kai` | `Pflanze-Test-2026` | Testzugang mit Standorten, Pflanzen und Pflegeaufgaben |
-| `kai-neu` | `Pflanze-Test-2026` | Testzugang ohne Daten, für den Einstieg von null |
-| `kilian` | `Pflanze-Test-2026` | wie `kai` |
-| `kilian-neu` | `Pflanze-Test-2026` | wie `kai-neu` |
+
+Daneben bestehen sechs Zugänge für Prüfung und Test, je zwei für den Tutor,
+für die Rolle Qualität und Test und für die Projektleitung. Sie sind im
+Dokument *Liste mit Test-Accounts* aufgeführt, das als eigener
+Liefergegenstand zu Meilenstein 4 gehört. Diese Aufstellung wird hier nicht
+wiederholt: Eine Angabe, die an zwei Stellen gepflegt werden muss, läuft
+früher oder später auseinander.
 
 Die Zugänge des Tutors sind bewusst von denen des Teams getrennt: So bleibt
 seine Prüfung von Änderungen des Teams unberührt, und umgekehrt kann er

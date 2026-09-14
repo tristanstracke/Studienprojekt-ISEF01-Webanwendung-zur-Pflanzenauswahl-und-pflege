@@ -38,7 +38,6 @@ QUELLENANGABE = "Quelle: Eigene Darstellung."
 # Titel der Tabellen in der Reihenfolge ihres Auftretens je Datei.
 TABELLEN = {
     "benutzerhandbuch.md": [
-        "Zugänge für die Prüfung",
         "Felder des Standortformulars",
         "Stufen des Eignungsurteils",
     ],
@@ -62,7 +61,7 @@ TABELLEN = {
     "betriebsdokumentation.md": [
         "Bausteine der Laufzeitumgebung",
         "Umgebungsvariablen der Anwendung",
-        "Zugänge des Systems",
+        "Administrativer Zugang",
         "Störungen und ihre Behebung",
     ],
 }
