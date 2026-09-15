@@ -174,7 +174,17 @@ def wunschliste(request):
 
 @login_required
 def pflanze_entfernen(request, pk):
-    pflanze = get_object_or_404(Pflanze, pk=pk, besitzer=request.user)
+    """
+    Nimmt eine Pflanze von der Wunschliste.
+
+    Die Einschraenkung auf den Status "wunsch" ist nicht kosmetisch: Wunsch
+    und Bestand liegen in derselben Tabelle. Ohne sie loescht die Adresse
+    auch eine Pflanze im Bestand - samt Pflegevorlagen und Terminen, und mit
+    der Meldung, sie sei von der Wunschliste entfernt worden. In der
+    Oberflaeche ist der Knopf nur auf der Wunschliste verlinkt; wer die
+    Adresse kennt, kaeme ohne diese Pruefung dennoch daran.
+    """
+    pflanze = get_object_or_404(Pflanze, pk=pk, besitzer=request.user, status=Pflanze.Status.WUNSCH)
     if request.method == "POST":
         name = str(pflanze)
         pflanze.delete()
