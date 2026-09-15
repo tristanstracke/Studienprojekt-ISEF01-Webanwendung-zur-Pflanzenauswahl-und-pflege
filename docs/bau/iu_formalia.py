@@ -147,49 +147,56 @@ def umformen(name, text):
     return "\n".join(ergebnis), abbildungen, tabellen
 
 
-def verzeichnis(ueberschrift, eintraege, praefix, marken):
-    """Ein Verzeichnis als zweispaltige Tabelle: Eintrag links, Seite rechts.
+def eintrag(text, seite_marke, stufe=1):
+    """Ein Verzeichniseintrag als Absatz: Text, Tabstopp, Seitenzahl.
 
-    Die Seitenzahl steht zunaechst als Marke; iu_bauen.py setzt sie nach dem
-    ersten Durchlauf aus dem gerenderten PDF ein. Ein Feld im Sinne von Word
-    kommt nicht in Frage: es bleibt beim Export nach PDF leer, solange niemand
-    das Verzeichnis in Word von Hand aktualisiert.
+    Als roher Wortabschnitt, weil Markdown keinen Tabulator kennt. Die
+    Absatzvorlage bringt den rechtsbuendigen Tabstopp mit Punktlinie mit.
     """
-    zeilen = [f"## {ueberschrift}", "", "| | |", "|:---|---:|"]
-    for nummer, eintrag in enumerate(eintraege, 1):
-        text = f"{praefix} {nummer} {eintrag}"
+    sicher = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return [
+        "",
+        "```{=openxml}",
+        f'<w:p><w:pPr><w:pStyle w:val="Verzeichnis{stufe}"/></w:pPr>'
+        f'<w:r><w:t xml:space="preserve">{sicher}</w:t></w:r>'
+        f"<w:r><w:tab/></w:r>"
+        f"<w:r><w:t>{seite_marke}</w:t></w:r></w:p>",
+        "```",
+        "",
+    ]
+
+
+def verzeichnis(ueberschrift, eintraege, praefix, marken):
+    """Abbildungs- oder Tabellenverzeichnis."""
+    zeilen = [f"## {ueberschrift}", ""]
+    for nummer, text in enumerate(eintraege, 1):
         marke = f"@@{len(marken)}@@"
-        marken.append(text)
-        zeilen.append(f"| {text} | {marke} |")
-    zeilen.append("")
+        marken.append(f"{praefix} {nummer} {text}")
+        zeilen += eintrag(f"{praefix} {nummer} {text}", marke)
     return zeilen
 
 
 def inhaltsverzeichnis(zeilen_des_koerpers, marken):
     """Inhaltsverzeichnis aus den Ueberschriften; nur Stufe 1 wird fett."""
-    eintraege = []
+    gefunden = []
     im_block = False
     for zeile in zeilen_des_koerpers:
         if zeile.startswith("```"):
             im_block = not im_block
         if im_block or not zeile.startswith("#"):
             continue
-        stufe = len(zeile) - len(zeile.lstrip("#"))
+        tiefe = len(zeile) - len(zeile.lstrip("#"))
         text = zeile.lstrip("#").strip().replace("`", "")
-        if stufe > 3:
-            continue
-        eintraege.append((stufe, text))
-    if not eintraege:
+        if tiefe <= 3:
+            gefunden.append((tiefe, text))
+    if not gefunden:
         return []
-    zeilen = ["## Inhaltsverzeichnis", "", "| | |", "|:---|---:|"]
-    for stufe, text in eintraege:
+    zeilen = ["## Inhaltsverzeichnis", ""]
+    for tiefe, text in gefunden:
         marke = f"@@{len(marken)}@@"
         marken.append(text)
-        # Stufe 2 in der Quelle ist nach dem Anheben Stufe 1.
-        gezeigt = f"**{text}**" if stufe == 2 else text
-        einzug = "&nbsp;&nbsp;&nbsp;&nbsp;" if stufe == 3 else ""
-        zeilen.append(f"| {einzug}{gezeigt} | {marke} |")
-    zeilen.append("")
+        # Stufe 2 in der Quelle ist nach dem Anheben die erste Stufe.
+        zeilen += eintrag(text, marke, stufe=1 if tiefe == 2 else 2)
     return zeilen
 
 

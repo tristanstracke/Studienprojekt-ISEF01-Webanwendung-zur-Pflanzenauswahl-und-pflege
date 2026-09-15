@@ -63,6 +63,33 @@ def ist_erstes_kapitel(absatz):
     return bool(text) and text[0].isdigit()
 
 
+def verzeichnistabellen_glaetten(koerper):
+    """Nimmt den Verzeichnissen die leere Kopfzeile.
+
+    Die Verzeichnisse entstehen als zweispaltige Tabelle, deren Kopfzeile
+    leer bleibt - sie soll ja nur Eintrag und Seitenzahl nebeneinander
+    stellen. Der Tabellenstil hebt die erste Zeile jedoch hervor und zieht
+    eine Linie darunter, sodass im Dokument eine leere Zeile mit Strich
+    steht. Also: Zeile entfernen und die Hervorhebung abschalten.
+    """
+    geglaettet = 0
+    for tabelle in koerper.iter(wn("tbl")):
+        zeilen = tabelle.findall(wn("tr"))
+        if not zeilen:
+            continue
+        erste = "".join(t.text or "" for t in zeilen[0].iter(wn("t"))).strip()
+        if erste:
+            continue
+        tabelle.remove(zeilen[0])
+        pr = tabelle.find(wn("tblPr"))
+        if pr is not None:
+            for look in pr.findall(wn("tblLook")):
+                look.set(wn("firstRow"), "0")
+                look.set(wn("noHBand"), "1")
+        geglaettet += 1
+    return geglaettet
+
+
 def seitenzaehlung_trennen(docx):
     """Vorspann roemisch, Textteil arabisch ab 1.
 
@@ -79,6 +106,8 @@ def seitenzaehlung_trennen(docx):
     schluss = koerper.find(wn("sectPr"))
     if schluss is None:
         return
+
+    verzeichnistabellen_glaetten(koerper)
 
     # Der Textteil zaehlt arabisch und beginnt neu bei 1.
     nummerierung = ET.SubElement(schluss, wn("pgNumType"))

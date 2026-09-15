@@ -531,3 +531,20 @@ ein Schritt, an den sich jemand erinnern muss, unter Zeitdruck ausfaellt. Der
 Bau laeuft nun zweimal: Der erste Durchlauf erzeugt ein PDF, aus dem die
 tatsaechlichen Seiten abgelesen werden, der zweite setzt sie ein. Die
 Verzeichnisse sind damit auch ohne Word korrekt.
+
+
+**2026-09-15 — Wechsel auf den Tarif Hobby bei Railway vollzogen**
+Das kostenlose Guthaben der Plattform waere am 01.10.2026 ausgelaufen, die
+Abgabe erfolgt am 28.09.2026. Da ein Meilenstein erst als erreicht gilt,
+wenn der Tutor das Ticket schliesst, und Rueckfragen mehrere Tage in
+Anspruch nehmen koennen, haette die Anwendung waehrend der Bewertung
+unerreichbar werden koennen. Geprueft wurden drei Wege: das Guthaben
+auslaufen lassen und auf eine rechtzeitige Bewertung hoffen, auf einen
+anderen Anbieter umziehen, oder den Tarif wechseln. Der erste Weg stellt die
+Erreichbarkeit unter einen Vorbehalt, den das Team nicht steuert; der zweite
+haette Laufzeitumgebung, Volume und Auslieferungsweg gleichzeitig neu
+erfordert, und zwar in der Woche vor der Abgabe. Gewaehlt wurde der Wechsel
+auf den Tarif Hobby, vollzogen am 15.09.2026 und damit knapp zwei Wochen vor
+beiden Terminen. Gegen den naechsthoeheren Tarif sprach, dass sein einziger
+hier relevanter Mehrwert Sicherungen des Volumes waeren - der Datenbestand
+ist ueber das Verwaltungskommando reproduzierbar.

@@ -95,7 +95,11 @@ def formatvorlagen():
     if standard is not None:
         rpr = standard.find(f"{w('rPrDefault')}/{w('rPr')}")
         if rpr is not None:
-            setze(rpr, "rFonts", ascii=SCHRIFT, hAnsi=SCHRIFT, cs=SCHRIFT)
+            schriften = setze(rpr, "rFonts", ascii=SCHRIFT, hAnsi=SCHRIFT, cs=SCHRIFT)
+            # Auch in den Grundeinstellungen gilt: Ein Themaverweis schlaegt
+            # die ausdrueckliche Angabe, und zwar nur in Word.
+            for thema in ("asciiTheme", "hAnsiTheme", "cstheme", "eastAsiaTheme"):
+                schriften.attrib.pop(w(thema), None)
             setze(rpr, "sz", val="22")
             setze(rpr, "szCs", val="22")
 
@@ -118,6 +122,18 @@ def formatvorlagen():
         "ControlFlowTok",
         "OperatorTok",
     }
+    # Pandoc setzt Quelltext in Consolas. Die Schrift kommt unter macOS mit
+    # Office mit, fehlt aber sonst; Word ersetzt sie dann durch irgendeine.
+    # Courier New ist auf jedem System vorhanden.
+    for kennung in ("SourceCode", "VerbatimChar"):
+        stil = nach_id.get(kennung)
+        if stil is None:
+            continue
+        rpr = kind(stil, "rPr")
+        setze(rpr, "rFonts", ascii="Courier New", hAnsi="Courier New", cs="Courier New")
+        setze(rpr, "sz", val="20")
+        setze(rpr, "szCs", val="20")
+
     for kennung, stil in nach_id.items():
         if kennung in quelltext:
             continue
@@ -128,7 +144,13 @@ def formatvorlagen():
         # Hausschrift von pandoc stehen.
         for thema in ("asciiTheme", "hAnsiTheme", "cstheme", "eastAsiaTheme"):
             schriften.attrib.pop(w(thema), None)
-        setze(rpr, "color", val="000000")
+        farbe = setze(rpr, "color", val="000000")
+        # Word zieht themeColor der ausdruecklichen Farbe vor, LibreOffice
+        # nicht. Bleibt das Attribut stehen, sind die Ueberschriften in Word
+        # blau, obwohl die Datei Schwarz angibt - und ein Blick ins
+        # PDF zeigt den Fehler nicht.
+        for thema in ("themeColor", "themeTint", "themeShade"):
+            farbe.attrib.pop(w(thema), None)
 
     fliesstext = ("Normal", "BodyText", "FirstParagraph", "Compact", "BlockText")
     for kennung in fliesstext:
@@ -191,7 +213,43 @@ def formatvorlagen():
         zeichen(stil, "20")
         absatz(stil, "both", nach="0", zeile="240")
 
+    verzeichnisstile(wurzel)
     baum.write(BAU / "word/styles.xml", encoding="UTF-8", xml_declaration=True)
+
+
+def verzeichnisstile(wurzel):
+    """Zwei Absatzvorlagen fuer Verzeichniseintraege.
+
+    Ein Verzeichnis ist keine Tabelle: Der Eintrag steht links, die Seitenzahl
+    rechts am Satzspiegel, dazwischen fuehrt eine Punktlinie. Umgesetzt ueber
+    einen rechtsbuendigen Tabstopp mit Fuellzeichen. Die Satzbreite betraegt
+    21 cm minus zweimal 2 cm Rand, also 17 cm oder 9639 Twips.
+    """
+    for kennung, name, fett, einzug in (
+        ("Verzeichnis1", "Verzeichnis 1", True, "0"),
+        ("Verzeichnis2", "Verzeichnis 2", False, "340"),
+    ):
+        stil = ET.SubElement(wurzel, w("style"))
+        stil.set(w("type"), "paragraph")
+        stil.set(w("styleId"), kennung)
+        ET.SubElement(stil, w("name")).set(w("val"), name)
+        ET.SubElement(stil, w("basedOn")).set(w("val"), "Normal")
+        ppr = ET.SubElement(stil, w("pPr"))
+        tabs = ET.SubElement(ppr, w("tabs"))
+        halt = ET.SubElement(tabs, w("tab"))
+        halt.set(w("val"), "right")
+        halt.set(w("leader"), "dot")
+        halt.set(w("pos"), "9639")
+        setze(ppr, "spacing", before="0", after="0", line=ZEILE, lineRule="auto")
+        setze(ppr, "ind", left=einzug, right="0", firstLine="0")
+        setze(ppr, "jc", val="left")
+        rpr = ET.SubElement(stil, w("rPr"))
+        setze(rpr, "rFonts", ascii=SCHRIFT, hAnsi=SCHRIFT, cs=SCHRIFT)
+        setze(rpr, "sz", val="22")
+        setze(rpr, "szCs", val="22")
+        setze(rpr, "color", val="000000")
+        if fett:
+            ET.SubElement(rpr, w("b"))
 
 
 def seitenraender_und_fusszeile():
@@ -283,8 +341,28 @@ def grundlage_holen():
     roh.unlink()
 
 
+def aktuelles_dateiformat():
+    """Sagt Word, dass die Datei dem aktuellen Format folgt.
+
+    Fehlt diese Angabe, oeffnet Word das Dokument im Kompatibilitaetsmodus
+    und schreibt das in die Titelleiste. Auf die Darstellung wirkt sich das
+    kaum aus, es sieht in einer Abgabe aber nach einer alten Datei aus.
+    """
+    datei = BAU / "word/settings.xml"
+    inhalt = datei.read_text(encoding="utf-8")
+    if "compatibilityMode" in inhalt:
+        return
+    block = (
+        '<w:compat><w:compatSetting w:name="compatibilityMode" '
+        'w:uri="http://schemas.microsoft.com/office/word" w:val="15"/>'
+        "</w:compat>"
+    )
+    datei.write_text(inhalt.replace("</w:settings>", block + "</w:settings>"), encoding="utf-8")
+
+
 def main():
     grundlage_holen()
+    aktuelles_dateiformat()
     formatvorlagen()
     seitenraender_und_fusszeile()
     if ZIEL.exists():

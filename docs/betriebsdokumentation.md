@@ -252,14 +252,15 @@ railway run python manage.py changepassword <benutzername>
 | Anmeldung schlägt fehl, obwohl Kennwort stimmt | Verwechslung von lokaler Umgebung und Server; beide haben getrennte Datenbestände | Adresse prüfen |
 | Anwendung nicht erreichbar, keine Fehlermeldung | Guthaben aufgebraucht oder Dienst angehalten | Tarif und Guthaben im Railway-Dashboard prüfen |
 
-**Bekanntes Risiko: Ende des Testguthabens.** Das kostenlose Guthaben endet
-am 01.10.2026, die Abgabe erfolgt am 28.09.2026. Ohne Wechsel auf einen
-bezahlten Tarif wäre die Anwendung während der Bewertung nicht erreichbar,
-und die Anforderung, dass der Tutor sie ohne Installation bedienen kann,
-wäre verletzt. Das Team hat deshalb den Wechsel auf das kostenpflichtige
-Programm beschlossen; er wird am 15.09.2026 vollzogen. Die
-Entscheidung gegen den nächsthöheren Tarif fiel bewusst: Dessen einziger für
-dieses System relevanter Mehrwert wären Sicherungen des Volumes, und der
+**Behandeltes Risiko: Ende des Testguthabens.** Das kostenlose Guthaben
+endete am 01.10.2026, die Abgabe erfolgt am 28.09.2026. Ohne Wechsel auf
+einen bezahlten Tarif wäre die Anwendung während der Bewertung nicht
+erreichbar gewesen, und die Anforderung, dass der Tutor sie ohne
+Installation bedienen kann, wäre verletzt worden. Das Team hat den Wechsel
+auf den Tarif *Hobby* deshalb vorgezogen und am 15.09.2026 vollzogen, also
+knapp zwei Wochen vor der Abgabe und zwei Wochen vor Ablauf des Guthabens.
+Die Entscheidung gegen den nächsthöheren Tarif fiel bewusst: Dessen einziger
+für dieses System relevanter Mehrwert wären Sicherungen des Volumes, und der
 Datenbestand lässt sich über das Verwaltungskommando `testdaten`
 reproduzieren. Nach dem Wechsel ist der Verbrauch im Dashboard der Plattform weiterhin zu
 beobachten; ein aufgebrauchtes Guthaben macht die Anwendung ohne
