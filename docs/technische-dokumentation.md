@@ -108,8 +108,8 @@ hätte sie Importwege verlängert, ohne Zuständigkeiten zu klären.
 
 | Baustein | Zeilen | Aufgabe |
 |---|---|---|
-| `models.py` | 331 | Datenmodell, Wertebereiche als Aufzählungen, Bedingungen auf Datenbankebene |
-| `views.py` | 394 | Ansichten: Anfrage entgegennehmen, Fachfunktion aufrufen, Vorlage füllen |
+| `models.py` | 338 | Datenmodell, Wertebereiche als Aufzählungen, Bedingungen auf Datenbankebene |
+| `views.py` | 418 | Ansichten: Anfrage entgegennehmen, Fachfunktion aufrufen, Vorlage füllen |
 | `eignung.py` | 231 | Eignungsprüfung: fünf Kriterien, ein Gesamturteil – ohne Datenbankzugriff |
 | `forms.py` | 177 | Formulare und Eingabeprüfung |
 | `pflege.py` | 158 | Ableitung der Pflegeaufgaben, Fälligkeiten, Gruppierung für den Kalender |
@@ -196,10 +196,10 @@ Schriftschnitt erkennbar, nicht über Farbe allein.
 
 **Prüfung und Auslieferung.** Ruff, Systemcheck einschließlich `--deploy`
 und die Testreihe laufen vor jeder Veröffentlichung; nur ein vollständig
-grüner Lauf erlaubt die Auslieferung. Derzeit umfasst die Testreihe 88
-Testfunktionen, die durch Parametrisierung 110 Testfälle ergeben, mit einem
-Schwerpunkt auf Eignungsprüfung und
-Pflegeableitung, deren Anweisungsüberdeckung bei 100 Prozent liegt.
+grüner Lauf erlaubt die Auslieferung. Derzeit umfasst die Testreihe 94
+Testfunktionen, die durch Parametrisierung 116 Testfälle ergeben, mit einem
+Schwerpunkt auf Eignungsprüfung und Pflegeableitung, deren
+Anweisungsüberdeckung bei 100 Prozent liegt.
 
 ---
 

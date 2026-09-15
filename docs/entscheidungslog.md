@@ -372,9 +372,9 @@ Fixture-Datei mit fertigen Datensätzen ausliefern.
 Begründung: MS 4 verlangt eine Liste von Testzugängen, und das Team
 benötigt Zugänge zur gegenseitigen Prüfung. Von Hand angelegte Konten
 sind nach einem Redeploy ohne Datenbestand verloren und auf einem
-zweiten Rechner nicht reproduzierbar. Das Kommando "testdaten" legt vier
-Zugänge (je zwei pro Prüfer, einer mit Bestand, einer leer) und einen
-Administrator an, ist mehrfach ausführbar und bezieht die Fälligkeiten
+zweiten Rechner nicht reproduzierbar. Das Kommando "testdaten" legt sechs
+Zugänge (je zwei pro prüfender Person, einer mit Bestand, einer leer) und
+einen Administrator an, ist mehrfach ausführbar und bezieht die Fälligkeiten
 der Pflegeaufgaben auf den Ausführungstag, sodass auch nach Wochen noch
 eine überfällige und eine heute fällige Aufgabe im Kalender stehen. Eine
 Fixture-Datei wurde verworfen, weil sie feste Datumsangaben enthielte.
@@ -548,3 +548,43 @@ auf den Tarif Hobby, vollzogen am 15.09.2026 und damit knapp zwei Wochen vor
 beiden Terminen. Gegen den naechsthoeheren Tarif sprach, dass sein einziger
 hier relevanter Mehrwert Sicherungen des Volumes waeren - der Datenbestand
 ist ueber das Verwaltungskommando reproduzierbar.
+
+
+**2026-09-15 — Loeschen eines Standorts nimmt die Pflanzen dort mit**
+Entscheidung: Wird ein Standort geloescht, verschwinden die Pflanzen, die
+dort stehen, samt ihren Pflegeaufgaben (on_delete=CASCADE). Geprueft wurden
+zwei Alternativen. Erstens SET_NULL: Die Pflanzen behalten ihren Platz im
+Bestand und verlieren nur die Standortzuordnung. Das widerspricht der
+fachlichen Festlegung, dass jede Pflanze im Bestand einen Platz hat; sie ist
+als CheckConstraint auf Datenbankebene hinterlegt, und das Loeschen lief
+deshalb in einen IntegrityError - der Fehler war in der Oberflaeche als
+Serverfehler sichtbar. Zweitens PROTECT: Das Loeschen wird verweigert,
+solange dort eine Pflanze steht. Das verlangt vom Nutzer einen Standortwechsel
+je Pflanze, fuer den es in diesem Umfang keine Funktion gibt, und trifft den
+haeufigeren Fall nicht. Begruendung fuer CASCADE: Wer einen Standort
+aufloest, hat die Pflanzen dort in der Regel ebenfalls nicht mehr. Der
+Datenverlust wird abgefedert, nicht verschwiegen - die Bestaetigungsseite
+zaehlt die betroffenen Pflanzen namentlich auf, und das Benutzerhandbuch
+warnt an der Stelle, an der das Loeschen beschrieben wird.
+
+
+**2026-09-15 — Abnahme in der Rolle des Tutors vor der Bereitstellung**
+Entscheidung: Vor dem Zuweisen des Redmine-Tickets wird die Abgabe einmal
+vollstaendig aus der Sicht des Bewertenden geprueft: Liefergegenstaende gegen
+die Liste der Aufgabenstellung, beide Anwendungsfaelle von null an
+durchgespielt, jede Zahlenangabe der Dokumente gegen den Quelltext
+nachgemessen. Geprueft wurde als Alternative, sich auf die
+Testendberichte der Rolle Qualitaet und Test zu verlassen. Verworfen, weil
+deren Testfaelle die Anwendung pruefen, nicht die Abgabe: Ob die im
+Zugangsdokument genannten Konten auf dem ausgelieferten Stand ueberhaupt
+existieren, ist kein Testfall der Anwendung. Genau dieser Punkt war der
+gravierendste Befund - die Pruefzugaenge des Tutors lagen in einem noch
+nicht zusammengefuehrten Pull Request. Methodisch ist das eine
+Abnahmepruefung (Acceptance Test) gegen die Abnahmekriterien der
+Aufgabenstellung, abgewandelt darin, dass sie nicht vom Auftraggeber
+durchgefuehrt wird, sondern vom Team in dessen Rolle - eine
+Selbstabnahme, deren Aussagekraft entsprechend geringer ist. Weitere
+Befunde: drei Stellen im Benutzerhandbuch beschrieben Wege, die es nicht
+gibt, die Testzahlen der technischen Dokumentation lagen vier Faelle
+zurueck, und die Ansicht zum Entfernen einer Pflanze pruefte den Status
+nicht.

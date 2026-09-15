@@ -104,6 +104,18 @@ Orte passt, und versteht warum.
   Zimmers sind zwei Standorte, wenn sie unterschiedlich hell sind.
 - Selbst angelegte Arten sind **privat**. Ein gemeinsam gepflegter Katalog
   bräuchte Qualitätssicherung, die im Projektumfang nicht zu leisten ist.
+- Das **Löschen eines Standorts nimmt die Pflanzen mit**, die dort stehen,
+  samt ihren Pflegeaufgaben. Geprüft wurden zwei Alternativen. Erstens: Die
+  Pflanzen verlieren nur die Standortzuordnung und bleiben im Bestand. Das
+  widerspricht der Festlegung, dass jede Pflanze im Bestand einen Platz hat –
+  diese Bedingung wird auf Datenbankebene erzwungen, das Löschen lief deshalb
+  in einen Fehler. Zweitens: Das Löschen wird verweigert, solange dort eine
+  Pflanze steht. Das verlangt vom Nutzer einen Umzug, für den es keine
+  Funktion gibt, und trifft den häufigeren Fall nicht: Wer einen Standort
+  auflöst, hat die Pflanzen dort in der Regel ebenfalls nicht mehr. Gewählt
+  wurde deshalb das Mitlöschen, mit namentlicher Auflistung der betroffenen
+  Pflanzen auf der Bestätigungsseite. Pflanzen auf der Wunschliste sind nicht
+  betroffen, weil sie keinem Standort zugeordnet sind.
 
 ---
 

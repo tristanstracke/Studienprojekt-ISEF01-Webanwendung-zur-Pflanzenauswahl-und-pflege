@@ -67,9 +67,15 @@ vergleichen.
 | Für Kinder oder Haustiere erreichbar | Ankreuzen, wenn ein Kind oder ein Tier an die Pflanze herankommt. Dieses Kästchen entscheidet später darüber, ob giftige Pflanzen als geeignet gelten |
 
 Sie können einen Standort jederzeit **Ändern**; die Schaltfläche zum
-**Löschen** finden Sie im Änderungsformular. Löschen Sie einen Standort erst,
-wenn dort keine Pflanze mehr steht: Weisen Sie die betroffenen Pflanzen
-vorher über *Meine Pflanzen* einem anderen Standort zu.
+**Löschen** finden Sie im Änderungsformular.
+
+> **Achtung:** Beim Löschen eines Standorts werden die Pflanzen, die dort
+> stehen, mitgelöscht – einschließlich ihrer Pflegeaufgaben und der bereits
+> abgehakten Termine. Die Bestätigungsseite zählt vorher namentlich auf,
+> welche Pflanzen betroffen sind. Ein Umziehen an einen anderen Standort ist
+> in dieser Fassung nicht vorgesehen; sollen die Pflanzen erhalten bleiben,
+> brechen Sie dort ab. Pflanzen auf der Wunschliste sind nicht betroffen,
+> weil sie noch keinem Standort zugeordnet sind.
 
 ---
 
@@ -133,8 +139,8 @@ darüber hinweggehen.
 Haben Sie die Pflanze gekauft, wandert sie von der Wunschliste in Ihren
 Bestand: **Wunschliste → Anschaffen**. Sie wählen den Standort, an dem sie
 nun steht. Eine eigene Bezeichnung – hilfreich, wenn Sie mehrere Exemplare
-derselben Art haben („die große im Flur") – vergeben Sie bereits beim
-Vormerken, sie lässt sich dort auch nachträglich ändern.
+derselben Art haben („die große im Flur") – vergeben Sie beim Vormerken.
+Ein nachträgliches Ändern ist in dieser Fassung nicht vorgesehen.
 
 Beim Anschaffen geschieht zweierlei automatisch:
 
@@ -205,10 +211,13 @@ Temperatur, Luft und Boden stimmen.
 nicht. Eine bereits abgehakte Aufgabe wird kein zweites Mal gezählt, und es
 entsteht nur ein Folgetermin.
 
-**Kann ich eine Pflanze wieder aus dem Bestand entfernen?** In dieser
-Fassung nicht. Entfernen lassen sich nur Einträge auf der Wunschliste. Eine
-Pflanze, die Sie nicht mehr pflegen möchten, können Sie über den Pflegeplan
-von ihren Aufgaben befreien; sie bleibt dann ohne Termine im Bestand stehen.
+**Kann ich eine Pflanze wieder aus dem Bestand entfernen?** Nur
+mittelbar, indem Sie ihren Standort löschen – dann verschwinden alle Pflanzen
+dieses Standorts (Abschnitt 3). Einen Weg, eine einzelne Bestandspflanze zu
+entfernen, gibt es in dieser Fassung nicht; die Schaltfläche **Entfernen**
+gilt allein für die Wunschliste. Eine Pflanze, die Sie nicht mehr pflegen
+möchten, können Sie über den Pflegeplan von ihren Aufgaben befreien; sie
+bleibt dann ohne Termine im Bestand stehen.
 
 **Bekomme ich eine Erinnerung, wenn etwas fällig ist?** Nein. Die Anwendung
 verschickt weder E-Mails noch Mitteilungen; fällige Aufgaben sehen Sie auf
