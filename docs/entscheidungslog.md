@@ -588,3 +588,26 @@ Befunde: drei Stellen im Benutzerhandbuch beschrieben Wege, die es nicht
 gibt, die Testzahlen der technischen Dokumentation lagen vier Faelle
 zurueck, und die Ansicht zum Entfernen einer Pflanze pruefte den Status
 nicht.
+
+
+**2026-09-15 — Erzeugte Diagramm-PNG liegen im Repository**
+Entscheidung: Die fuenf Diagramme liegen nicht nur als SVG-Quelle, sondern
+auch als erzeugte PNG im Repository. Das widerspricht der Regel, erzeugte
+Dateien nicht zu versionieren. Ausloeser war ein Befund aus der
+Abnahmepruefung: Die PNG waren nicht im Repository, und es gab auch kein
+Skript, das sie erzeugt - der README nannte den Schritt, aber keinen Befehl.
+Damit konnte niemand ausser dem Verfasser die Abgabedokumente vollstaendig
+bauen; bei allen anderen waeren Dokumente entstanden, deren
+Abbildungsverzeichnis Eintraege ohne zugehoerige Abbildung enthaelt.
+Geprueft wurde die saubere Alternative: ein Wandlungsskript und cairosvg in
+requirements-dev.txt. Verworfen, weil cairosvg die Systembibliothek Cairo
+voraussetzt, die auf den Arbeitsplaetzen des Teams erst zu installieren
+waere - genau die Art Voraussetzung, die in der Woche vor der Abgabe
+scheitert. Begruendung fuer das Versionieren: Die Diagramme aendern sich im
+verbleibenden Umfang nicht mehr, es sind fuenf Dateien von zusammen rund
+einem Megabyte, und jedes Teammitglied kann damit ohne zusaetzliche
+Installation bauen. Der Weg zum Neuerzeugen ist in docs/diagramme/README.md
+dokumentiert. Ergaenzend prueft iu_bauen.py vor dem Bau, ob zu jeder
+Abbildung die Rasterfassung vorliegt, und bricht sonst ab - der eigentliche
+Mangel war nicht der Handgriff, sondern dass sein Ausbleiben unbemerkt blieb.
+

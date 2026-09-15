@@ -198,9 +198,41 @@ def seite_suchen(marke_text, seiten, ab_seite=1):
     return None
 
 
+def bilder_pruefen():
+    """
+    Bricht ab, wenn ein in der Markdown genanntes Bild fehlt.
+
+    Ohne diese Pruefung baut pandoc klaglos weiter und setzt statt des Bildes
+    dessen Beschriftung ein - die Warnung dazu geht in der uebrigen Ausgabe
+    unter. Das Abbildungsverzeichnis entsteht aus der Markdown und listet die
+    Abbildung trotzdem auf. Im fertigen Dokument steht dann ein Verzeichnis
+    mit Eintraegen, zu denen es keine Abbildung gibt - und das sieht nicht
+    nach einem vergessenen Schritt aus, sondern nach Schlamperei.
+    """
+    fehlend = []
+    for kennung in DOKUMENTE:
+        quelle = DOCS / f"{kennung}.md"
+        for bezug in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", quelle.read_text(encoding="utf-8")):
+            # Geprueft wird, was pandoc spaeter liest: Fuer SVG setzt
+            # iu_formalia.py die PNG-Umsetzung ein, weil Word SVG nicht
+            # zuverlaessig einbettet. Die SVG allein genuegt also nicht.
+            gesucht = bezug[:-4] + ".png" if bezug.endswith(".svg") else bezug
+            if not (DOCS / gesucht).exists():
+                fehlend.append(f"{quelle.name}: {gesucht}")
+    if fehlend:
+        raise SystemExit(
+            "Abbruch, folgende Bilder fehlen:\n  "
+            + "\n  ".join(fehlend)
+            + "\n\nDie Diagramme liegen als PNG unter docs/bilder/ im Repository. "
+            "Sind sie\nnach einer Aenderung neu zu erzeugen, siehe docs/diagramme/README.md."
+        )
+
+
 def main():
-    # Die Diagramme als PNG neben die Markdown legen; die SVG im Repository
-    # sind die Quelle, Word braucht die Rasterfassung.
+    bilder_pruefen()
+
+    # Die Diagramme als PNG neben die Markdown legen; die SVG sind die
+    # Quelle der Darstellung, Word braucht die Rasterfassung.
     bilder = BAU / "bilder"
     bilder.mkdir(parents=True, exist_ok=True)
     for png in (DOCS / "bilder").glob("*.png"):

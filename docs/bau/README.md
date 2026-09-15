@@ -10,6 +10,12 @@ IU werden beim Bauen aufgesetzt.
 
 Das Ergebnis liegt danach in `docs/bau/ausgabe/` als vier Word-Dateien.
 
+Voraussetzungen sind `pandoc`, `libreoffice` (für den Zwischenschritt nach
+PDF, aus dem die Seitenzahlen der Verzeichnisse abgelesen werden) und
+`pdftotext`. Die Diagramme liegen als PNG im Repository und müssen nicht
+erzeugt werden; `iu_bauen.py` bricht ab, falls doch eines fehlt. Siehe
+`docs/diagramme/README.md`.
+
 ## Was die einzelnen Skripte tun
 
 | Skript | Aufgabe |
