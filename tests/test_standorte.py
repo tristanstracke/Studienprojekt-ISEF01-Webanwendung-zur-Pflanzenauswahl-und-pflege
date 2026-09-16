@@ -7,11 +7,24 @@ Zugriffstrennung: Ein fehlender Filter auf den Besitzer ist in der Oberflaeche
 unsichtbar und faellt ohne Test niemandem auf.
 """
 
+from datetime import date
+
 import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from plants.models import Bodenart, Standort
+from plants.models import (
+    Bodenart,
+    Feuchtigkeit,
+    Licht,
+    Pflanze,
+    Pflanzenart,
+    Pflegeaufgabe,
+    Pflegevorlage,
+    Standort,
+    Taetigkeit,
+    Wasserbedarf,
+)
 
 
 @pytest.fixture
@@ -164,3 +177,74 @@ def test_formularseiten_zeigen_ihre_ueberschrift(client, anna):
     """
     client.force_login(anna)
     assert "Standort anlegen" in client.get(reverse("standort_anlegen")).content.decode()
+
+
+# --- Loeschen ------------------------------------------------------------
+#
+# Diese Faelle fehlten lange. Dadurch blieb unbemerkt, dass das Loeschen
+# eines Standorts mit Pflanzen im Bestand in einen Datenbankfehler lief:
+# Die Fremdschluesselregel setzte die Zuordnung auf leer, die Bedingung
+# standort_nur_bei_pflanzen_im_bestand verlangt dort aber einen Standort.
+
+
+@pytest.fixture
+def art(db, bodenart):
+    a = Pflanzenart.objects.create(
+        name="Aloe vera",
+        lichtbedarf=Licht.HELL,
+        temperaturuntergrenze=10,
+        feuchtigkeitsbedarf=Feuchtigkeit.TROCKEN,
+        wasserbedarf=Wasserbedarf.GERING,
+    )
+    a.geeignete_bodenarten.set([bodenart])
+    return a
+
+
+def test_leerer_standort_wird_geloescht(client, anna, bodenart):
+    ort = standort_anlegen(anna, bodenart)
+    client.login(username="anna", password="geheim-12345")
+
+    antwort = client.post(reverse("standort_loeschen", args=[ort.pk]))
+
+    assert antwort.status_code == 302
+    assert not Standort.objects.filter(pk=ort.pk).exists()
+
+
+def test_standort_mit_pflanzen_wird_samt_pflanzen_geloescht(client, anna, bodenart, art):
+    ort = standort_anlegen(anna, bodenart)
+    pflanze = Pflanze.objects.create(
+        besitzer=anna, art=art, status=Pflanze.Status.BESTAND, standort=ort
+    )
+    vorlage = Pflegevorlage.objects.create(
+        pflanze=pflanze, taetigkeit=Taetigkeit.GIESSEN, intervall_tage=7
+    )
+    Pflegeaufgabe.objects.create(vorlage=vorlage, faelligkeit=date.today())
+    client.login(username="anna", password="geheim-12345")
+
+    antwort = client.post(reverse("standort_loeschen", args=[ort.pk]))
+
+    assert antwort.status_code == 302
+    assert not Standort.objects.filter(pk=ort.pk).exists()
+    assert not Pflanze.objects.filter(pk=pflanze.pk).exists()
+    assert not Pflegeaufgabe.objects.exists()
+
+
+def test_loeschseite_nennt_die_betroffenen_pflanzen(client, anna, bodenart, art):
+    ort = standort_anlegen(anna, bodenart)
+    Pflanze.objects.create(besitzer=anna, art=art, status=Pflanze.Status.BESTAND, standort=ort)
+    client.login(username="anna", password="geheim-12345")
+
+    antwort = client.get(reverse("standort_loeschen", args=[ort.pk]))
+
+    assert "Aloe vera" in antwort.content.decode()
+    assert "mitgelöscht" in antwort.content.decode()
+
+
+def test_wunschpflanze_bleibt_beim_loeschen_erhalten(client, anna, bodenart, art):
+    ort = standort_anlegen(anna, bodenart)
+    wunsch = Pflanze.objects.create(besitzer=anna, art=art, status=Pflanze.Status.WUNSCH)
+    client.login(username="anna", password="geheim-12345")
+
+    client.post(reverse("standort_loeschen", args=[ort.pk]))
+
+    assert Pflanze.objects.filter(pk=wunsch.pk).exists()

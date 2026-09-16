@@ -195,3 +195,32 @@ def test_bestand_zeigt_nur_eigene_pflanzen(client, anna, bernd, art, blumenerde)
     inhalt = angemeldet(client, anna).get(reverse("bestand")).content.decode()
     assert "Annas Exemplar" in inhalt
     assert "Bernds Exemplar" not in inhalt
+
+
+def test_bestandspflanze_ist_ueber_die_wunschliste_nicht_entfernbar(client, anna, art, blumenerde):
+    """
+    Die Adresse zum Entfernen gilt nur fuer die Wunschliste.
+
+    Wunsch und Bestand liegen in derselben Tabelle. Ohne die Statuspruefung in
+    der Ansicht loescht diese Adresse auch eine Pflanze im Bestand, mitsamt
+    ihren Pflegevorlagen und Terminen - und meldet, sie sei von der
+    Wunschliste entfernt worden. In der Oberflaeche ist der Knopf nur auf der
+    Wunschliste verlinkt, deshalb faellt der Fall dort nicht auf.
+    """
+    im_bestand = Pflanze.objects.create(
+        besitzer=anna,
+        art=art,
+        status=Pflanze.Status.BESTAND,
+        standort=standort(anna, blumenerde),
+    )
+    antwort = angemeldet(client, anna).post(reverse("pflanze_entfernen", args=[im_bestand.pk]))
+    assert antwort.status_code == 404
+    assert Pflanze.objects.filter(pk=im_bestand.pk).exists()
+
+
+def test_wunschpflanze_bleibt_entfernbar(client, anna, art):
+    """Gegenprobe: Die Statuspruefung darf den eigentlichen Weg nicht sperren."""
+    gemerkt = Pflanze.objects.create(besitzer=anna, art=art)
+    antwort = angemeldet(client, anna).post(reverse("pflanze_entfernen", args=[gemerkt.pk]))
+    assert antwort.status_code == 302
+    assert not Pflanze.objects.filter(pk=gemerkt.pk).exists()

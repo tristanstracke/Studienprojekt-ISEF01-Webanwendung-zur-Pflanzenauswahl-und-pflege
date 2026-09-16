@@ -246,7 +246,14 @@ class Pflanze(models.Model):
     )
     standort = models.ForeignKey(
         Standort,
-        on_delete=models.SET_NULL,
+        # Wird ein Standort geloescht, verschwinden die Pflanzen mit, die dort
+        # stehen. SET_NULL waere hier falsch: Die Bedingung weiter unten
+        # verlangt fuer jede Pflanze im Bestand einen Standort, das Loeschen
+        # lief deshalb in einen Datenbankfehler. Fachlich trifft CASCADE auch
+        # den Normalfall - wer einen Standort aufloest, hat die Pflanzen dort
+        # in aller Regel ebenfalls nicht mehr. Die Ansicht nennt vor dem
+        # Loeschen, welche Pflanzen betroffen sind.
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="pflanzen",

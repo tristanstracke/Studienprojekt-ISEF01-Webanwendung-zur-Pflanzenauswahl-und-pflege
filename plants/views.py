@@ -89,12 +89,25 @@ def standort_bearbeiten(request, pk):
 @login_required
 def standort_loeschen(request, pk):
     standort = get_object_or_404(Standort, pk=pk, besitzer=request.user)
+    betroffen = list(standort.pflanzen.select_related("art"))
     if request.method == "POST":
         name = standort.name
+        anzahl = len(betroffen)
         standort.delete()
-        messages.success(request, f"Standort {name} wurde gelöscht.")
+        if anzahl:
+            messages.success(
+                request,
+                f"Standort {name} wurde gelöscht, zusammen mit "
+                f"{anzahl} Pflanze{'n' if anzahl != 1 else ''} und deren Pflegeaufgaben.",
+            )
+        else:
+            messages.success(request, f"Standort {name} wurde gelöscht.")
         return redirect("standort_liste")
-    return render(request, "plants/standort_loeschen.html", {"standort": standort})
+    return render(
+        request,
+        "plants/standort_loeschen.html",
+        {"standort": standort, "betroffen": betroffen},
+    )
 
 
 # --------------------------------------------------------------------------
@@ -161,7 +174,17 @@ def wunschliste(request):
 
 @login_required
 def pflanze_entfernen(request, pk):
-    pflanze = get_object_or_404(Pflanze, pk=pk, besitzer=request.user)
+    """
+    Nimmt eine Pflanze von der Wunschliste.
+
+    Die Einschraenkung auf den Status "wunsch" ist nicht kosmetisch: Wunsch
+    und Bestand liegen in derselben Tabelle. Ohne sie loescht die Adresse
+    auch eine Pflanze im Bestand - samt Pflegevorlagen und Terminen, und mit
+    der Meldung, sie sei von der Wunschliste entfernt worden. In der
+    Oberflaeche ist der Knopf nur auf der Wunschliste verlinkt; wer die
+    Adresse kennt, kaeme ohne diese Pruefung dennoch daran.
+    """
+    pflanze = get_object_or_404(Pflanze, pk=pk, besitzer=request.user, status=Pflanze.Status.WUNSCH)
     if request.method == "POST":
         name = str(pflanze)
         pflanze.delete()
