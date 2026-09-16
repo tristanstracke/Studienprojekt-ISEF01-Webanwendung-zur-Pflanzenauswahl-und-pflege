@@ -332,6 +332,14 @@
       .zeile .rechts { margin-left: 0; width: 100%; }
       .kriterien .name { flex-basis: 100%; }
       .kriterien li { flex-wrap: wrap; }
+
+      /* Karten duerfen hier umbrechen. Ohne diese Regel gilt weiter das
+         nowrap von oben, waehrend .rechts zugleich die volle Breite
+         bekommt: Ein Block, der nicht schrumpfen darf und die ganze Zeile
+         beansprucht, draengt den Titel dann auf null, und die Schaltflaeche
+         legt sich ueber die Ueberschrift. Auf schmalen Bildschirmen steht
+         sie deshalb unter dem Text statt daneben. */
+      .karte > .zeile { flex-wrap: wrap; }
     }
   </style>
 </head>
