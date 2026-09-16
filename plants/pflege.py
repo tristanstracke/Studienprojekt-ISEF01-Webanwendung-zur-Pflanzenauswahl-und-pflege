@@ -62,6 +62,38 @@ def erzeuge_pflegevorlagen(pflanze, ab_datum: date | None = None) -> int:
     return angelegt
 
 
+def erste_aufgabe(vorlage: Pflegevorlage, ab_datum: date | None = None) -> Pflegeaufgabe:
+    """
+    Legt den ersten Termin einer neu angelegten Vorlage an.
+
+    Dieselbe Regel wie beim Anschaffen: ein volles Intervall in der Zukunft.
+    Die Funktion steht hier und nicht in der Ansicht, weil sie eine fachliche
+    Festlegung ist - in der Ansicht waere sie weder pruefbar noch waere
+    erkennbar, dass sie mit erzeuge_pflegevorlagen dieselbe Regel teilt.
+    """
+    ab_datum = ab_datum or heute()
+    return Pflegeaufgabe.objects.create(
+        vorlage=vorlage, faelligkeit=ab_datum + timedelta(days=vorlage.intervall_tage)
+    )
+
+
+def verschiebe_offenen_termin(vorlage: Pflegevorlage) -> Pflegeaufgabe | None:
+    """
+    Rechnet den offenen Termin einer Vorlage auf ihr Intervall um.
+
+    Wird nach einer Aenderung des Intervalls aufgerufen. Ohne diesen Schritt
+    wirkte die Aenderung erst nach dem naechsten Abhaken - der Nutzer aendert
+    das Intervall aber gerade deshalb, weil der aktuelle Termin nicht passt.
+    Gibt es keinen offenen Termin, geschieht nichts.
+    """
+    naechste = vorlage.aufgaben.filter(erledigt_am__isnull=True).order_by("faelligkeit").first()
+    if naechste is None:
+        return None
+    naechste.faelligkeit = heute() + timedelta(days=vorlage.intervall_tage)
+    naechste.save(update_fields=["faelligkeit"])
+    return naechste
+
+
 def hake_ab(aufgabe: Pflegeaufgabe, erledigt_am: date | None = None) -> Pflegeaufgabe | None:
     """
     Markiert eine Aufgabe als erledigt und legt die Folgeaufgabe an.

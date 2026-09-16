@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1200" width="1400" height="1200"
+     font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="pfeil" markerWidth="11" markerHeight="11" refX="9.5" refY="3.6"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,7.2 L10,3.6 z" fill="#1d2b1f"/>
+    </marker>
+    <style>
+      .kasten  { fill: #ffffff; stroke: #1d2b1f; stroke-width: 2.4; }
+      .betont  { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 3.6; }
+      .raute   { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .rahmen  { fill: #fafbf9; stroke: #1d2b1f; stroke-width: 2.2;
+                 stroke-dasharray: 10 7; }
+      .kopf    { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .txt     { font-size: 30px; fill: #1d2b1f; }
+      .fett    { font-size: 30px; font-weight: 700; fill: #1d2b1f; }
+      .feld    { font-size: 26px; fill: #3d4a3f; }
+      .kante   { fill: none; stroke: #1d2b1f; stroke-width: 2.4;
+                 marker-end: url(#pfeil); }
+      .linie   { fill: none; stroke: #1d2b1f; stroke-width: 2.4; }
+      .marke   { font-size: 26px; fill: #5f6d60; }
+      .karte   { font-size: 26px; font-weight: 700; fill: #1d2b1f; }
+      .rolle   { font-size: 26px; fill: #5f6d60; font-style: italic; }
+    </style>
+  </defs>
+<rect class="kasten" x="314" y="40" width="312" height="76" rx="8"/><text class="txt" x="470" y="88" text-anchor="middle">Standort anlegen</text><rect class="kasten" x="289" y="170" width="362" height="76" rx="8"/><text class="txt" x="470" y="218" text-anchor="middle">Katalog durchsuchen</text><polygon class="raute" points="470,271.0 699.0,330 470,389.0 241.0,330"/><text class="txt" x="470" y="340" text-anchor="middle">Art im Katalog?</text><rect class="kasten" x="948" y="294" width="345" height="76" rx="8"/><text class="txt" x="1120" y="342" text-anchor="middle">Eigene Art anlegen</text><rect class="kasten" x="289" y="470" width="362" height="76" rx="8"/><text class="txt" x="470" y="518" text-anchor="middle">Auf die Wunschliste</text><rect class="kasten" x="330" y="600" width="279" height="76" rx="8"/><text class="txt" x="470" y="648" text-anchor="middle">Eignung prüfen</text><rect class="kasten" x="298" y="730" width="345" height="116" rx="8"/><text class="txt" x="470" y="778" text-anchor="middle">Urteil je Standort</text><text class="txt" x="470" y="818" text-anchor="middle">mit Begründung</text><polygon class="raute" points="470,901.0 674.0,960 470,1019.0 266.0,960"/><text class="txt" x="470" y="970" text-anchor="middle">Entscheidung</text><rect class="betont" x="223" y="1090" width="494" height="76" rx="40"/><text class="txt" x="470" y="1138" text-anchor="middle">Anschaffen – weiter in UC 2</text><rect class="betont" x="906" y="1090" width="428" height="76" rx="40"/><text class="txt" x="1120" y="1138" text-anchor="middle">Von der Liste entfernen</text><path class="kante" d="M470,116 L470,162"/><path class="kante" d="M470,246 L470,263"/><path class="kante" d="M699,330 L940,330"/><text class="marke" x="721" y="314" text-anchor="start">nein</text><path class="kante" d="M470,389 L470,462"/><text class="marke" x="452" y="412" text-anchor="end">ja</text><path class="kante" d="M1120,370 L1120,432 L480,432"/><path class="kante" d="M470,546 L470,592"/><path class="kante" d="M470,676 L470,722"/><path class="kante" d="M470,846 L470,893"/><path class="kante" d="M470,1019 L470,1082"/><text class="marke" x="490" y="1061" text-anchor="start">anschaffen</text><path class="kante" d="M674,960 L1120,960 L1120,1082"/><text class="marke" x="696" y="944" text-anchor="start">verwerfen</text></svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" width="1500" height="400"
+     font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="pfeil" markerWidth="11" markerHeight="11" refX="9.5" refY="3.6"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,7.2 L10,3.6 z" fill="#1d2b1f"/>
+    </marker>
+    <style>
+      .kasten  { fill: #ffffff; stroke: #1d2b1f; stroke-width: 2.4; }
+      .betont  { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 3.6; }
+      .raute   { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .rahmen  { fill: #fafbf9; stroke: #1d2b1f; stroke-width: 2.2;
+                 stroke-dasharray: 10 7; }
+      .kopf    { fill: #eef1ec; stroke: #1d2b1f; stroke-width: 2.4; }
+      .txt     { font-size: 30px; fill: #1d2b1f; }
+      .fett    { font-size: 30px; font-weight: 700; fill: #1d2b1f; }
+      .feld    { font-size: 26px; fill: #3d4a3f; }
+      .kante   { fill: none; stroke: #1d2b1f; stroke-width: 2.4;
+                 marker-end: url(#pfeil); }
+      .linie   { fill: none; stroke: #1d2b1f; stroke-width: 2.4; }
+      .marke   { font-size: 26px; fill: #5f6d60; }
+      .karte   { font-size: 26px; font-weight: 700; fill: #1d2b1f; }
+      .rolle   { font-size: 26px; fill: #5f6d60; font-style: italic; }
+    </style>
+  </defs>
+<rect class="rahmen" x="30" y="30" width="1440" height="340" rx="10"/><text class="fett" x="62" y="88">Care for Plants (Django-Projekt)</text><rect class="kasten" x="70" y="130" width="440" height="200" rx="8"/><text class="fett" x="290" y="200" text-anchor="middle">config</text><text class="txt" x="290" y="240" text-anchor="middle">settings · urls</text><text class="txt" x="290" y="280" text-anchor="middle">wsgi</text><rect class="kasten" x="540" y="130" width="420" height="200" rx="8"/><text class="fett" x="750" y="200" text-anchor="middle">plants</text><text class="txt" x="750" y="240" text-anchor="middle">models · views · forms</text><text class="txt" x="750" y="280" text-anchor="middle">eignung · pflege</text><rect class="kasten" x="1010" y="130" width="420" height="200" rx="8"/><text class="fett" x="1220" y="200" text-anchor="middle">templates</text><text class="txt" x="1220" y="240" text-anchor="middle">Seitengerüst und</text><text class="txt" x="1220" y="280" text-anchor="middle">Ansichten je Fall</text><path class="kante" d="M510,230 L532,230"/><path class="kante" d="M960,230 L1002,230"/></svg>

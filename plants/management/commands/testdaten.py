@@ -43,9 +43,13 @@ from plants.pflege import erzeuge_pflegevorlagen, heute
 KENNWORT = "Pflanze-Test-2026"
 KENNWORT_ADMIN = "Pflanze-Admin-2026"
 
-# Zwei Zugaenge je Teammitglied: einer mit Bestand, um beide Anwendungsfaelle
-# sofort zu sehen, und einer ohne, um den Einstieg von null zu pruefen.
+# Zwei Zugaenge je pruefender Person: einer mit Bestand, um beide
+# Anwendungsfaelle sofort zu sehen, und einer ohne, um den Einstieg von null
+# zu pruefen. Der Tutor bekommt eigene Konten, damit seine Pruefung nicht von
+# Aenderungen des Teams beeinflusst wird - und umgekehrt.
 KONTEN = [
+    ("tutor", "tutor@example.org", True),
+    ("tutor-neu", "tutor-neu@example.org", False),
     ("kai", "kai@example.org", True),
     ("kai-neu", "kai-neu@example.org", False),
     ("kilian", "kilian@example.org", True),
